@@ -25,3 +25,12 @@ Clinical Trials analysis: Alzheimer’s drug development pipeline. A spotlight o
 
 
 # The planned timeline
+
+| Date | Description | 
+|------|------|
+| Nov 13-17 | Project review meeting  | 
+| Nov 18-21 | Prepare and build the intended website  |
+| Nov 27-30 | Complete Part I  |
+| Dec 1-4 | Complete Part II  |
+| Dec 5-7 | Complete Part III  |
+| Dec 8-9 | Review and check the project, complete screencast and peer assessment  |
