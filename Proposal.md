@@ -65,21 +65,6 @@ spotlight on two recently released medications will give a further
 comparison of efficacy, side effects, and other critical metrics,
 empowering stakeholders with data-driven insights.
 
-# The planned analyses / visualizations / coding challenges
-
-In this project, we aim to comprehensively analyze the landscape of
-Alzheimer’s disease (AD) patients in the United States. Part 1 involves
-mapping the geographical distribution of AD patients across the country
-using R packages such as ggplot and leaflet. In Part 2, we will employ
-data manipulation and analysis tools like tidyverse, MASS, and various
-statistical methods including principal component analysis, cluster
-analysis, and regression modeling to identify key factors contributing
-to the disease’s onset, such as age, gender, and ethnicity. Finally, in
-Part 3, we will perform a comparative analysis of two recently released
-drugs targeting Alzheimer’s disease, utilizing visualization packages
-like ggplot2 and plotly to create informative charts and graphics that
-illustrate the effectiveness and specificity of these medications.
-
 # The planned data sources
 
 **Part I Geographical distribution of AD patients across the US**
