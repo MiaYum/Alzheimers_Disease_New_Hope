@@ -1,6 +1,8 @@
 Proposal
 ================
 
+# Alzheimer’s Disease：New Hope
+
 **The group members:**
 
 Mia Yu (my2838)
