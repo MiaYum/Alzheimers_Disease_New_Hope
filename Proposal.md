@@ -50,6 +50,7 @@ data-driven insights.
 
 # Anticipated Data Sources
 
+<<<<<<< HEAD
 # The planned analyses / visualizations / coding challenges
 
 In this project, we aim to comprehensively analyze the landscape of
@@ -66,3 +67,38 @@ like ggplot2 and plotly to create informative charts and graphics that
 illustrate the effectiveness and specificity of these medications.
 
 # The planned timeline
+=======
+**Part I Geographical distribution of AD patients across the US**
+
+Alzheimer’s Association.
+<https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.13016>
+
+**Part II**
+
+Open access series of imaging studies. <https://www.oasis-brains.org/>
+
+**Part III Clinical trials of Alzheimer drugs & comparative analysis of
+two recently released drugs**
+
+ClinicalTrials.gov. <https://clinicaltrials.gov/search?cond=Alzheimer>
+
+Journal articles for Phase III study of
+
+Lecanemab (<https://www.nejm.org/doi/10.1056/NEJMoa2212948>)
+
+Dononemab
+(<https://jamanetwork.com/journals/jama/article-abstract/2807533>)
+
+# The planned analyses / visualizations / coding challenges
+
+# The planned timeline
+
+| Date      | Description                                                           |
+|-----------|-----------------------------------------------------------------------|
+| Nov 13-17 | Project review meeting                                                |
+| Nov 18-21 | Prepare and build the intended website                                |
+| Nov 27-30 | Complete Part I                                                       |
+| Dec 1-4   | Complete Part II                                                      |
+| Dec 5-7   | Complete Part III                                                     |
+| Dec 8-9   | Review and check the project, complete screencast and peer assessment |
+>>>>>>> ca9f3f165ee58c03c4572695adee97caeac82429
