@@ -11,7 +11,7 @@ Kairui Wang (kw3103)
 
 Yige Bian (yb2591)
 
-Can Wang (cw3555)
+Eunice Wang (cw3555)
 
 # The motivation for this project
 
