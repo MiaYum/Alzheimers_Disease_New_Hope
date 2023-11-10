@@ -45,22 +45,22 @@ address, and a brief intro of our team members. Additionally, a
 screencast will offer visitors a guided tour of our project,
 encapsulating our journey from conception to realization.
 
-**Data Exploration: ** A dedicated section for our data sources and
+**Data Exploration:** A dedicated section for our data sources and
 exploratory data analysis (EDA), offering insights into the foundational
 data that informs our research and models.
 
 The website will also host a suite of interactive tools, visualizations
 and statistical models focusing on three key topics:
 
-**Geographical Analysis Tool: ** An interactive ‘Shiny’ application that
+**Geographical Analysis Tool:** An interactive ‘Shiny’ application that
 maps the distribution of Alzheimer’s Disease (AD) patients across the
 United States, allowing users to identify patterns and hotspots.
 
-**Risk Factor Analysis: ** We will develop statistical models to analyze
+**Risk Factor Analysis:** We will develop statistical models to analyze
 the risk factors associated with Alzheimer’s Disease, providing valuable
 insights into prevention and early detection strategies.
 
-**Clinical Trials analysis: ** Alzheimer’s drug development pipeline. A
+**Clinical Trials analysis:** Alzheimer’s drug development pipeline. A
 spotlight on two recently released medications will give a further
 comparison of efficacy, side effects, and other critical metrics,
 empowering stakeholders with data-driven insights.
