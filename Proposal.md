@@ -85,7 +85,7 @@ Journal articles for Phase III study of
 
 Lecanemab (<https://www.nejm.org/doi/10.1056/NEJMoa2212948>)
 
-Dononemab
+Donanemab
 (<https://jamanetwork.com/journals/jama/article-abstract/2807533>)
 
 # The planned analyses / visualizations / coding challenges
