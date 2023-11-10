@@ -50,7 +50,8 @@ data-driven insights.
 
 # Anticipated Data Sources
 
-<<<<<<< HEAD
+\<\<\<\<\<\<\< HEAD
+
 # The planned analyses / visualizations / coding challenges
 
 In this project, we aim to comprehensively analyze the landscape of
@@ -66,8 +67,8 @@ drugs targeting Alzheimer’s disease, utilizing visualization packages
 like ggplot2 and plotly to create informative charts and graphics that
 illustrate the effectiveness and specificity of these medications.
 
-# The planned timeline
-=======
+# \# The planned timeline
+
 **Part I Geographical distribution of AD patients across the US**
 
 Alzheimer’s Association.
@@ -91,6 +92,19 @@ Dononemab
 
 # The planned analyses / visualizations / coding challenges
 
+In this project, we aim to comprehensively analyze the landscape of
+Alzheimer’s disease (AD) patients in the United States. Part 1 involves
+mapping the geographical distribution of AD patients across the country
+using R packages such as ggplot and leaflet. In Part 2, we will employ
+data manipulation and analysis tools like tidyverse, MASS, and various
+statistical methods including principal component analysis, cluster
+analysis, and regression modeling to identify key factors contributing
+to the disease’s onset, such as age, gender, and ethnicity. Finally, in
+Part 3, we will perform a comparative analysis of two recently released
+drugs targeting Alzheimer’s disease, utilizing visualization packages
+like ggplot2 and plotly to create informative charts and graphics that
+illustrate the effectiveness and specificity of these medications.
+
 # The planned timeline
 
 | Date      | Description                                                           |
@@ -101,4 +115,5 @@ Dononemab
 | Dec 1-4   | Complete Part II                                                      |
 | Dec 5-7   | Complete Part III                                                     |
 | Dec 8-9   | Review and check the project, complete screencast and peer assessment |
->>>>>>> ca9f3f165ee58c03c4572695adee97caeac82429
+
+> > > > > > > ca9f3f165ee58c03c4572695adee97caeac82429
