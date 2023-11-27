@@ -31,3 +31,36 @@ Demographic dataset contains the statistics about AD in ```r length(demo_data$st
 *```r colnames(demo_data)[3]```: Number of deaths and annual mortality rate (per100,000) due to Alzheimer’s disease by state, 2019
 
 *```r colnames(demo_data)[4]```: Number of caregivers of people with Alzheimer's or other dementias
+
+## Clinical Trials data
+Clinical Trials data is directly downloaded from **clinicaltrials.gov** for Alzheimer's Disease.
+```{r read data, include = FALSE}
+CT_data = 
+  read_csv("./Data/ClinicalTrials_raw_data.csv") |>
+  janitor::clean_names() 
+```
+There are a total of```r nrow(CT_data)```` and ```r length(CT_data)``` variables. Variables and description is listed below:
+
+*```r colnames(CT_data)[1]```: 
+
+*```r colnames(CT_data)[2]```: 
+
+*```r colnames(CT_data)[3]```: 
+
+*```r colnames(CT_data)[4]```:
+
+*```r colnames(CT_data)[5]```:
+
+*```r colnames(CT_data)[6]```:
+
+*```r colnames(CT_data)[7]```:
+
+*```r colnames(CT_data)[8]```:
+
+*```r colnames(CT_data)[9]```:
+
+*```r colnames(CT_data)[10]```:
+
+*```r colnames(CT_data)[11]```:
+
+# should simplify variables later 
