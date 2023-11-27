@@ -1,0 +1,33 @@
+---
+title: "Data"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include = FALSE}
+library(readxl)
+library(tidyverse)
+```
+
+# Introduction of the datasets
+
+## (AD) Demographic dataset
+We extract data from ALZHEIMER’S ASSOCIATION REPORT to give an overview of current figures of Alzheimer's disease in the United States.
+
+```{r upload dataset}
+# Get demongraphic data
+demo_data = 
+  read_excel("./Data/Demographic.xlsx", range = "A1:D52") |>
+  janitor::clean_names()
+```
+Demographic dataset contains the statistics about AD in ```r length(demo_data$state)``` states of the US. There are a total of ```r length(demo_data)``` variables. Variables and description is listed below:
+
+*```r colnames(demo_data)[1]```: State name
+
+*```r colnames(demo_data)[2]```: Projections of total numbers (in thousands) of Americans age 65 and older with Alzheimer's demential by state, 2020
+
+*```r colnames(demo_data)[3]```: Number of deaths and annual mortality rate (per100,000) due to Alzheimer’s disease by state, 2019
+
+*```r colnames(demo_data)[4]```: Number of caregivers of people with Alzheimer's or other dementias
