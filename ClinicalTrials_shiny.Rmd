@@ -1,0 +1,72 @@
+---
+title: "Clinical Trials Visualization for AD Drugs in the US"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: row
+    source_code: embed
+runtime: shiny
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+
+library(tidyverse)
+library(readxl)
+library(plotly)
+library(ggplot2)
+library(shiny)
+library(leaflet)
+```
+
+
+```{r read data, include = FALSE}
+data = 
+  read_csv("./Data/ClinicalTrials_raw_data.csv") |>
+  janitor::clean_names() 
+```
+
+```{r}
+CT_us_studies = data |>
+  filter(str_detect(locations, "United States")) |>
+  select(nct_number, interventions, funder_type, sex, age, phases, locations, enrollment, study_type, study_status)
+
+```
+
+```{r}
+CT_loc_clean = 
+  read_excel("./Data/CT_loc_clean_data.xlsx", range = "A1:J30108") |>
+  janitor::clean_names() |>
+  filter(str_detect(locations, "United States")) |>
+  mutate(num_com = as.character(str_count(locations, ",")),
+         num_com = case_match(num_com, "2" ~ ",,,,,", "3" ~ ",,,,", "4" ~ ",,,", "5" ~ ",,", "6" ~ ",", "7" ~ ""),
+         locations = paste(num_com, locations)) |>
+  separate(locations, into = c("del1", "del2", "del3", "del4", "del5", "city", "state", "country"), sep = ",") |>
+  select(-del1, -del2, -del3, -del4, -del5, -num_com) |>
+  mutate(city = str_trim(city, side = "both"),
+         state = str_trim(state, side = "both"),
+         country = str_trim(country, side = "both"),
+           locations = paste(city, state))
+```
+
+```{r}
+city_coor = 
+  read_excel("./Data/uscities.xlsx", range = "A1:M30845") |>
+  janitor::clean_names() |>
+  select(city, state_name, latitude, longitude) |>
+  mutate(locations = paste(city, state_name))
+
+### Attentiaon!!!! Na are dropped here due to incomplete list of coor_cities, should try to solve this prob
+CT_final_data = left_join(CT_loc_clean, city_coor, by = "locations") |>
+  drop_na(state_name) |>
+  select(-city.y, -state_name, -locations) |>
+  mutate(
+    phases = 
+      case_match(
+        phases,
+        "PHASE1" ~ "Phase 1/Phase 2",
+        "PHASE2" ~ "Phase 1/Phase 2",
+        "PHASE3" ~ "Phase 3/Phase 4",
+        "PHASE4" ~ "Phase 3/Phase 4",
+        "0" ~ "Observational"),
+    phases = ifelse(is.na(phases), "Unknown Phase", phases),
+    url = nct_number)
+```
