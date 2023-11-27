@@ -70,3 +70,36 @@ CT_final_data = left_join(CT_loc_clean, city_coor, by = "locations") |>
     phases = ifelse(is.na(phases), "Unknown Phase", phases),
     url = nct_number)
 ```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+```{r }
+
+radioButtons("phase_type", label = h3("Select study design"), choices = sort(unique(pull(CT_final_data, phases))), select = "Phase 3/Phase 4")
+
+State = state.name
+checkboxGroupInput("State", label = h3("Select State"), choices = State, selected = State)
+```
+
+Row 
+-----------------------------------------------------------------------
+### Study Location(s)
+```{r map_fig}
+f = function(element, state_choice) {
+  if(element %in% state_choice) {
+    TRUE} else{
+    FALSE}}
+
+LeafletInput <- reactive({
+  CT_final_data %>%
+    mutate(state = map(state, f, input$State)) %>%
+  filter(state == TRUE, phases == input$phase_type)
+})
+
+  renderLeaflet({
+  LeafletInput() %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(clusterOptions = markerClusterOptions(), popup = ~as.character(url))})
+        
+```
