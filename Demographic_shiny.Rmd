@@ -1,0 +1,84 @@
+---
+title: "Demographic statistics for Alzheimer's Disease in the US"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: row
+runtime: shiny
+---
+
+```{r}
+library(flexdashboard)
+
+library(shiny)
+library(readxl)
+library(tidyverse)
+library(usmap)
+library(plotly)
+library(ggplot2)
+```
+
+
+```{r}
+demo_data = 
+  read_excel("./Data/Demographic.xlsx", range = "A1:D52") |>
+  janitor::clean_names()
+
+death_rate_by_year = 
+  read_excel("./Data/Demographic.xlsx", sheet = "death_rate_by_year", range = "A1:K6") |>
+  janitor::clean_names()
+```
+
+```{r}
+demo_data = demo_data[order(demo_data$state),]
+demo_data$fips = statepop$fips
+demo_data$abbr = statepop$abbr
+
+death_rate_by_year = death_rate_by_year |>
+  pivot_longer(
+    y2000:y2018,
+    names_to = "year",
+    values_to = "death_rate"
+  ) |>
+  mutate(year = as.numeric(gsub("y", "", year)))
+
+demo_dict = tibble(
+  demo_type = "death_rate",
+  data = death_rate_by_year
+)
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+```{r}
+demo_type = demo_data |>
+  select(-state, -fips, -abbr) |>
+  variable.names()
+
+selectInput(
+  "demo_type", 
+  label = h3("Select demographic type"),
+  choices = demo_type, selected = "death_rate")
+```
+
+Row {data-height=650}
+-----------------------------------------------------------------------
+### Demographic visualizations
+```{r}
+renderPlotly({
+  ggplotly(plot_usmap(data = demo_data,
+           values = input$demo_type,
+           labels = TRUE))
+  })
+```
+
+Row {data-height=350) .tabset}
+-----------------------------------------------------------------------
+### test
+```{r}
+renderPlotly({
+  demo_dict |>
+    filter(demo_type == input$demo_type) |>
+    pull(data) |>
+    plot_ly(x = ~year, y = ~death_rate, color = ~age, type = 'scatter', mode = 'lines')
+})
+```
