@@ -1,0 +1,16 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "About"
+      href: About.html
+    - text: "EDA"
+      href: EDA.html
+    - icon: fa-envelope fa-lg
+      href: 
+    - icon: fa-github fa-lg
+      href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+output:
+  html_document:
+    theme: cosmo
