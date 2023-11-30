@@ -65,7 +65,25 @@ edu_level =
   pivot_longer(
     x2018:x2021,
     names_to = "year",
-    values_to = "value"
+    values_to = "edu_level"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  arrange(state, year)
+
+diabetes_rate = 
+  read_excel("./Data/diabetes.xlsx", range = "A1:C205") |>
+  janitor::clean_names() |>
+  rename(diabetes_rate = diabetes_proportion) |>
+  mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3)) |>
+  arrange(state, year)
+
+cardio_rate = 
+  read_excel("./Data/Cardiovascular Disease.xlsx", range = "A1:E52") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "cardio_rate"
   ) |>
   mutate(year = as.numeric(str_replace(year, "x", ""))) |>
   arrange(state, year)
