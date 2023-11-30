@@ -1,36 +1,86 @@
 ---
 title: "Data"
-output: 
-  html_document:
-    toc: true
-    toc_float: true
 ---
 
 ```{r setup, include = FALSE}
+suppressMessages(library(tidyverse))
+suppressMessages(library(dbplyr))
 library(readxl)
-library(tidyverse)
 ```
 
 # Introduction of the datasets
 
-## (AD) Demographic dataset
-We extract data from ALZHEIMER’S ASSOCIATION REPORT to give an overview of current figures of Alzheimer's disease in the United States.
+## Geo
+Alzheimer’s Disease Mortality by State: [CDC](https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm)
 
-```{r upload dataset}
-# Get demongraphic data
-demo_data = 
-  read_excel("./Data/Demographic.xlsx", range = "A1:D52") |>
-  janitor::clean_names()
+Econ data by state: [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==)
+
+Healthcare Expenditure: [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI1MjQiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyIxNiJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==)
+
+Education level: [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#)
+
+```{r, message = FALSE, warning = FALSE}
+death_rate = 
+  read_csv("./Data/death_rate.csv") |>
+  janitor::clean_names() |>
+  rename(death_rate = rate) |>
+  select(state, year, death_rate) |>
+  filter(year >= 2018) |>
+  arrange(state, year)
+
+econ_data = 
+  read_csv("./Data/econdata.csv") |>
+  janitor::clean_names() |>
+  select(geo_name, description, x2018:x2021) |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "value"
+  ) |>
+  pivot_wider(
+    names_from = "description",
+    values_from = "value"
+  ) |>
+  rename(state = geo_name) |>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  arrange(state, year)
+
+hc_exp = 
+  read_csv("./Data/healthcare_exp.csv") |>
+  janitor::clean_names() |>
+  select(geo_name, x2018:x2021) |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "value"
+  ) |>
+  rename(state = geo_name) |>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  arrange(state, year)
+
+edu_level = 
+  read_excel("./Data/edu_level.xlsx") |>
+  janitor::clean_names() |>
+  select(state, x2018:x2021) |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "value"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  arrange(state, year)
+
+
 ```
-Demographic dataset contains the statistics about AD in ```r length(demo_data$state)``` states of the US. There are a total of ```r length(demo_data)``` variables. Variables and description is listed below:
 
-*```r colnames(demo_data)[1]```: State name
 
-*```r colnames(demo_data)[2]```: Projections of total numbers (in thousands) of Americans age 65 and older with Alzheimer's demential by state, 2020
 
-*```r colnames(demo_data)[3]```: Number of deaths and annual mortality rate (per100,000) due to Alzheimer’s disease by state, 2019
 
-*```r colnames(demo_data)[4]```: Number of caregivers of people with Alzheimer's or other dementias
+
+
+
+
+
 
 ## Clinical Trials data
 Clinical Trials data is directly downloaded from **clinicaltrials.gov** for Alzheimer's Disease.

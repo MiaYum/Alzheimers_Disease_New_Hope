@@ -1,9 +1,5 @@
 ---
 title: "EDA"
-output: 
-  html_document:
-    toc: true
-    toc_float: true
 ---
 
 ```{r setup, include = FALSE}
