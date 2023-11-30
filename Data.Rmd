@@ -19,6 +19,10 @@ Healthcare Expenditure: [Bureau of Economic Analysis](https://apps.bea.gov/iTabl
 
 Education level: [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#)
 
+Diabetes rate:[KFF](https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D)
+
+Cardiovascular Disease rate: [KFF](https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D)
+
 ```{r, message = FALSE, warning = FALSE}
 death_rate = 
   read_csv("./Data/death_rate.csv") |>
@@ -32,6 +36,16 @@ econ_data =
   read_csv("./Data/econdata.csv") |>
   janitor::clean_names() |>
   select(geo_name, description, x2018:x2021) |>
+  mutate(description = 
+           case_match(
+             description,
+             "GDP"~"gdp",
+             "PCE"~"pce",
+             "Regional price parities"~"rpp",
+             "employment"~"employment",
+             "healthcare expenditure"~"hc_exp",
+             "personal income"~"income",
+             "population"~"population")) |>
   pivot_longer(
     x2018:x2021,
     names_to = "year",
@@ -42,7 +56,14 @@ econ_data =
     values_from = "value"
   ) |>
   rename(state = geo_name) |>
-  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")),
+         gdp = gdp/(population/1000000),
+         pce = pce/(population/1000000),
+         employment = employment/(population/1000000),
+         hc_exp = hc_exp/(population/1000000),
+         income = income/(population/1000000),
+         ) |>
+  select(-population) |>
   arrange(state, year)
 
 hc_exp = 
@@ -88,10 +109,27 @@ cardio_rate =
   mutate(year = as.numeric(str_replace(year, "x", ""))) |>
   arrange(state, year)
 
+smoke_rate =
+  read_excel("./Data/smoke.xlsx") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "smoke_rate"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")),
+         smoke_rate = smoke_rate/100) |>
+  arrange(state, year)
+
 
 ```
 
 
+```{r}
+agen = 
+  read_csv("./Data/econdata.csv") |>
+  arrange(GeoName, Description)
+```
 
 
 
