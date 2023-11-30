@@ -64,14 +64,14 @@ process_data <- function(input_file) {
 
 
 # 处理不同年份的数据文件并保存结果
-data_2021 <- process_data("../Data/age_over_65/2021.csv")
-write.csv(data_2021, file = "result_2021.csv", row.names = FALSE)
+data_2021 <- process_data("./Data/age_over_65/2021.csv")
+write.csv(data_2021, file = "./Data/age_over_65/result_2021.csv", row.names = FALSE)
 
-data_2019 <- process_data("../Data/age_over_65/2019.csv")
-write.csv(data_2019, file = "result_2019.csv", row.names = FALSE)
+data_2019 <- process_data("./Data/age_over_65/2019.csv")
+write.csv(data_2019, file = "./Data/age_over_65/result_2019.csv", row.names = FALSE)
 
-data_2018 <- process_data("../Data/age_over_65/2018.csv")
-write.csv(data_2018, file = "result_2018.csv", row.names = FALSE)
+data_2018 <- process_data("./Data/age_over_65/2018.csv")
+write.csv(data_2018, file = "./Data/age_over_65/result_2018.csv", row.names = FALSE)
 
 ```
 
