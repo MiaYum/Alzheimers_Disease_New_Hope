@@ -3,10 +3,16 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "About"
-      href: About.html
-    - text: "EDA"
-      href: EDA.html
+    - text: "Introduction"
+      href: Introduction.html
+    - text: "Data Sources"
+      href: Data.html
+    - text: "Analysis"
+      menu:
+      - text: "Exploratory Analysis"
+        href: EDA.html
+      - text: "Statistical Analysis"
+        href: EDA.html
     - icon: fa-envelope fa-lg
       href: 
     - icon: fa-github fa-lg
