@@ -23,6 +23,10 @@ Diabetes rate:[KFF](https://www.kff.org/other/state-indicator/adults-with-diabet
 
 Cardiovascular Disease rate: [KFF](https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D)
 
+Smoking: [CDC](https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm), [KFF](https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D)
+
+Age>65: 
+
 ```{r, message = FALSE, warning = FALSE}
 death_rate = 
   read_csv("./Data/death_rate.csv") |>
@@ -66,19 +70,6 @@ econ_data =
   select(-population) |>
   arrange(state, year)
 
-hc_exp = 
-  read_csv("./Data/healthcare_exp.csv") |>
-  janitor::clean_names() |>
-  select(geo_name, x2018:x2021) |>
-  pivot_longer(
-    x2018:x2021,
-    names_to = "year",
-    values_to = "value"
-  ) |>
-  rename(state = geo_name) |>
-  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
-  arrange(state, year)
-
 edu_level = 
   read_excel("./Data/edu_level.xlsx") |>
   janitor::clean_names() |>
@@ -95,7 +86,8 @@ diabetes_rate =
   read_excel("./Data/diabetes.xlsx", range = "A1:C205") |>
   janitor::clean_names() |>
   rename(diabetes_rate = diabetes_proportion) |>
-  mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3)) |>
+  mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3),
+         year = as.numeric(year)) |>
   arrange(state, year)
 
 cardio_rate = 
@@ -121,7 +113,22 @@ smoke_rate =
          smoke_rate = smoke_rate/100) |>
   arrange(state, year)
 
+elderly_rate = read_excel("./Data/age_over_65/age_over_65.xlsx") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "elder_rate"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")))|>
+  arrange(state, year)
 
+geo_data = left_join(death_rate, econ_data, by = c("state", "year")) |>
+  left_join(edu_level, by = c("state", "year")) |>
+  left_join(diabetes_rate, by = c("state", "year")) |>
+  left_join(cardio_rate, by = c("state", "year")) |>
+  left_join(smoke_rate, by = c("state", "year")) |>
+  left_join(elderly_rate, by = c("state", "year"))
 ```
 
 
