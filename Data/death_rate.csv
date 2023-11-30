@@ -1,0 +1,456 @@
+YEAR,STATE (ABBR),STATE,RATE,DEATHS,URL
+2021,AL,Alabama,46.8,2725,/nchs/pressroom/states/alabama/al.htm
+2021,AK,Alaska,26.4,135,/nchs/pressroom/states/alaska/ak.htm
+2021,AZ,Arizona,30.5,2754,/nchs/pressroom/states/arizona/az.htm
+2021,AR,Arkansas,43.2,1559,/nchs/pressroom/states/arkansas/ar.htm
+2021,CA,California,39.5,16911,/nchs/pressroom/states/california/ca.htm
+2021,CO,Colorado,32.6,1778,/nchs/pressroom/states/colorado/co.htm
+2021,CT,Connecticut,21.2,1049,/nchs/pressroom/states/connecticut/ct.htm
+2021,DE,Delaware,29.7,381,/nchs/pressroom/states/delaware/de.htm
+2021,DC,District of Columbia,,,
+2021,FL,Florida,19.6,6716,/nchs/pressroom/states/florida/fl.htm
+2021,GA,Georgia,44.5,4378,/nchs/pressroom/states/georgia/ga.htm
+2021,HI,Hawaii,23.9,562,/nchs/pressroom/states/hawaii/hi.htm
+2021,ID,Idaho,40.5,789,/nchs/pressroom/states/idaho/id.htm
+2021,IL,Illinois,26.6,4025,/nchs/pressroom/states/illinois/il.htm
+2021,IN,Indiana,29.7,2238,/nchs/pressroom/states/indiana/in.htm
+2021,IA,Iowa,28.2,1185,/nchs/pressroom/states/iowa/ia.htm
+2021,KS,Kansas,22.6,805,/nchs/pressroom/states/kansas/ks.htm
+2021,KY,Kentucky,32.7,1632,/nchs/pressroom/states/kentucky/ky.htm
+2021,LA,Louisiana,42.9,2121,/nchs/pressroom/states/louisiana/la.htm
+2021,ME,Maine,27.4,539,/nchs/pressroom/states/maine/me.htm
+2021,MD,Maryland,16.1,1129,/nchs/pressroom/states/maryland/md.htm
+2021,MA,Massachusetts,17.7,1558,/nchs/pressroom/states/massachusetts/ma.htm
+2021,MI,Michigan,34.4,4198,/nchs/pressroom/states/michigan/mi.htm
+2021,MN,Minnesota,33.1,2251,/nchs/pressroom/states/minnesota/mn.htm
+2021,MS,Mississippi,52.8,1694,/nchs/pressroom/states/mississippi/ms.htm
+2021,MO,Missouri,33,2517,/nchs/pressroom/states/missouri/mo.htm
+2021,MT,Montana,24.7,341,/nchs/pressroom/states/montana/mt.htm
+2021,NE,Nebraska,29.6,687,/nchs/pressroom/states/nebraska/ne.htm
+2021,NV,Nevada,26.1,804,/nchs/pressroom/states/nevada/nv.htm
+2021,NH,New Hampshire,23.5,422,/nchs/pressroom/states/newhampshire/nh.htm
+2021,NJ,New Jersey,20.6,2399,/nchs/pressroom/states/newjersey/nj.htm
+2021,NM,New Mexico,24.6,634,/nchs/pressroom/states/newmexico/nm.htm
+2021,NY,New York,13.6,3582,/nchs/pressroom/states/newyork/ny.htm
+2021,NC,North Carolina,36.7,4260,/nchs/pressroom/states/northcarolina/nc.htm
+2021,ND,North Dakota,32.8,325,/nchs/pressroom/states/northdakota/nd.htm
+2021,OH,Ohio,34.2,4947,/nchs/pressroom/states/ohio/oh.htm
+2021,OK,Oklahoma,36,1580,/nchs/pressroom/states/oklahoma/ok.htm
+2021,OR,Oregon,41,2047,/nchs/pressroom/states/oregon/or.htm
+2021,PA,Pennsylvania,22.7,4109,/nchs/pressroom/states/pennsylvania/pa.htm
+2021,RI,Rhode Island,29.7,445,/nchs/pressroom/states/rhodeisland/ri.htm
+2021,SC,South Carolina,40.9,2419,/nchs/pressroom/states/southcarolina/sc.htm
+2021,SD,South Dakota,35.6,396,/nchs/pressroom/states/southdakota/sd.htm
+2021,TN,Tennessee,37.7,2879,/nchs/pressroom/states/tennessee/tn.htm
+2021,TX,Texas,41.9,10437,/nchs/pressroom/states/texas/tx.htm
+2021,UT,Utah,40.7,998,/nchs/pressroom/states/utah/ut.htm
+2021,VT,Vermont,38.8,337,/nchs/pressroom/states/vermont/vt.htm
+2021,VA,Virginia,27.5,2582,/nchs/pressroom/states/virginia/va.htm
+2021,WA,Washington,45.5,3644,/nchs/pressroom/states/washington/wa.htm
+2021,WV,West Virginia,35.4,851,/nchs/pressroom/states/westvirginia/wv.htm
+2021,WI,Wisconsin,33,2371,/nchs/pressroom/states/wisconsin/wi.htm
+2021,WY,Wyoming,32.7,208,/nchs/pressroom/states/wyoming/wy.htm
+2020,AL,Alabama,50.8,3093,/nchs/pressroom/states/alabama/al.htm
+2020,AK,Alaska,26.8,139,/nchs/pressroom/states/alaska/ak.htm
+2020,AZ,Arizona,32.7,3238,/nchs/pressroom/states/arizona/az.htm
+2020,AR,Arkansas,45.6,1782,/nchs/pressroom/states/arkansas/ar.htm
+2020,CA,California,40.6,18775,/nchs/pressroom/states/california/ca.htm
+2020,CO,Colorado,36.9,2164,/nchs/pressroom/states/colorado/co.htm
+2020,CT,Connecticut,20.3,1084,/nchs/pressroom/states/connecticut/ct.htm
+2020,DE,Delaware,35.1,474,/nchs/pressroom/states/delaware/de.htm
+2020,DC,District of Columbia,,,
+2020,FL,Florida,19.8,7274,/nchs/pressroom/states/florida/fl.htm
+2020,GA,Georgia,45.9,4782,/nchs/pressroom/states/georgia/ga.htm
+2020,HI,Hawaii,22.8,572,/nchs/pressroom/states/hawaii/hi.htm
+2020,ID,Idaho,36.7,749,/nchs/pressroom/states/idaho/id.htm
+2020,IL,Illinois,28.7,4636,/nchs/pressroom/states/illinois/il.htm
+2020,IN,Indiana,34.3,2803,/nchs/pressroom/states/indiana/in.htm
+2020,IA,Iowa,31.9,1467,/nchs/pressroom/states/iowa/ia.htm
+2020,KS,Kansas,25.3,979,/nchs/pressroom/states/kansas/ks.htm
+2020,KY,Kentucky,32.3,1719,/nchs/pressroom/states/kentucky/ky.htm
+2020,LA,Louisiana,45.8,2450,/nchs/pressroom/states/louisiana/la.htm
+2020,ME,Maine,27.9,587,/nchs/pressroom/states/maine/me.htm
+2020,MD,Maryland,15.8,1172,/nchs/pressroom/states/maryland/md.htm
+2020,MA,Massachusetts,18.6,1751,/nchs/pressroom/states/massachusetts/ma.htm
+2020,MI,Michigan,36.9,4864,/nchs/pressroom/states/michigan/mi.htm
+2020,MN,Minnesota,35,2587,/nchs/pressroom/states/minnesota/mn.htm
+2020,MS,Mississippi,58,2018,/nchs/pressroom/states/mississippi/ms.htm
+2020,MO,Missouri,34.9,2873,/nchs/pressroom/states/missouri/mo.htm
+2020,MT,Montana,23.8,346,/nchs/pressroom/states/montana/mt.htm
+2020,NE,Nebraska,32.2,808,/nchs/pressroom/states/nebraska/ne.htm
+2020,NV,Nevada,28.7,943,/nchs/pressroom/states/nevada/nv.htm
+2020,NH,New Hampshire,26.1,491,/nchs/pressroom/states/newhampshire/nh.htm
+2020,NJ,New Jersey,22.1,2677,/nchs/pressroom/states/newjersey/nj.htm
+2020,NM,New Mexico,26.6,728,/nchs/pressroom/states/newmexico/nm.htm
+2020,NY,New York,14,3862,/nchs/pressroom/states/newyork/ny.htm
+2020,NC,North Carolina,37.5,4713,/nchs/pressroom/states/northcarolina/nc.htm
+2020,ND,North Dakota,39.7,426,/nchs/pressroom/states/northdakota/nd.htm
+2020,OH,Ohio,38,5955,/nchs/pressroom/states/ohio/oh.htm
+2020,OK,Oklahoma,38.2,1817,/nchs/pressroom/states/oklahoma/ok.htm
+2020,OR,Oregon,37,2008,/nchs/pressroom/states/oregon/or.htm
+2020,PA,Pennsylvania,23.2,4544,/nchs/pressroom/states/pennsylvania/pa.htm
+2020,RI,Rhode Island,31.9,501,/nchs/pressroom/states/rhodeisland/ri.htm
+2020,SC,South Carolina,40.4,2575,/nchs/pressroom/states/southcarolina/sc.htm
+2020,SD,South Dakota,39.7,488,/nchs/pressroom/states/southdakota/sd.htm
+2020,TN,Tennessee,44.4,3607,/nchs/pressroom/states/tennessee/tn.htm
+2020,TX,Texas,44.6,11918,/nchs/pressroom/states/texas/tx.htm
+2020,UT,Utah,42.9,1116,/nchs/pressroom/states/utah/ut.htm
+2020,VT,Vermont,31,280,/nchs/pressroom/states/vermont/vt.htm
+2020,VA,Virginia,28.7,2861,/nchs/pressroom/states/virginia/va.htm
+2020,WA,Washington,42.9,3704,/nchs/pressroom/states/washington/wa.htm
+2020,WV,West Virginia,35.9,932,/nchs/pressroom/states/westvirginia/wv.htm
+2020,WI,Wisconsin,33.2,2595,/nchs/pressroom/states/wisconsin/wi.htm
+2020,WY,Wyoming,32.1,227,/nchs/pressroom/states/wyoming/wy.htm
+2019,AL,Alabama,44.6,2659,/nchs/pressroom/states/alabama/al.htm
+2019,AK,Alaska,25.3,128,/nchs/pressroom/states/alaska/ak.htm
+2019,AZ,Arizona,32.3,3047,/nchs/pressroom/states/arizona/az.htm
+2019,AR,Arkansas,39.5,1507,/nchs/pressroom/states/arkansas/ar.htm
+2019,CA,California,37,16859,/nchs/pressroom/states/california/ca.htm
+2019,CO,Colorado,33.4,1909,/nchs/pressroom/states/colorado/co.htm
+2019,CT,Connecticut,18.1,967,/nchs/pressroom/states/connecticut/ct.htm
+2019,DE,Delaware,25.9,339,/nchs/pressroom/states/delaware/de.htm
+2019,DC,District of Columbia,,,
+2019,FL,Florida,18.3,6539,/nchs/pressroom/states/florida/fl.htm
+2019,GA,Georgia,41.9,4221,/nchs/pressroom/states/georgia/ga.htm
+2019,HI,Hawaii,19.1,471,/nchs/pressroom/states/hawaii/hi.htm
+2019,ID,Idaho,33.2,650,/nchs/pressroom/states/idaho/id.htm
+2019,IL,Illinois,24.5,3954,/nchs/pressroom/states/illinois/il.htm
+2019,IN,Indiana,31.6,2561,/nchs/pressroom/states/indiana/in.htm
+2019,IA,Iowa,29.2,1344,/nchs/pressroom/states/iowa/ia.htm
+2019,KS,Kansas,21.9,839,/nchs/pressroom/states/kansas/ks.htm
+2019,KY,Kentucky,32.1,1684,/nchs/pressroom/states/kentucky/ky.htm
+2019,LA,Louisiana,41.4,2165,/nchs/pressroom/states/louisiana/la.htm
+2019,ME,Maine,25.9,544,/nchs/pressroom/states/maine/me.htm
+2019,MD,Maryland,13.8,1012,/nchs/pressroom/states/maryland/md.htm
+2019,MA,Massachusetts,17.7,1663,/nchs/pressroom/states/massachusetts/ma.htm
+2019,MI,Michigan,33.9,4467,/nchs/pressroom/states/michigan/mi.htm
+2019,MN,Minnesota,34.9,2552,/nchs/pressroom/states/minnesota/mn.htm
+2019,MS,Mississippi,48.8,1662,/nchs/pressroom/states/mississippi/ms.htm
+2019,MO,Missouri,34.1,2782,/nchs/pressroom/states/missouri/mo.htm
+2019,MT,Montana,22.6,326,/nchs/pressroom/states/montana/mt.htm
+2019,NE,Nebraska,30.3,768,/nchs/pressroom/states/nebraska/ne.htm
+2019,NV,Nevada,21.6,678,/nchs/pressroom/states/nevada/nv.htm
+2019,NH,New Hampshire,27.8,511,/nchs/pressroom/states/newhampshire/nh.htm
+2019,NJ,New Jersey,21.7,2629,/nchs/pressroom/states/newjersey/nj.htm
+2019,NM,New Mexico,21.3,568,/nchs/pressroom/states/newmexico/nm.htm
+2019,NY,New York,13.7,3753,/nchs/pressroom/states/newyork/ny.htm
+2019,NC,North Carolina,36.9,4508,/nchs/pressroom/states/northcarolina/nc.htm
+2019,ND,North Dakota,37.6,403,/nchs/pressroom/states/northdakota/nd.htm
+2019,OH,Ohio,33.6,5234,/nchs/pressroom/states/ohio/oh.htm
+2019,OK,Oklahoma,37.9,1775,/nchs/pressroom/states/oklahoma/ok.htm
+2019,OR,Oregon,37.2,1992,/nchs/pressroom/states/oregon/or.htm
+2019,PA,Pennsylvania,21.2,4150,/nchs/pressroom/states/pennsylvania/pa.htm
+2019,RI,Rhode Island,28.9,456,/nchs/pressroom/states/rhodeisland/ri.htm
+2019,SC,South Carolina,37.9,2323,/nchs/pressroom/states/southcarolina/sc.htm
+2019,SD,South Dakota,40.5,495,/nchs/pressroom/states/southdakota/sd.htm
+2019,TN,Tennessee,41.1,3252,/nchs/pressroom/states/tennessee/tn.htm
+2019,TX,Texas,38.6,10101,/nchs/pressroom/states/texas/tx.htm
+2019,UT,Utah,39,980,/nchs/pressroom/states/utah/ut.htm
+2019,VT,Vermont,35.1,315,/nchs/pressroom/states/vermont/vt.htm
+2019,VA,Virginia,26.9,2631,/nchs/pressroom/states/virginia/va.htm
+2019,WA,Washington,42.2,3585,/nchs/pressroom/states/washington/wa.htm
+2019,WV,West Virginia,32.3,832,/nchs/pressroom/states/westvirginia/wv.htm
+2019,WI,Wisconsin,30.5,2390,/nchs/pressroom/states/wisconsin/wi.htm
+2019,WY,Wyoming,34.4,238,/nchs/pressroom/states/wyoming/wy.htm
+2018,AL,Alabama,44.9,2616,/nchs/pressroom/states/alabama/al.htm
+2018,AK,Alaska,27.5,131,/nchs/pressroom/states/alaska/ak.htm
+2018,AZ,Arizona,33,3012,/nchs/pressroom/states/arizona/az.htm
+2018,AR,Arkansas,38.9,1457,/nchs/pressroom/states/arkansas/ar.htm
+2018,CA,California,37.1,16627,/nchs/pressroom/states/california/ca.htm
+2018,CO,Colorado,29.6,1649,/nchs/pressroom/states/colorado/co.htm
+2018,CT,Connecticut,18.5,986,/nchs/pressroom/states/connecticut/ct.htm
+2018,DE,Delaware,32.7,412,/nchs/pressroom/states/delaware/de.htm
+2018,DC,District of Columbia,,,
+2018,FL,Florida,19.2,6725,/nchs/pressroom/states/florida/fl.htm
+2018,GA,Georgia,46.5,4513,/nchs/pressroom/states/georgia/ga.htm
+2018,HI,Hawaii,20.2,480,/nchs/pressroom/states/hawaii/hi.htm
+2018,ID,Idaho,35,666,/nchs/pressroom/states/idaho/id.htm
+2018,IL,Illinois,25.3,4030,/nchs/pressroom/states/illinois/il.htm
+2018,IN,Indiana,33.4,2668,/nchs/pressroom/states/indiana/in.htm
+2018,IA,Iowa,31.7,1439,/nchs/pressroom/states/iowa/ia.htm
+2018,KS,Kansas,23.6,899,/nchs/pressroom/states/kansas/ks.htm
+2018,KY,Kentucky,32.5,1674,/nchs/pressroom/states/kentucky/ky.htm
+2018,LA,Louisiana,42.2,2166,/nchs/pressroom/states/louisiana/la.htm
+2018,ME,Maine,28.4,580,/nchs/pressroom/states/maine/me.htm
+2018,MD,Maryland,15.8,1122,/nchs/pressroom/states/maryland/md.htm
+2018,MA,Massachusetts,19.5,1823,/nchs/pressroom/states/massachusetts/ma.htm
+2018,MI,Michigan,34.3,4474,/nchs/pressroom/states/michigan/mi.htm
+2018,MN,Minnesota,33.7,2436,/nchs/pressroom/states/minnesota/mn.htm
+2018,MS,Mississippi,46,1547,/nchs/pressroom/states/mississippi/ms.htm
+2018,MO,Missouri,32.9,2641,/nchs/pressroom/states/missouri/mo.htm
+2018,MT,Montana,21.7,310,/nchs/pressroom/states/montana/mt.htm
+2018,NE,Nebraska,27.4,683,/nchs/pressroom/states/nebraska/ne.htm
+2018,NV,Nevada,23.6,704,/nchs/pressroom/states/nevada/nv.htm
+2018,NH,New Hampshire,26.4,487,/nchs/pressroom/states/newhampshire/nh.htm
+2018,NJ,New Jersey,22.7,2710,/nchs/pressroom/states/newjersey/nj.htm
+2018,NM,New Mexico,22.4,583,/nchs/pressroom/states/newmexico/nm.htm
+2018,NY,New York,13.9,3755,/nchs/pressroom/states/newyork/ny.htm
+2018,NC,North Carolina,37.9,4495,/nchs/pressroom/states/northcarolina/nc.htm
+2018,ND,North Dakota,33.8,356,/nchs/pressroom/states/northdakota/nd.htm
+2018,OH,Ohio,34.9,5391,/nchs/pressroom/states/ohio/oh.htm
+2018,OK,Oklahoma,37.9,1739,/nchs/pressroom/states/oklahoma/ok.htm
+2018,OR,Oregon,35.6,1868,/nchs/pressroom/states/oregon/or.htm
+2018,PA,Pennsylvania,20.7,4064,/nchs/pressroom/states/pennsylvania/pa.htm
+2018,RI,Rhode Island,29.2,470,/nchs/pressroom/states/rhodeisland/ri.htm
+2018,SC,South Carolina,44.3,2616,/nchs/pressroom/states/southcarolina/sc.htm
+2018,SD,South Dakota,36.3,437,/nchs/pressroom/states/southdakota/sd.htm
+2018,TN,Tennessee,45,3488,/nchs/pressroom/states/tennessee/tn.htm
+2018,TX,Texas,38.4,9763,/nchs/pressroom/states/texas/tx.htm
+2018,UT,Utah,42.1,1024,/nchs/pressroom/states/utah/ut.htm
+2018,VT,Vermont,37.7,333,/nchs/pressroom/states/vermont/vt.htm
+2018,VA,Virginia,27.1,2592,/nchs/pressroom/states/virginia/va.htm
+2018,WA,Washington,45.2,3752,/nchs/pressroom/states/washington/wa.htm
+2018,WV,West Virginia,31,791,/nchs/pressroom/states/westvirginia/wv.htm
+2018,WI,Wisconsin,31.7,2453,/nchs/pressroom/states/wisconsin/wi.htm
+2018,WY,Wyoming,41.5,277,/nchs/pressroom/states/wyoming/wy.htm
+2017,AL,Alabama,45.2,"2,563",/nchs/pressroom/states/alabama/alabama.htm
+2017,AK,Alaska,22.1,98,/nchs/pressroom/states/alaska/alaska.htm
+2017,AZ,Arizona,35.1,"3,058",/nchs/pressroom/states/arizona/arizona.htm
+2017,AR,Arkansas,39.4,"1,436",/nchs/pressroom/states/arkansas/arkansas.htm
+2017,CA,California,37.1,"16,238",/nchs/pressroom/states/california/california.htm
+2017,CO,Colorado,34.2,"1,830",/nchs/pressroom/states/colorado/colorado.htm
+2017,CT,Connecticut,20.4,"1,077",/nchs/pressroom/states/connecticut/connecticut.htm
+2017,DE,Delaware,30.5,377,/nchs/pressroom/states/delaware/delaware.htm
+2017,DC,District of Columbia,,,
+2017,FL,Florida,20.7,"6,980",/nchs/pressroom/states/florida/florida.htm
+2017,GA,Georgia,46,"4,290",/nchs/pressroom/states/georgia/georgia.htm
+2017,HI,Hawaii,19.7,465,/nchs/pressroom/states/hawaii/hawaii.htm
+2017,ID,Idaho,36.6,672,/nchs/pressroom/states/idaho/idaho.htm
+2017,IL,Illinois,25.6,"4,021",/nchs/pressroom/states/illinois/illinois.htm
+2017,IN,Indiana,35.3,"2,771",/nchs/pressroom/states/indiana/indiana.htm
+2017,IA,Iowa,35.3,"1,597",/nchs/pressroom/states/iowa/iowa.htm
+2017,KS,Kansas,24.3,894,/nchs/pressroom/states/kansas/kansas.htm
+2017,KY,Kentucky,35,"1,765",/nchs/pressroom/states/kentucky/kentucky.htm
+2017,LA,Louisiana,43.7,"2,188",/nchs/pressroom/states/louisiana/louisiana.htm
+2017,ME,Maine,30.4,601,/nchs/pressroom/states/maine/maine.htm
+2017,MD,Maryland,17.1,"1,191",/nchs/pressroom/states/maryland/maryland.htm
+2017,MA,Massachusetts,19.9,"1,841",/nchs/pressroom/states/massachusetts/massachusetts.htm
+2017,MI,Michigan,34.5,"4,428",/nchs/pressroom/states/michigan/michigan.htm
+2017,MN,Minnesota,34.9,"2,474",/nchs/pressroom/states/minnesota/minnesota.htm
+2017,MS,Mississippi,49.5,"1,626",/nchs/pressroom/states/mississippi/mississippi.htm
+2017,MO,Missouri,32.3,"2,545",/nchs/pressroom/states/missouri/missouri.htm
+2017,MT,Montana,20.9,285,/nchs/pressroom/states/montana/montana.htm
+2017,NE,Nebraska,28.5,698,/nchs/pressroom/states/nebraska/nebraska.htm
+2017,NV,Nevada,27.3,779,/nchs/pressroom/states/nevada/nevada.htm
+2017,NH,New Hampshire,24.8,436,/nchs/pressroom/states/newhampshire/newhampshire.htm
+2017,NJ,New Jersey,23.6,"2,829",/nchs/pressroom/states/newjersey/newjersey.htm
+2017,NM,New Mexico,22.7,572,/nchs/pressroom/states/newmexico/newmexico.htm
+2017,NY,New York,13.2,"3,521",/nchs/pressroom/states/newyork/newyork.htm
+2017,NC,North Carolina,37.3,"4,289",/nchs/pressroom/states/northcarolina/northcarolina.htm
+2017,ND,North Dakota,36.5,387,/nchs/pressroom/states/northdakota/northdakota.htm
+2017,OH,Ohio,33.6,"5,117",/nchs/pressroom/states/ohio/ohio.htm
+2017,OK,Oklahoma,39.3,"1,752",/nchs/pressroom/states/oklahoma/oklahoma.htm
+2017,OR,Oregon,36,"1,850",/nchs/pressroom/states/oregon/oregon.htm
+2017,PA,Pennsylvania,21.7,"4,213",/nchs/pressroom/states/pennsylvania/pennsylvania.htm
+2017,RI,Rhode Island,27.3,435,/nchs/pressroom/states/rhodeisland/rhodeisland.htm
+2017,SC,South Carolina,44.9,"2,549",/nchs/pressroom/states/southcarolina/southcarolina.htm
+2017,SD,South Dakota,36.9,444,/nchs/pressroom/states/southdakota/southdakota.htm
+2017,TN,Tennessee,46.7,"3,522",/nchs/pressroom/states/tenessee/tennessee.htm
+2017,TX,Texas,38.5,"9,545",/nchs/pressroom/states/texas/texas.htm
+2017,UT,Utah,42.1,991,/nchs/pressroom/states/utah/utah.htm
+2017,VT,Vermont,42.9,370,/nchs/pressroom/states/vermont/vermont.htm
+2017,VA,Virginia,27.6,"2,549",/nchs/pressroom/states/virginia/virginia.htm
+2017,WA,Washington,46,"3,710",/nchs/pressroom/states/washington/washington.htm
+2017,WV,West Virginia,30.6,770,/nchs/pressroom/states/westvirginia/westvirginia.htm
+2017,WI,Wisconsin,31.6,"2,428",/nchs/pressroom/states/wisconsin/wisconsin.htm
+2017,WY,Wyoming,32.7,212,/nchs/pressroom/states/wyoming/wyoming.htm
+2016,AL,Alabama,45,"2,507",/nchs/pressroom/states/alabama/alabama.htm
+2016,AK,Alaska,25.8,111,/nchs/pressroom/states/alaska/alaska.htm
+2016,AZ,Arizona,35.8,"3,082",/nchs/pressroom/states/arizona/arizona.htm
+2016,AR,Arkansas,41.3,"1,475",/nchs/pressroom/states/arkansas/arkansas.htm
+2016,CA,California,36.1,"15,570",/nchs/pressroom/states/california/california.htm
+2016,CO,Colorado,34.7,"1,835",/nchs/pressroom/states/colorado/colorado.htm
+2016,CT,Connecticut,20.3,"1,035",/nchs/pressroom/states/connecticut/connecticut.htm
+2016,DE,Delaware,27.4,329,/nchs/pressroom/states/delaware/delaware.htm
+2016,FL,Florida,21.5,"7,155",/nchs/pressroom/states/florida/florida.htm
+2016,GA,Georgia,44.8,"4,021",/nchs/pressroom/states/georgia/georgia.htm
+2016,HI,Hawaii,20.1,445,/nchs/pressroom/states/hawaii/hawaii.htm
+2016,ID,Idaho,33.9,607,/nchs/pressroom/states/idaho/idaho.htm
+2016,IL,Illinois,25.4,"3,877",/nchs/pressroom/states/illinois/illinois.htm
+2016,IN,Indiana,34.9,"2,678",/nchs/pressroom/states/indiana/indiana.htm
+2016,IA,Iowa,31.3,"1,415",/nchs/pressroom/states/iowa/iowa.htm
+2016,KS,Kansas,23.1,855,/nchs/pressroom/states/kansas/kansas.htm
+2016,KY,Kentucky,35.1,"1,728",/nchs/pressroom/states/kentucky/kentucky.htm
+2016,LA,Louisiana,45,"2,195",/nchs/pressroom/states/louisiana/louisiana.htm
+2016,ME,Maine,29.6,577,/nchs/pressroom/states/maine/maine.htm
+2016,MD,Maryland,17.4,"1,178",/nchs/pressroom/states/maryland/maryland.htm
+2016,MA,Massachusetts,18.6,"1,708",/nchs/pressroom/states/massachusetts/massachusetts.htm
+2016,MI,Michigan,33.6,"4,249",/nchs/pressroom/states/michigan/michigan.htm
+2016,MN,Minnesota,31.8,"2,219",/nchs/pressroom/states/minnesota/minnesota.htm
+2016,MS,Mississippi,45.8,"1,485",/nchs/pressroom/states/mississippi/mississippi.htm
+2016,MO,Missouri,30,"2,302",/nchs/pressroom/states/missouri/missouri.htm
+2016,MT,Montana,22.6,314,/nchs/pressroom/states/montana/montana.htm
+2016,NE,Nebraska,26.2,634,/nchs/pressroom/states/nebraska/nebraska.htm
+2016,NV,Nevada,24.6,686,/nchs/pressroom/states/nevada/nevada.htm
+2016,NH,New Hampshire,24.8,430,/nchs/pressroom/states/newhampshire/newhampshire.htm
+2016,NJ,New Jersey,21.1,"2,435",/nchs/pressroom/states/newjersey/newjersey.htm
+2016,NM,New Mexico,23.5,583,/nchs/pressroom/states/newmexico/newmexico.htm
+2016,NY,New York,13.1,"3,349",/nchs/pressroom/states/newyork/newyork.htm
+2016,NC,North Carolina,37.2,"4,153",/nchs/pressroom/states/northcarolina/northcarolina.htm
+2016,ND,North Dakota,35.3,361,/nchs/pressroom/states/northdakota/northdakota.htm
+2016,OH,Ohio,33.4,"5,031",/nchs/pressroom/states/ohio/ohio.htm
+2016,OK,Oklahoma,36.1,"1,590",/nchs/pressroom/states/oklahoma/oklahoma.htm
+2016,OR,Oregon,34.8,"1,786",/nchs/pressroom/states/oregon/oregon.htm
+2016,PA,Pennsylvania,21.7,"4,185",/nchs/pressroom/states/pennsylvania/pennsylvania.htm
+2016,RI,Rhode Island,26.7,422,/nchs/pressroom/states/rhodeisland/rhodeisland.htm
+2016,SC,South Carolina,45.3,"2,481",/nchs/pressroom/states/southcarolina/southcarolina.htm
+2016,SD,South Dakota,37.1,449,/nchs/pressroom/states/southdakota/southdakota.htm
+2016,TN,Tennessee,44.2,"3,250",/nchs/pressroom/states/tenessee/tennessee.htm
+2016,TX,Texas,37.8,"9,135",/nchs/pressroom/states/texas/texas.htm
+2016,UT,Utah,39.3,904,/nchs/pressroom/states/utah/utah.htm
+2016,VT,Vermont,35.8,310,/nchs/pressroom/states/vermont/vermont.htm
+2016,VA,Virginia,26.8,"2,408",/nchs/pressroom/states/virginia/virginia.htm
+2016,WA,Washington,40.7,"3,269",/nchs/pressroom/states/washington/washington.htm
+2016,WV,West Virginia,31.7,786,/nchs/pressroom/states/westvirginia/westvirginia.htm
+2016,WI,Wisconsin,29.6,"2,256",/nchs/pressroom/states/wisconsin/wisconsin.htm
+2016,WY,Wyoming,21.2,138,/nchs/pressroom/states/wyoming/wyoming.htm
+2015,AL,Alabama,41.8,"2,282",/nchs/pressroom/states/alabama/alabama.htm
+2015,AK,Alaska,16.7,68,/nchs/pressroom/states/alaska/alaska.htm
+2015,AZ,Arizona,35.8,"2,943",/nchs/pressroom/states/arizona/arizona.htm
+2015,AR,Arkansas,41.5,"1,457",/nchs/pressroom/states/arkansas/arkansas.htm
+2015,CA,California,35.7,"15,065",/nchs/pressroom/states/california/california.htm
+2015,CO,Colorado,31.3,"1,612",/nchs/pressroom/states/colorado/colorado.htm
+2015,CT,Connecticut,19,966,/nchs/pressroom/states/connecticut/connecticut.htm
+2015,DE,Delaware,22.6,264,/nchs/pressroom/states/delaware/delaware.htm
+2015,FL,Florida,21.8,"7,031",/nchs/pressroom/states/florida/florida.htm
+2015,GA,Georgia,42.4,"3,714",/nchs/pressroom/states/georgia/georgia.htm
+2015,HI,Hawaii,19.5,422,/nchs/pressroom/states/hawaii/hawaii.htm
+2015,ID,Idaho,31.6,552,/nchs/pressroom/states/idaho/idaho.htm
+2015,IL,Illinois,24.4,"3,686",/nchs/pressroom/states/illinois/illinois.htm
+2015,IN,Indiana,33.1,"2,513",/nchs/pressroom/states/indiana/indiana.htm
+2015,IA,Iowa,29.9,"1,339",/nchs/pressroom/states/iowa/iowa.htm
+2015,KS,Kansas,23.5,865,/nchs/pressroom/states/kansas/kansas.htm
+2015,KY,Kentucky,34.9,"1,694",/nchs/pressroom/states/kentucky/kentucky.htm
+2015,LA,Louisiana,42.5,"2,018",/nchs/pressroom/states/louisiana/louisiana.htm
+2015,ME,Maine,28.4,544,/nchs/pressroom/states/maine/maine.htm
+2015,MD,Maryland,16.4,"1,095",/nchs/pressroom/states/maryland/maryland.htm
+2015,MA,Massachusetts,20.2,"1,815",/nchs/pressroom/states/massachusetts/massachusetts.htm
+2015,MI,Michigan,30.1,"3,771",/nchs/pressroom/states/michigan/michigan.htm
+2015,MN,Minnesota,26,"1,789",/nchs/pressroom/states/minnesota/minnesota.htm
+2015,MS,Mississippi,44.1,"1,402",/nchs/pressroom/states/mississippi/mississippi.htm
+2015,MO,Missouri,28.7,"2,173",/nchs/pressroom/states/missouri/missouri.htm
+2015,MT,Montana,20.7,277,/nchs/pressroom/states/montana/montana.htm
+2015,NE,Nebraska,24.8,598,/nchs/pressroom/states/nebraska/nebraska.htm
+2015,NV,Nevada,32.9,874,/nchs/pressroom/states/nevada/nevada.htm
+2015,NH,New Hampshire,25.5,432,/nchs/pressroom/states/newhampshire/newhampshire.htm
+2015,NJ,New Jersey,19.8,"2,260",/nchs/pressroom/states/newjersey/newjersey.htm
+2015,NM,New Mexico,19.9,483,/nchs/pressroom/states/newmexico/newmexico.htm
+2015,NY,New York,12.6,"3,174",/nchs/pressroom/states/newyork/newyork.htm
+2015,NC,North Carolina,34.8,"3,803",/nchs/pressroom/states/northcarolina/northcarolina.htm
+2015,ND,North Dakota,36.7,376,/nchs/pressroom/states/northdakota/northdakota.htm
+2015,OH,Ohio,31.1,"4,643",/nchs/pressroom/states/ohio/ohio.htm
+2015,OK,Oklahoma,34.7,"1,498",/nchs/pressroom/states/oklahoma/oklahoma.htm
+2015,OR,Oregon,33,"1,652",/nchs/pressroom/states/oregon/oregon.htm
+2015,PA,Pennsylvania,21,"4,012",/nchs/pressroom/states/pennsylvania/pennsylvania.htm
+2015,RI,Rhode Island,28.8,453,/nchs/pressroom/states/rhodeisland/rhodeisland.htm
+2015,SC,South Carolina,46.2,"2,453",/nchs/pressroom/states/southcarolina/southcarolina.htm
+2015,SD,South Dakota,34.8,421,/nchs/pressroom/states/southdakota/southdakota.htm
+2015,TN,Tennessee,43.4,"3,122",/nchs/pressroom/states/tenessee/tennessee.htm
+2015,TX,Texas,38.2,"8,903",/nchs/pressroom/states/texas/texas.htm
+2015,UT,Utah,40.7,906,/nchs/pressroom/states/utah/utah.htm
+2015,VT,Vermont,35.1,298,/nchs/pressroom/states/vermont/vermont.htm
+2015,VA,Virginia,25.6,"2,248",/nchs/pressroom/states/virginia/virginia.htm
+2015,WA,Washington,44.4,"3,490",/nchs/pressroom/states/washington/washington.htm
+2015,WV,West Virginia,30,738,/nchs/pressroom/states/westvirginia/westvirginia.htm
+2015,WI,Wisconsin,27.5,"2,087",/nchs/pressroom/states/wisconsin/wisconsin.htm
+2015,WY,Wyoming,24.2,151,/nchs/pressroom/states/wyoming/wyoming.htm
+2014,AL,Alabama,35.3,"1,885",/nchs/pressroom/states/alabama/alabama.htm
+2014,AK,Alaska,17.2,68,/nchs/pressroom/states/alaska/alaska.htm
+2014,AZ,Arizona,31.6,"2,485",/nchs/pressroom/states/arizona/arizona.htm
+2014,AR,Arkansas,34.8,"1,193",/nchs/pressroom/states/arkansas/arkansas.htm
+2014,CA,California,30.9,"12,644",/nchs/pressroom/states/california/california.htm
+2014,CO,Colorado,27.4,"1,364",/nchs/pressroom/states/colorado/colorado.htm
+2014,CT,Connecticut,18.4,923,/nchs/pressroom/states/connecticut/connecticut.htm
+2014,DE,Delaware,16.6,188,/nchs/pressroom/states/delaware/delaware.htm
+2014,FL,Florida,18.8,"5,874",/nchs/pressroom/states/florida/florida.htm
+2014,GA,Georgia,31.7,"2,670",/nchs/pressroom/states/georgia/georgia.htm
+2014,HI,Hawaii,15,326,/nchs/pressroom/states/hawaii/hawaii.htm
+2014,ID,Idaho,22.4,376,/nchs/pressroom/states/idaho/idaho.htm
+2014,IL,Illinois,21.9,"3,266",/nchs/pressroom/states/illinois/illinois.htm
+2014,IN,Indiana,29.4,"2,204",/nchs/pressroom/states/indiana/indiana.htm
+2014,IA,Iowa,29.6,"1,313",/nchs/pressroom/states/iowa/iowa.htm
+2014,KS,Kansas,21.9,790,/nchs/pressroom/states/kansas/kansas.htm
+2014,KY,Kentucky,32.1,"1,523",/nchs/pressroom/states/kentucky/kentucky.htm
+2014,LA,Louisiana,36,"1,670",/nchs/pressroom/states/louisiana/louisiana.htm
+2014,ME,Maine,22.7,434,/nchs/pressroom/states/maine/maine.htm
+2014,MD,Maryland,14.5,934,/nchs/pressroom/states/maryland/maryland.htm
+2014,MA,Massachusetts,19,"1,688",/nchs/pressroom/states/massachusetts/massachusetts.htm
+2014,MI,Michigan,27,"3,349",/nchs/pressroom/states/michigan/michigan.htm
+2014,MN,Minnesota,24.2,"1,628",/nchs/pressroom/states/minnesota/minnesota.htm
+2014,MS,Mississippi,35.2,"1,098",/nchs/pressroom/states/mississippi/mississippi.htm
+2014,MO,Missouri,27.4,"2,053",/nchs/pressroom/states/missouri/missouri.htm
+2014,MT,Montana,19.2,253,/nchs/pressroom/states/montana/montana.htm
+2014,NE,Nebraska,21.9,515,/nchs/pressroom/states/nebraska/nebraska.htm
+2014,NV,Nevada,23.8,606,/nchs/pressroom/states/nevada/nevada.htm
+2014,NH,New Hampshire,24,396,/nchs/pressroom/states/newhampshire/newhampshire.htm
+2014,NJ,New Jersey,17.4,"1,962",/nchs/pressroom/states/newjersey/newjersey.htm
+2014,NM,New Mexico,18.9,442,/nchs/pressroom/states/newmexico/newmexico.htm
+2014,NY,New York,10.7,"2,639",/nchs/pressroom/states/newyork/newyork.htm
+2014,NC,North Carolina,30.5,"3,246",/nchs/pressroom/states/northcarolina/northcarolina.htm
+2014,ND,North Dakota,36.2,364,/nchs/pressroom/states/northdakota/northdakota.htm
+2014,OH,Ohio,27.7,"4,083",/nchs/pressroom/states/ohio/ohio.htm
+2014,OK,Oklahoma,28.9,"1,227",/nchs/pressroom/states/oklahoma/oklahoma.htm
+2014,OR,Oregon,28.5,"1,411",/nchs/pressroom/states/oregon/oregon.htm
+2014,PA,Pennsylvania,18.3,"3,486",/nchs/pressroom/states/pennsylvania/pennsylvania.htm
+2014,RI,Rhode Island,25.9,403,/nchs/pressroom/states/rhodeisland/rhodeisland.htm
+2014,SC,South Carolina,37.4,"1,938",/nchs/pressroom/states/southcarolina/southcarolina.htm
+2014,SD,South Dakota,36.2,434,/nchs/pressroom/states/southdakota/southdakota.htm
+2014,TN,Tennessee,38.1,"2,672",/nchs/pressroom/states/tenessee/tennessee.htm
+2014,TX,Texas,30,"6,772",/nchs/pressroom/states/texas/texas.htm
+2014,UT,Utah,26.7,584,/nchs/pressroom/states/utah/utah.htm
+2014,VT,Vermont,31.9,266,/nchs/pressroom/states/vermont/vermont.htm
+2014,VA,Virginia,20.8,"1,775",/nchs/pressroom/states/virginia/virginia.htm
+2014,WA,Washington,43.6,"3,344",/nchs/pressroom/states/washington/washington.htm
+2014,WV,West Virginia,25.5,620,/nchs/pressroom/states/westvirginia/westvirginia.htm
+2014,WI,Wisconsin,25,"1,876",/nchs/pressroom/states/wisconsin/wisconsin.htm
+2014,WY,Wyoming,26.6,162,/nchs/pressroom/states/wyoming/wyoming.htm
+2005,AL,Alabama,33.4,"1,501",/nchs/pressroom/states/alabama/alabama.htm
+2005,AK,Alaska,22.1,61,/nchs/pressroom/states/alaska/alaska.htm
+2005,AZ,Arizona,33,"1,831",/nchs/pressroom/states/arizona/arizona.htm
+2005,AR,Arkansas,22.8,686,/nchs/pressroom/states/arkansas/arkansas.htm
+2005,CA,California,24.6,"7,706",/nchs/pressroom/states/california/california.htm
+2005,CO,Colorado,29.5,"1,064",/nchs/pressroom/states/colorado/colorado.htm
+2005,CT,Connecticut,17.4,777,/nchs/pressroom/states/connecticut/connecticut.htm
+2005,DE,Delaware,21.2,180,/nchs/pressroom/states/delaware/delaware.htm
+2005,FL,Florida,19.4,"4,608",/nchs/pressroom/states/florida/florida.htm
+2005,GA,Georgia,27.4,"1,745",/nchs/pressroom/states/georgia/georgia.htm
+2005,HI,Hawaii,13.1,192,/nchs/pressroom/states/hawaii/hawaii.htm
+2005,ID,Idaho,30.7,407,/nchs/pressroom/states/idaho/idaho.htm
+2005,IL,Illinois,21.9,"2,827",/nchs/pressroom/states/illinois/illinois.htm
+2005,IN,Indiana,26,"1,651",/nchs/pressroom/states/indiana/indiana.htm
+2005,IA,Iowa,26.5,"1,082",/nchs/pressroom/states/iowa/iowa.htm
+2005,KS,Kansas,28.1,912,/nchs/pressroom/states/kansas/kansas.htm
+2005,KY,Kentucky,28.7,"1,147",/nchs/pressroom/states/kentucky/kentucky.htm
+2005,LA,Louisiana,34.8,"1,405",/nchs/pressroom/states/louisiana/louisiana.htm
+2005,ME,Maine,29.9,476,/nchs/pressroom/states/maine/maine.htm
+2005,MD,Maryland,18.7,958,/nchs/pressroom/states/maryland/maryland.htm
+2005,MA,Massachusetts,21.1,"1,638",/nchs/pressroom/states/massachusetts/massachusetts.htm
+2005,MI,Michigan,22.9,"2,359",/nchs/pressroom/states/michigan/michigan.htm
+2005,MN,Minnesota,23.5,"1,320",/nchs/pressroom/states/minnesota/minnesota.htm
+2005,MS,Mississippi,26.6,721,/nchs/pressroom/states/mississippi/mississippi.htm
+2005,MO,Missouri,25.6,"1,635",/nchs/pressroom/states/missouri/missouri.htm
+2005,MT,Montana,24.6,267,/nchs/pressroom/states/montana/montana.htm
+2005,NE,Nebraska,22.3,473,/nchs/pressroom/states/nebraska/nebraska.htm
+2005,NV,Nevada,18.1,310,/nchs/pressroom/states/nevada/nevada.htm
+2005,NH,New Hampshire,28.3,376,/nchs/pressroom/states/newhampshire/newhampshire.htm
+2005,NJ,New Jersey,19,"1,815",/nchs/pressroom/states/newjersey/newjersey.htm
+2005,NM,New Mexico,18.7,327,/nchs/pressroom/states/newmexico/newmexico.htm
+2005,NY,New York,9.7,"2,065",/nchs/pressroom/states/newyork/newyork.htm
+2005,NC,North Carolina,30.5,"2,417",/nchs/pressroom/states/northcarolina/northcarolina.htm
+2005,ND,North Dakota,31.5,287,/nchs/pressroom/states/northdakota/northdakota.htm
+2005,OH,Ohio,27.7,"3,478",/nchs/pressroom/states/ohio/ohio.htm
+2005,OK,Oklahoma,28,"1,012",/nchs/pressroom/states/oklahoma/oklahoma.htm
+2005,OR,Oregon,30.5,"1,239",/nchs/pressroom/states/oregon/oregon.htm
+2005,PA,Pennsylvania,20.7,"3,429",/nchs/pressroom/states/pennsylvania/pennsylvania.htm
+2005,RI,Rhode Island,20.9,298,/nchs/pressroom/states/rhodeisland/rhodeisland.htm
+2005,SC,South Carolina,34.3,"1,316",/nchs/pressroom/states/southcarolina/southcarolina.htm
+2005,SD,South Dakota,28.3,290,/nchs/pressroom/states/southdakota/southdakota.htm
+2005,TN,Tennessee,36.1,"2,033",/nchs/pressroom/states/tenessee/tennessee.htm
+2005,TX,Texas,27.4,"4,629",/nchs/pressroom/states/texas/texas.htm
+2005,UT,Utah,22.4,368,/nchs/pressroom/states/utah/utah.htm
+2005,VT,Vermont,27.1,184,/nchs/pressroom/states/vermont/vermont.htm
+2005,VA,Virginia,23.6,"1,550",/nchs/pressroom/states/virginia/virginia.htm
+2005,WA,Washington,38.2,"2,309",/nchs/pressroom/states/washington/washington.htm
+2005,WV,West Virginia,23.6,504,/nchs/pressroom/states/westvirginia/westvirginia.htm
+2005,WI,Wisconsin,23.5,"1,512",/nchs/pressroom/states/wisconsin/wisconsin.htm
+2005,WY,Wyoming,22.8,110,/nchs/pressroom/states/wyoming/wyoming.htm
