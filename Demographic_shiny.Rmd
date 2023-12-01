@@ -6,7 +6,7 @@ output:
 runtime: shiny
 ---
 
-```{r}
+```{r, include = FALSE, message = FALSE, warning = FALSE}
 library(flexdashboard)
 
 library(shiny)
@@ -17,68 +17,41 @@ library(plotly)
 library(ggplot2)
 ```
 
-
-```{r}
-demo_data = 
-  read_excel("./Data/Demographic.xlsx", range = "A1:D52") |>
-  janitor::clean_names()
-
-death_rate_by_year = 
-  read_excel("./Data/Demographic.xlsx", sheet = "death_rate_by_year", range = "A1:K6") |>
-  janitor::clean_names()
-```
-
-```{r}
-demo_data = demo_data[order(demo_data$state),]
-demo_data$fips = statepop$fips
-demo_data$abbr = statepop$abbr
-
-death_rate_by_year = death_rate_by_year |>
-  pivot_longer(
-    y2000:y2018,
-    names_to = "year",
-    values_to = "death_rate"
-  ) |>
-  mutate(year = as.numeric(gsub("y", "", year)))
-
-demo_dict = tibble(
-  demo_type = "death_rate",
-  data = death_rate_by_year
-)
+```{r, message = FALSE, warning = FALSE}
+geo_data =
+  read_csv("./Data/geo_data.csv") |>
+  select(-...1)
 ```
 
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r}
-demo_type = demo_data |>
-  select(-state, -fips, -abbr) |>
+geo_type = geo_data |>
+  select(-year) |>
   variable.names()
 
 selectInput(
-  "demo_type", 
-  label = h3("Select demographic type"),
-  choices = demo_type, selected = "death_rate")
+  "geo_type", 
+  label = h3("Select geo type"),
+  choices = geo_type, selected = "death_rate")
+
+selectInput(
+  "year", 
+  label = h3("Select year"),
+  choices = c(2018, 2019, 2020, 2021), selected = "2018")
 ```
 
-Row {data-height=650}
+Row
 -----------------------------------------------------------------------
 ### Demographic visualizations
 ```{r}
 renderPlotly({
-  ggplotly(plot_usmap(data = demo_data,
-           values = input$demo_type,
+  ggplotly(plot_usmap(data = geo_data |>
+                        filter(year==input$year) |>
+                        mutate(tate = order(state),
+                               fips = pull(statepop, fips),
+                               abbr = pull(statepop, abbr)),
+           values = input$geo_type,
            labels = TRUE))
   })
-```
-
-Row {data-height=350) .tabset}
------------------------------------------------------------------------
-### test
-```{r}
-renderPlotly({
-  demo_dict |>
-    filter(demo_type == input$demo_type) |>
-    pull(data) |>
-    plot_ly(x = ~year, y = ~death_rate, color = ~age, type = 'scatter', mode = 'lines')
-})
 ```

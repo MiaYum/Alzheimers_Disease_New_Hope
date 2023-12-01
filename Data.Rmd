@@ -79,7 +79,8 @@ edu_level =
     names_to = "year",
     values_to = "edu_level"
   ) |>
-  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")),
+         edu_level = edu_level/100) |>
   arrange(state, year)
 
 diabetes_rate = 
