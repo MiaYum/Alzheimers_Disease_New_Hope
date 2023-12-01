@@ -248,10 +248,25 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="About.html">About</a>
+  <a href="Introduction.html">Introduction</a>
 </li>
 <li>
-  <a href="EDA.html">EDA</a>
+  <a href="Data.html">Data Sources</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EDA.html">Exploratory Analysis</a>
+    </li>
+    <li>
+      <a href="EDA.html">Statistical Analysis</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a>
@@ -294,6 +309,15 @@ of Economic Analysis</a></p>
 <p>Education level: <a
 href="https://fred.stlouisfed.org/release/tables?rid=330&amp;eid=391444&amp;od=2018-01-01#">Federal
 Reserve Economic Data</a></p>
+<p>Diabetes rate:<a
+href="https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a></p>
+<p>Cardiovascular Disease rate: <a
+href="https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a></p>
+<p>Smoking: <a
+href="https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm">CDC</a>,
+<a
+href="https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a></p>
+<p>Age&gt;65:</p>
 <pre class="r"><code>death_rate = 
   read_csv(&quot;./Data/death_rate.csv&quot;) |&gt;
   janitor::clean_names() |&gt;
@@ -306,6 +330,16 @@ econ_data =
   read_csv(&quot;./Data/econdata.csv&quot;) |&gt;
   janitor::clean_names() |&gt;
   select(geo_name, description, x2018:x2021) |&gt;
+  mutate(description = 
+           case_match(
+             description,
+             &quot;GDP&quot;~&quot;gdp&quot;,
+             &quot;PCE&quot;~&quot;pce&quot;,
+             &quot;Regional price parities&quot;~&quot;rpp&quot;,
+             &quot;employment&quot;~&quot;employment&quot;,
+             &quot;healthcare expenditure&quot;~&quot;hc_exp&quot;,
+             &quot;personal income&quot;~&quot;income&quot;,
+             &quot;population&quot;~&quot;population&quot;)) |&gt;
   pivot_longer(
     x2018:x2021,
     names_to = &quot;year&quot;,
@@ -316,20 +350,14 @@ econ_data =
     values_from = &quot;value&quot;
   ) |&gt;
   rename(state = geo_name) |&gt;
-  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;))) |&gt;
-  arrange(state, year)
-
-hc_exp = 
-  read_csv(&quot;./Data/healthcare_exp.csv&quot;) |&gt;
-  janitor::clean_names() |&gt;
-  select(geo_name, x2018:x2021) |&gt;
-  pivot_longer(
-    x2018:x2021,
-    names_to = &quot;year&quot;,
-    values_to = &quot;value&quot;
-  ) |&gt;
-  rename(state = geo_name) |&gt;
-  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;))) |&gt;
+  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)),
+         gdp = gdp/(population/1000000),
+         pce = pce/(population/1000000),
+         employment = employment/(population/1000000),
+         hc_exp = hc_exp/(population/1000000),
+         income = income/(population/1000000),
+         ) |&gt;
+  select(-population) |&gt;
   arrange(state, year)
 
 edu_level = 
@@ -339,10 +367,75 @@ edu_level =
   pivot_longer(
     x2018:x2021,
     names_to = &quot;year&quot;,
-    values_to = &quot;value&quot;
+    values_to = &quot;edu_level&quot;
+  ) |&gt;
+  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)),
+         edu_level = edu_level/100) |&gt;
+  arrange(state, year)
+
+diabetes_rate = 
+  read_excel(&quot;./Data/diabetes.xlsx&quot;, range = &quot;A1:C205&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  rename(diabetes_rate = diabetes_proportion) |&gt;
+  mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3),
+         year = as.numeric(year)) |&gt;
+  arrange(state, year)
+
+cardio_rate = 
+  read_excel(&quot;./Data/Cardiovascular Disease.xlsx&quot;, range = &quot;A1:E52&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  pivot_longer(
+    x2018:x2021,
+    names_to = &quot;year&quot;,
+    values_to = &quot;cardio_rate&quot;
   ) |&gt;
   mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;))) |&gt;
-  arrange(state, year)</code></pre>
+  arrange(state, year)
+
+smoke_rate =
+  read_excel(&quot;./Data/smoke.xlsx&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  pivot_longer(
+    x2018:x2021,
+    names_to = &quot;year&quot;,
+    values_to = &quot;smoke_rate&quot;
+  ) |&gt;
+  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)),
+         smoke_rate = smoke_rate/100) |&gt;
+  arrange(state, year)
+
+elderly_rate = read_excel(&quot;./Data/age_over_65/age_over_65.xlsx&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  pivot_longer(
+    x2018:x2021,
+    names_to = &quot;year&quot;,
+    values_to = &quot;elder_rate&quot;
+  ) |&gt;
+  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)))|&gt;
+  arrange(state, year)
+
+geo_data = left_join(death_rate, econ_data, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  left_join(edu_level, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  left_join(diabetes_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  left_join(cardio_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  left_join(smoke_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  left_join(elderly_rate, by = c(&quot;state&quot;, &quot;year&quot;))</code></pre>
+<pre class="r"><code>write.csv(geo_data, &quot;./Data/geo_data.csv&quot;)</code></pre>
+<pre class="r"><code>agen = 
+  read_csv(&quot;./Data/econdata.csv&quot;) |&gt;
+  arrange(GeoName, Description)</code></pre>
+<pre><code>## New names:
+## Rows: 357 Columns: 18
+## ── Column specification
+## ─────────────────────────────── Delimiter: &quot;,&quot; chr
+## (11): GeoName, Description, 2008, 2009, 2010, 2011,
+## 2012, 2013, 2014, 20... dbl (7): ...1, GeoFips, 2017,
+## 2018, 2019, 2020, 2021
+## ℹ Use `spec()` to retrieve the full column
+## specification for this data. ℹ Specify the column
+## types or set `show_col_types = FALSE` to quiet this
+## message.
+## • `` -&gt; `...1`</code></pre>
 </div>
 <div id="clinical-trials-data" class="section level2">
 <h2>Clinical Trials data</h2>

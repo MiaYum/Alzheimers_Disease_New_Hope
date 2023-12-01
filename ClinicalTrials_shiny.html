@@ -8,9 +8,9 @@
 
 
 
-<title>Demographic statistics for Alzheimer’s Disease in the US</title>
+<title>Clinical Trials Visualization for AD Drugs in the US</title>
 
-<meta property="og:title" content="Demographic statistics for Alzheimer’s Disease in the US" />
+<meta property="og:title" content="Clinical Trials Visualization for AD Drugs in the US" />
 
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 
@@ -21,6 +21,9 @@
 window.FlexDashboardComponents = [];
 </script>
 
+<script id="flexdashboard-navbar" type="application/json">
+[{"title":"Source Code","icon":"fa-code","href":"source_embed","align":"right"}]
+</script>
 <script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,14 +41,23 @@ window.FlexDashboardComponents = [];
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/stickytableheaders-0.1.19/jquery.stickytableheaders.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 <link href="site_libs/value-box-accent-static-0.6.2/theme-cosmo-value-box.css" rel="stylesheet" />
+<link href="site_libs/featherlight-1.3.5/featherlight.min.css" rel="stylesheet" />
+<script src="site_libs/featherlight-1.3.5/featherlight.min.js"></script>
+<link href="site_libs/prism-1.4.1/prism.css" rel="stylesheet" />
+<script src="site_libs/prism-1.4.1/prism.js"></script>
 <link href="site_libs/flexdashboard-css-0.6.2/flexdashboard.min.css" rel="stylesheet" />
 <link href="site_libs/flexdashboard-css-0.6.2/theme-cosmo.css" rel="stylesheet" />
-<link href="site_libs/selectize-0.15.2/css/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="site_libs/selectize-0.15.2/js/selectize.min.js"></script>
-<script src="site_libs/selectize-0.15.2/accessibility/js/selectize-plugin-a11y.min.js"></script>
 <script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.2.1/leaflet.js"></script>
 <style type="text/css">
 /*
   CSS for flexdashboard.js' use of Sly(). The sizing/position of this CSS needs to be
@@ -159,7 +171,7 @@ html, body {
   
 </span>
 <span class="navbar-brand">
-  Demographic statistics for Alzheimer’s Disease in the US
+  Clinical Trials Visualization for AD Drugs in the US
   <span class="navbar-author">
         </span>
 </span>
@@ -1864,53 +1876,364 @@ window.FlexDashboardComponents.push({
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
 <div id="section-column" class="section level2 sidebar">
 <h2 class="sidebar">Column</h2>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="form-group shiny-input-container">
-<label class="control-label" id="geo_type-label" for="geo_type">
-<h3>Select geo type</h3>
+<div id="phase_type" class="form-group shiny-input-radiogroup shiny-input-container" role="radiogroup" aria-labelledby="phase_type-label">
+<label class="control-label" id="phase_type-label" for="phase_type">
+<h3>Select study design</h3>
 </label>
-<div>
-<select id="geo_type" class="shiny-input-select"><option value="state">state</option>
-<option value="death_rate" selected>death_rate</option>
-<option value="gdp">gdp</option>
-<option value="pce">pce</option>
-<option value="rpp">rpp</option>
-<option value="employment">employment</option>
-<option value="hc_exp">hc_exp</option>
-<option value="income">income</option>
-<option value="edu_level">edu_level</option>
-<option value="diabetes_rate">diabetes_rate</option>
-<option value="cardio_rate">cardio_rate</option>
-<option value="smoke_rate">smoke_rate</option>
-<option value="elder_rate">elder_rate</option></select>
-<script type="application/json" data-for="geo_type" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+<div class="shiny-options-group">
+<div class="radio">
+<label>
+<input type="radio" name="phase_type" value="Observational"/>
+<span>Observational</span>
+</label>
+</div>
+<div class="radio">
+<label>
+<input type="radio" name="phase_type" value="Phase 1/Phase 2"/>
+<span>Phase 1/Phase 2</span>
+</label>
+</div>
+<div class="radio">
+<label>
+<input type="radio" name="phase_type" value="Phase 3/Phase 4" checked="checked"/>
+<span>Phase 3/Phase 4</span>
+</label>
+</div>
+<div class="radio">
+<label>
+<input type="radio" name="phase_type" value="Unknown Phase"/>
+<span>Unknown Phase</span>
+</label>
 </div>
 </div>
-<div class="form-group shiny-input-container">
-<label class="control-label" id="year-label" for="year">
-<h3>Select year</h3>
+</div>
+<div id="State" class="form-group shiny-input-checkboxgroup shiny-input-container" role="group" aria-labelledby="State-label">
+<label class="control-label" id="State-label" for="State">
+<h3>Select State</h3>
 </label>
-<div>
-<select id="year" class="shiny-input-select"><option value="2018" selected>2018</option>
-<option value="2019">2019</option>
-<option value="2020">2020</option>
-<option value="2021">2021</option></select>
-<script type="application/json" data-for="year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+<div class="shiny-options-group">
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Alabama" checked="checked"/>
+<span>Alabama</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Alaska" checked="checked"/>
+<span>Alaska</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Arizona" checked="checked"/>
+<span>Arizona</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Arkansas" checked="checked"/>
+<span>Arkansas</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="California" checked="checked"/>
+<span>California</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Colorado" checked="checked"/>
+<span>Colorado</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Connecticut" checked="checked"/>
+<span>Connecticut</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Delaware" checked="checked"/>
+<span>Delaware</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Florida" checked="checked"/>
+<span>Florida</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Georgia" checked="checked"/>
+<span>Georgia</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Hawaii" checked="checked"/>
+<span>Hawaii</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Idaho" checked="checked"/>
+<span>Idaho</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Illinois" checked="checked"/>
+<span>Illinois</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Indiana" checked="checked"/>
+<span>Indiana</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Iowa" checked="checked"/>
+<span>Iowa</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Kansas" checked="checked"/>
+<span>Kansas</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Kentucky" checked="checked"/>
+<span>Kentucky</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Louisiana" checked="checked"/>
+<span>Louisiana</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Maine" checked="checked"/>
+<span>Maine</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Maryland" checked="checked"/>
+<span>Maryland</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Massachusetts" checked="checked"/>
+<span>Massachusetts</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Michigan" checked="checked"/>
+<span>Michigan</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Minnesota" checked="checked"/>
+<span>Minnesota</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Mississippi" checked="checked"/>
+<span>Mississippi</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Missouri" checked="checked"/>
+<span>Missouri</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Montana" checked="checked"/>
+<span>Montana</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Nebraska" checked="checked"/>
+<span>Nebraska</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Nevada" checked="checked"/>
+<span>Nevada</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="New Hampshire" checked="checked"/>
+<span>New Hampshire</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="New Jersey" checked="checked"/>
+<span>New Jersey</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="New Mexico" checked="checked"/>
+<span>New Mexico</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="New York" checked="checked"/>
+<span>New York</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="North Carolina" checked="checked"/>
+<span>North Carolina</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="North Dakota" checked="checked"/>
+<span>North Dakota</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Ohio" checked="checked"/>
+<span>Ohio</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Oklahoma" checked="checked"/>
+<span>Oklahoma</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Oregon" checked="checked"/>
+<span>Oregon</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Pennsylvania" checked="checked"/>
+<span>Pennsylvania</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Rhode Island" checked="checked"/>
+<span>Rhode Island</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="South Carolina" checked="checked"/>
+<span>South Carolina</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="South Dakota" checked="checked"/>
+<span>South Dakota</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Tennessee" checked="checked"/>
+<span>Tennessee</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Texas" checked="checked"/>
+<span>Texas</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Utah" checked="checked"/>
+<span>Utah</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Vermont" checked="checked"/>
+<span>Vermont</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Virginia" checked="checked"/>
+<span>Virginia</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Washington" checked="checked"/>
+<span>Washington</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="West Virginia" checked="checked"/>
+<span>West Virginia</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Wisconsin" checked="checked"/>
+<span>Wisconsin</span>
+</label>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="State" value="Wyoming" checked="checked"/>
+<span>Wyoming</span>
+</label>
+</div>
 </div>
 </div>
 </div>
 <div id="section-row" class="section level2">
 <h2>Row</h2>
-<div id="section-demographic-visualizations" class="section level3">
-<h3>Demographic visualizations</h3>
+<div id="section-study-locations" class="section level3">
+<h3>Study Location(s)</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="plotly html-widget html-widget-output shiny-report-size shiny-report-theme html-fill-item-overflow-hidden html-fill-item" id="out45581a475a1a895b" style="width:100%;height:400px;"></div>
+<div class="leaflet html-widget html-widget-output shiny-report-size html-fill-item-overflow-hidden html-fill-item" id="out049e5a4b69bd4540" style="width:100%;height:400px;"></div>
 </div>
 </div>
 
@@ -1930,6 +2253,114 @@ $(document).ready(function() {
 });
 </script>
 
+<div id="flexdashboard-source-code">
+<pre class="line-numbers"><code class="language-r">---
+title: "Clinical Trials Visualization for AD Drugs in the US"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: row
+    source_code: embed
+runtime: shiny
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+
+library(tidyverse)
+library(readxl)
+library(plotly)
+library(ggplot2)
+library(shiny)
+library(leaflet)
+```
+
+
+```{r read data, include = FALSE}
+data = 
+  read_csv("./Data/ClinicalTrials_raw_data.csv") |&gt;
+  janitor::clean_names() 
+```
+
+```{r}
+CT_us_studies = data |&gt;
+  filter(str_detect(locations, "United States")) |&gt;
+  select(nct_number, interventions, funder_type, sex, age, phases, locations, enrollment, study_type, study_status)
+
+```
+
+```{r}
+CT_loc_clean = 
+  read_excel("./Data/CT_loc_clean_data.xlsx", range = "A1:J30108") |&gt;
+  janitor::clean_names() |&gt;
+  filter(str_detect(locations, "United States")) |&gt;
+  mutate(num_com = as.character(str_count(locations, ",")),
+         num_com = case_match(num_com, "2" ~ ",,,,,", "3" ~ ",,,,", "4" ~ ",,,", "5" ~ ",,", "6" ~ ",", "7" ~ ""),
+         locations = paste(num_com, locations)) |&gt;
+  separate(locations, into = c("del1", "del2", "del3", "del4", "del5", "city", "state", "country"), sep = ",") |&gt;
+  select(-del1, -del2, -del3, -del4, -del5, -num_com) |&gt;
+  mutate(city = str_trim(city, side = "both"),
+         state = str_trim(state, side = "both"),
+         country = str_trim(country, side = "both"),
+           locations = paste(city, state))
+```
+
+```{r}
+city_coor = 
+  read_excel("./Data/uscities.xlsx", range = "A1:M30845") |&gt;
+  janitor::clean_names() |&gt;
+  select(city, state_name, latitude, longitude) |&gt;
+  mutate(locations = paste(city, state_name))
+
+### Attentiaon!!!! Na are dropped here due to incomplete list of coor_cities, should try to solve this prob
+CT_final_data = left_join(CT_loc_clean, city_coor, by = "locations") |&gt;
+  drop_na(state_name) |&gt;
+  select(-city.y, -state_name, -locations) |&gt;
+  mutate(
+    phases = 
+      case_match(
+        phases,
+        "PHASE1" ~ "Phase 1/Phase 2",
+        "PHASE2" ~ "Phase 1/Phase 2",
+        "PHASE3" ~ "Phase 3/Phase 4",
+        "PHASE4" ~ "Phase 3/Phase 4",
+        "0" ~ "Observational"),
+    phases = ifelse(is.na(phases), "Unknown Phase", phases),
+    url = nct_number)
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+```{r }
+
+radioButtons("phase_type", label = h3("Select study design"), choices = sort(unique(pull(CT_final_data, phases))), select = "Phase 3/Phase 4")
+
+State = state.name
+checkboxGroupInput("State", label = h3("Select State"), choices = State, selected = State)
+```
+
+Row 
+-----------------------------------------------------------------------
+### Study Location(s)
+```{r map_fig}
+f = function(element, state_choice) {
+  if(element %in% state_choice) {
+    TRUE} else{
+    FALSE}}
+
+LeafletInput &lt;- reactive({
+  CT_final_data %&gt;%
+    mutate(state = map(state, f, input$State)) %&gt;%
+  filter(state == TRUE, phases == input$phase_type)
+})
+
+  renderLeaflet({
+  LeafletInput() %&gt;% 
+  leaflet() %&gt;%
+  addTiles() %&gt;%
+  addMarkers(clusterOptions = markerClusterOptions(), popup = ~as.character(url))})
+        
+```
+</code></pre>
+</div>
 <script type="text/javascript">
 $(document).ready(function () {
   FlexDashboard.init({

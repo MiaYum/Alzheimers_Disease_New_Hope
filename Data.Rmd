@@ -132,6 +132,10 @@ geo_data = left_join(death_rate, econ_data, by = c("state", "year")) |>
   left_join(elderly_rate, by = c("state", "year"))
 ```
 
+```{r}
+write.csv(geo_data, "./Data/geo_data.csv")
+```
+
 
 ```{r}
 agen = 
