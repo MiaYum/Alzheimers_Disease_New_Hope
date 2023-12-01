@@ -298,26 +298,39 @@ $(document).ready(function () {
 <h1>Introduction of the datasets</h1>
 <div id="geo" class="section level2">
 <h2>Geo</h2>
-<p>Alzheimer’s Disease Mortality by State: <a
-href="https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm">CDC</a></p>
-<p>Econ data by state: <a
+<p>The data for analysis is obtained by merging several Alzheimer’s
+Disease related datasets.</p>
+<p>The first dataset <code>death_rate</code> contains the mortality of
+Alzheimer’s Disease in each state from 2014 to 2021, which can be
+accessed <a
+href="https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm">here</a>.</p>
+<p><code>econdata</code> dataset contains the economic status of each
+state from 2008 to 2021, including GDP, income, price index, expenditure
+on healthcare etc. The data is downloaded from <a
 href="https://apps.bea.gov/iTable/?reqid=70&amp;step=1&amp;acrdn=2&amp;_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==">Bureau
-of Economic Analysis</a></p>
-<p>Healthcare Expenditure: <a
-href="https://apps.bea.gov/iTable/?reqid=70&amp;step=1&amp;acrdn=2&amp;_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI1MjQiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyIxNiJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==">Bureau
-of Economic Analysis</a></p>
-<p>Education level: <a
+of Economic Analysis</a>.</p>
+<p><code>edu_level</code> dataset contains the percentage of population
+obtained Bachelor’s Degree or Higher in each state from 2018 to 2021.
+The data is extracted from <a
 href="https://fred.stlouisfed.org/release/tables?rid=330&amp;eid=391444&amp;od=2018-01-01#">Federal
-Reserve Economic Data</a></p>
-<p>Diabetes rate:<a
-href="https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a></p>
-<p>Cardiovascular Disease rate: <a
-href="https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a></p>
-<p>Smoking: <a
-href="https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm">CDC</a>,
-<a
-href="https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a></p>
-<p>Age&gt;65:</p>
+Reserve Economic Data</a>.</p>
+<p><code>diabetes</code> dataset contains the rate of diabetes by state
+from 2018 to 2021. The data can be accessed <a
+href="https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">here</a>.</p>
+<p><code>Cardiovascular Disease</code> dataset contains the
+Cardiovascular Disease rate, and the data can be accessed <a
+href="https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">here</a>.</p>
+<p><code>smoke</code> dataset contains the rate of smoking by state. The
+sources of the data are <a
+href="https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm">CDC</a>
+and <a
+href="https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a>.</p>
+<p><code>age_over_65</code> dataset contains the percentage of elderly
+people (&gt;65 years old). This data is extracted from <a
+href="https://data.census.gov/table/ACSDP1Y2021.DP05?g=010XX00US$0400000&amp;moe=false">Census
+Bureau</a> and <a
+href="https://www.prb.org/resources/which-us-states-are-the-oldest/">PRB</a>.</p>
+<p>These datasets were tidied and merged to generate the</p>
 <pre class="r"><code>death_rate = 
   read_csv(&quot;./Data/death_rate.csv&quot;) |&gt;
   janitor::clean_names() |&gt;
@@ -427,14 +440,11 @@ geo_data = left_join(death_rate, econ_data, by = c(&quot;state&quot;, &quot;year
 <pre><code>## New names:
 ## Rows: 357 Columns: 18
 ## ── Column specification
-## ─────────────────────────────── Delimiter: &quot;,&quot; chr
-## (11): GeoName, Description, 2008, 2009, 2010, 2011,
-## 2012, 2013, 2014, 20... dbl (7): ...1, GeoFips, 2017,
-## 2018, 2019, 2020, 2021
-## ℹ Use `spec()` to retrieve the full column
-## specification for this data. ℹ Specify the column
-## types or set `show_col_types = FALSE` to quiet this
-## message.
+## ──────────────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
+## (11): GeoName, Description, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 20... dbl
+## (7): ...1, GeoFips, 2017, 2018, 2019, 2020, 2021
+## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+## Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ## • `` -&gt; `...1`</code></pre>
 </div>
 <div id="clinical-trials-data" class="section level2">
