@@ -304,42 +304,19 @@ Disease related datasets.</p>
 Alzheimer’s Disease in each state from 2014 to 2021, which can be
 accessed <a
 href="https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm">here</a>.</p>
-<p><code>econdata</code> dataset contains the economic status of each
-state from 2008 to 2021, including GDP, income, price index, expenditure
-on healthcare etc. The data is downloaded from <a
-href="https://apps.bea.gov/iTable/?reqid=70&amp;step=1&amp;acrdn=2&amp;_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==">Bureau
-of Economic Analysis</a>.</p>
-<p><code>edu_level</code> dataset contains the percentage of population
-obtained Bachelor’s Degree or Higher in each state from 2018 to 2021.
-The data is extracted from <a
-href="https://fred.stlouisfed.org/release/tables?rid=330&amp;eid=391444&amp;od=2018-01-01#">Federal
-Reserve Economic Data</a>.</p>
-<p><code>diabetes</code> dataset contains the rate of diabetes by state
-from 2018 to 2021. The data can be accessed <a
-href="https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">here</a>.</p>
-<p><code>Cardiovascular Disease</code> dataset contains the
-Cardiovascular Disease rate, and the data can be accessed <a
-href="https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">here</a>.</p>
-<p><code>smoke</code> dataset contains the rate of smoking by state. The
-sources of the data are <a
-href="https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm">CDC</a>
-and <a
-href="https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a>.</p>
-<p><code>age_over_65</code> dataset contains the percentage of elderly
-people (&gt;65 years old). This data is extracted from <a
-href="https://data.census.gov/table/ACSDP1Y2021.DP05?g=010XX00US$0400000&amp;moe=false">Census
-Bureau</a> and <a
-href="https://www.prb.org/resources/which-us-states-are-the-oldest/">PRB</a>.</p>
-<p>These datasets were tidied and merged to generate the</p>
 <pre class="r"><code>death_rate = 
   read_csv(&quot;./Data/death_rate.csv&quot;) |&gt;
   janitor::clean_names() |&gt;
   rename(death_rate = rate) |&gt;
   select(state, year, death_rate) |&gt;
   filter(year &gt;= 2018) |&gt;
-  arrange(state, year)
-
-econ_data = 
+  arrange(state, year)</code></pre>
+<p><code>econdata</code> dataset contains the economic status of each
+state from 2008 to 2021, including GDP, income, price index, expenditure
+on healthcare etc. The data is downloaded from <a
+href="https://apps.bea.gov/iTable/?reqid=70&amp;step=1&amp;acrdn=2&amp;_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==">Bureau
+of Economic Analysis</a>.</p>
+<pre class="r"><code>econ_data = 
   read_csv(&quot;./Data/econdata.csv&quot;) |&gt;
   janitor::clean_names() |&gt;
   select(geo_name, description, x2018:x2021) |&gt;
@@ -371,9 +348,13 @@ econ_data =
          income = income/(population/1000000),
          ) |&gt;
   select(-population) |&gt;
-  arrange(state, year)
-
-edu_level = 
+  arrange(state, year)</code></pre>
+<p><code>edu_level</code> dataset contains the percentage of population
+obtained Bachelor’s Degree or Higher in each state from 2018 to 2021.
+The data is extracted from <a
+href="https://fred.stlouisfed.org/release/tables?rid=330&amp;eid=391444&amp;od=2018-01-01#">Federal
+Reserve Economic Data</a>.</p>
+<pre class="r"><code>edu_level = 
   read_excel(&quot;./Data/edu_level.xlsx&quot;) |&gt;
   janitor::clean_names() |&gt;
   select(state, x2018:x2021) |&gt;
@@ -384,17 +365,21 @@ edu_level =
   ) |&gt;
   mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)),
          edu_level = edu_level/100) |&gt;
-  arrange(state, year)
-
-diabetes_rate = 
+  arrange(state, year)</code></pre>
+<p><code>diabetes</code> dataset contains the rate of diabetes by state
+from 2018 to 2021. The data can be accessed <a
+href="https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">here</a>.</p>
+<pre class="r"><code>diabetes_rate = 
   read_excel(&quot;./Data/diabetes.xlsx&quot;, range = &quot;A1:C205&quot;) |&gt;
   janitor::clean_names() |&gt;
   rename(diabetes_rate = diabetes_proportion) |&gt;
   mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3),
          year = as.numeric(year)) |&gt;
-  arrange(state, year)
-
-cardio_rate = 
+  arrange(state, year)</code></pre>
+<p><code>Cardiovascular Disease</code> dataset contains the
+Cardiovascular Disease rate, and the data can be accessed <a
+href="https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">here</a>.</p>
+<pre class="r"><code>cardio_rate = 
   read_excel(&quot;./Data/Cardiovascular Disease.xlsx&quot;, range = &quot;A1:E52&quot;) |&gt;
   janitor::clean_names() |&gt;
   pivot_longer(
@@ -403,9 +388,13 @@ cardio_rate =
     values_to = &quot;cardio_rate&quot;
   ) |&gt;
   mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;))) |&gt;
-  arrange(state, year)
-
-smoke_rate =
+  arrange(state, year)</code></pre>
+<p><code>smoke</code> dataset contains the rate of smoking by state. The
+sources of the data are <a
+href="https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm">CDC</a>
+and <a
+href="https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D">KFF</a>.</p>
+<pre class="r"><code>smoke_rate =
   read_excel(&quot;./Data/smoke.xlsx&quot;) |&gt;
   janitor::clean_names() |&gt;
   pivot_longer(
@@ -415,9 +404,13 @@ smoke_rate =
   ) |&gt;
   mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)),
          smoke_rate = smoke_rate/100) |&gt;
-  arrange(state, year)
-
-elderly_rate = read_excel(&quot;./Data/age_over_65/age_over_65.xlsx&quot;) |&gt;
+  arrange(state, year)</code></pre>
+<p><code>age_over_65</code> dataset contains the percentage of elderly
+people (&gt;65 years old). This data is extracted from <a
+href="https://data.census.gov/table/ACSDP1Y2021.DP05?g=010XX00US$0400000&amp;moe=false">Census
+Bureau</a> and <a
+href="https://www.prb.org/resources/which-us-states-are-the-oldest/">PRB</a>.</p>
+<pre class="r"><code>elderly_rate = read_excel(&quot;./Data/age_over_65/age_over_65.xlsx&quot;) |&gt;
   janitor::clean_names() |&gt;
   pivot_longer(
     x2018:x2021,
@@ -425,14 +418,32 @@ elderly_rate = read_excel(&quot;./Data/age_over_65/age_over_65.xlsx&quot;) |&gt;
     values_to = &quot;elder_rate&quot;
   ) |&gt;
   mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)))|&gt;
-  arrange(state, year)
-
-geo_data = left_join(death_rate, econ_data, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  arrange(state, year)</code></pre>
+<pre class="r"><code>obesity_rate = read_csv(&quot;./Data/obesity.csv&quot;) |&gt;
+  janitor::clean_names() |&gt;
+  pivot_longer(
+    x2018:x2021,
+    names_to = &quot;year&quot;,
+    values_to = &quot;obesity_rate&quot;
+  ) |&gt;
+  mutate(year = as.numeric(str_replace(year, &quot;x&quot;, &quot;&quot;)))|&gt;
+  arrange(state, year)</code></pre>
+<pre><code>## Rows: 51 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): state
+## dbl (4): 2018, 2019, 2020, 2021
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>These datasets were tidied and merged to generate</p>
+<pre class="r"><code>geo_data = left_join(death_rate, econ_data, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
   left_join(edu_level, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
   left_join(diabetes_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
   left_join(cardio_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
   left_join(smoke_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
-  left_join(elderly_rate, by = c(&quot;state&quot;, &quot;year&quot;))</code></pre>
+  left_join(elderly_rate, by = c(&quot;state&quot;, &quot;year&quot;)) |&gt;
+  left_join(obesity_rate, by = c(&quot;state&quot;, &quot;year&quot;))</code></pre>
 <pre class="r"><code>write.csv(geo_data, &quot;./Data/geo_data.csv&quot;)</code></pre>
 <pre class="r"><code>agen = 
   read_csv(&quot;./Data/econdata.csv&quot;) |&gt;
