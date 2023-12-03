@@ -1,0 +1,103 @@
+---
+title: "Prelimary Analysis"
+author: "Kairui Wang"
+date: "2023-12-03"
+output: html_document
+---
+```{r, include = FALSE, message = FALSE, warning = FALSE}
+library(dplyr)
+library(tidyverse)
+```
+
+# Analysis
+   
+## 1. Death rate by Regions
+
+```{r}
+data<- read_csv("data/geo_data.csv") %>%
+  mutate(region = case_when(
+    state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont") ~ "Northeast",
+    state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin") ~ "Midwest",
+    state %in% c("Alabama", "Arkansas", "Delaware", "District of Columbia", "Florida", "Georgia", "Kentucky", "Louisiana", "Maryland", "Mississippi", "North Carolina", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Virginia", "West Virginia") ~ "South",
+    state %in% c("Alaska", "Arizona", "California", "Colorado", "Hawaii", "Idaho", "Montana", "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming") ~ "West"
+  ))
+```
+
+```{r}
+data %>%
+  janitor::clean_names() %>%
+  group_by(region) %>%
+  summarise(avg_death_rate = mean(death_rate, na.rm = TRUE)) %>%
+  arrange(avg_death_rate) %>%
+  knitr::kable(digits = 3)
+```
+
+* The table shows the arranged average death rate of each region from 2018 to 2021.
+
+* The range of average death rate among regions is about 
+
+* South America has the highest average death rate while Northeast America has the lowest.
+
+```{r}
+data %>%
+  janitor::clean_names() %>%
+  group_by(region) %>%
+  ggplot(aes(x = fct_reorder(region, death_rate), y = death_rate, fill = region)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Death Rate by Regions", x = "Region", y = "Death Rate") +
+  theme(axis.text.x = element_text(hjust = 1, angle = 10, size = 8))
+```
+
+* The boxplot shows the distribution of death rate in each region.
+
+* The variance of death rate is higher in South America.
+
+* We can roughly tell from the plot that the variances of death rate among regions are not equal. Thus, we may perform a statistical test to check heteroscedasticity
+
+### test of equal variances
+# 斜体居中H0:Equal  variance  among  regions  vs  H1:Unequal  variance
+
+```{r}
+bartlett.test(death_rate ~ factor(region), data = data) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+Based on the less-than-significance level of the p-value (usually 0.05), we have enough evidence to reject the null hypothesis of variance homogeneity. Therefore, we can assume that the variance of mortality rates is not equal under different regions. This may have important implications for some statistical methods (e.g., analysis of variance ANOVA), which typically assume variance chi-square.
+
+## 2. t.test : Compare Mean Death Rate Between West America and Midwest America
+
+From the boxplot above, we find that the death rate in West America and Midwest America distribute almost in the same interval. Though the median of Midwest America is higher, the variance in West America seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
+
+### extract death rate in West America and Midwest America
+
+```{r}
+west_death_rate <- data %>% 
+  filter(region == "West") %>% 
+  pull(death_rate)
+
+midwest_death_rate <- data %>% 
+  janitor::clean_names() %>% 
+  filter(region == "Midwest") %>% 
+  pull(death_rate)
+
+```
+
+```{r}
+var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level = 0.95) %>% 
+  broom::tidy() %>% 
+  knitr::kable()
+```
+
+The null hypothesis for the variance test is that the two variance are equal. The result shows that the p-value is much less than 0.05. Thus, we may reject the null hypothesis and conclude that the variances are not equal. Next, we should perform 2 sample t.test with unknown and unequal variance.
+
+### 2 sample t.test with unknown unequal variances
+
+
+
+```{r}
+t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) %>% 
+  broom::tidy() %>% 
+  knitr::kable()
+```
+
