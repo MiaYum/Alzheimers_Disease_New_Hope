@@ -100,14 +100,14 @@ for (i in 2018:2021) {
     myplots[[i-2017]] <- data %>%
       filter(year == i) %>%
       ggplot(aes(x = edu_level, y = death_rate)) +
-      geom_point(alpha = 0.5, size = 0.5, shape = 3) +
-      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.5) +
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
       labs(title = sprintf("Year %s", i)) +
       xlab("Educational Level") +
       ylab("Death Rate") +
       scale_x_continuous(limits = c(0.2, 0.4)) +
-      theme_minimal() +  # 使用简洁的主题
-      theme( # 自定义一些元素
+      theme_minimal() + 
+      theme( 
         plot.title = element_text(hjust = 0.5),
         axis.text = element_text(color = "grey20"),
         axis.title = element_text(color = "grey20")
@@ -128,6 +128,9 @@ title <- ggdraw() +
 
 plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
 ```
+
+
+As shown in the graph, a higher level of education correlates with a lower death rate. However, the points are quite scattered, and a linear trend might not fit well. There may be a non-linear trend present.
 
 
 ```{r}
@@ -179,6 +182,7 @@ for (i in 2018:2021) {
       labs(title = sprintf("Year %s", i)) +
       xlab("Employment") + 
       ylab("Death Rate") +
+      scale_x_continuous(limits = c(500000, 800000)) +
       theme_minimal() +
       theme(
         plot.title = element_text(hjust = 0.5),
@@ -238,6 +242,8 @@ title <- ggdraw() +
 plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
 ```
 
+Income, employment, and particularly spending on health, all show a more or less positive correlation trend, but a linear relationship seems unable to fully explain it.
+
 ```{r}
 # elder_rate
 
@@ -273,6 +279,8 @@ title <- ggdraw() +
 
  plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
 ```
+
+The proportion of the population over 65 years old is negatively correlated with the death rate. We infer that a higher proportion of the population over 65 indicates a more advanced level of medical care in that state, thus resulting in a smaller proportion of deaths from Alzheimer's disease.
 
 ```{r}
 # smoke_rate
@@ -346,6 +354,7 @@ title <- ggdraw() +
 plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
 ```
 
+The proportion of smokers and the rate of heart disease are positively correlated with the death rate.
 
 
 
