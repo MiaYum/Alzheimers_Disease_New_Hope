@@ -9,9 +9,7 @@ library(tidyverse)
 
 # Exploratory data analysis
 
-这个数据集包含了关于美国各州的多个变量，包括年份、死亡率、GDP、个人消费支出（PCE）、区域价格平价（RPP）、就业情况、医疗支出、收入、教育水平以及一些健康指标（如糖尿病率、心脏病发病率、吸烟率、老年人口比例和肥胖率）。
-
-## Part I Missing data 
+## Part I Data Overview
 
 ```{r}
 library(ggplot2)
@@ -22,59 +20,78 @@ data=read_csv("./Data/geo_data.csv")
 summary(data)
 ```
 
-数据概览:
+The dataset contains r nrow(data) rows and r ncol(data) columns. It includes variables such as state, year, death rate, GDP, personal consumption expenditure (PCE), regional price parity (RPP), employment, healthcare expenditure (HC_EXP), income, education level (EDU_LEVEL), diabetes rate, cardiovascular disease rate, smoking rate, elderly population ratio (ELDER_RATE), and obesity rate, among others.
 
-数据集共有`r nrow(data)`行和`r ncol(data)`列。
-包括州名（state）、年份（year）、死亡率（death_rate）、GDP、个人消费支出（pce）、区域价格平价（rpp）、就业情况（employment）、医疗支出（hc_exp）、收入（income）、教育水平（edu_level）、糖尿病率（diabetes_rate）、心脏病发病率（cardio_rate）、吸烟率（smoke_rate）、老年人口比例（elder_rate）和肥胖率（obesity_rate）等指标。
-
-缺失值:
-
-death_rate有4个缺失值。
-diabetes_rate、cardio_rate各有14个缺失值。
-smoke_rate有6个缺失值。
-elder_rate和obesity_rate各有1个缺失值。
 
 
 
 ```{r}
-# 2. Explore distribution of results and consider potential transformations
-# Histograms for continuous variable
-ggplot(data, aes(x = death_rate)) + geom_histogram(bins = 30) + ggtitle("Histogram of Death Rate")
+library(plotly)
+library(dplyr)
+
+# 计算每个变量的缺失值数量
+missing_data <- data %>% 
+  summarise_all(funs(sum(is.na(.)))) %>% 
+  gather(key = "Variable", value = "MissingValues")
+
+# 使用plotly创建交互式条形图
+plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = "bar") %>%
+  layout(title = "Missing Data Visualization",
+         xaxis = list(title = "Variables"),
+         yaxis = list(title = "Number of Missing Values"))
+
 ```
 
-分布呈现出轻微的右偏态，大部分值集中在较低的死亡率区间。
+## Part II Missing Value Analysis
 
-缺失值不多，我们直接删除
+From the above, we can see that there are 4 missing values in death_rate. Diabetes_rate and cardio_rate each have 14 missing values. Smoke_rate has 6 missing values. Elder_rate and obesity_rate each have 1 missing value. The reason for missing values in death_rate is that there is no available data for the District of Columbia. Since death_rate is the predictor variable of interest, we choose to directly delete all data for this state. In addition, the missing values for diabetes_rate, cardio_rate, and smoke_rate are due to the absence of data for these diseases in the states of Idaho and Illinois. We also choose to remove these states' data. The remaining missing values are relatively few, and we choose to directly delete rows containing missing values. In summary, because there are not many missing values and they are not easily imputed, we simply delete rows containing missing values.
 
 
-## Part II Multi-colinearity Check
 ```{r}
-# 处理缺失数据，这里我们选择删除含有缺失值的行
+# Explore distribution of results and consider potential transformations
+library(plotly)
+
+# Create a histogram
+plot_ly(data, x = ~death_rate, type = "histogram", nbinsx = 30) %>%
+  layout(title = "Histogram of Death Rate")
+```
+
+Since our goal is to create a model to predict the death rate, we separately examine the distribution of predictor variables. As shown in the above chart, the distribution of death rate exhibits a slight right skew, with most values concentrated in lower death rate ranges. However, this mild skewness does not necessarily imply a departure from the normality assumption, so we do not perform any transformations on it for now.
+
+
+## Part III Multi-colinearity Check
+
+Due to multicollinearity potentially leading to substantial fluctuations in coefficient estimates and reduced precision of the estimates, we grouped predictor variables with similar properties or correlations to examine multicollinearity. We divided GDP, PCE, RPP, Employment, HC_Exp, Income, and Edu_Level into one group representing economic and social factors, and Diabetes_Rate, Cardio_Rate, Smoke_Rate, Elder_Rate, and Obesity_Rate into another group representing health and disease-related factors for analysis. Correlation heatmaps can help us identify whether there is multicollinearity among the selected predictor variables.
+
+```{r}
+# Handling missing data, here we choose to delete rows containing missing values.
 data <- na.omit(data)
 ```
 
 ```{r}
-data_selected_1 <-data %>% select(gdp, pce, rpp, employment,hc_exp,income,edu_level)
-# 计算相关系数矩阵
-correlation_matrix <- cor(data_selected_1)
+data_selected_social <-data %>% select(gdp, pce, rpp, employment,hc_exp,income,edu_level)
+# Calculate the correlation matrix
+correlation_matrix <- cor(data_selected_social)
 
-# 可视化相关系数矩阵
+# Visualize the correlation matrix
 corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
 ```
+
+From the heatmap, we observed a high degree of correlation among GDP, personal consumption expenditure (PCE), regional price parity (RPP), employment, healthcare expenditure (HC_EXP), income, and education level. Consequently, we decided to remove GDP, PCE, and RPP from our analysis. Firstly, from a practical standpoint, while GDP, PCE, and RPP do provide some insights into the economic conditions of a region, their direct connection to Alzheimer's disease death rates may be relatively weak. In contrast, variables like employment status, healthcare expenditure, personal income, and education level are more likely to directly impact the survival rates of Alzheimer's disease patients. Secondly, removing highly correlated variables helps mitigate the issues related to multicollinearity, enhancing the stability and interpretability of the model. 
 
 ```{r}
-data_selected_2 <-data %>% select(diabetes_rate,cardio_rate,smoke_rate,elder_rate,obesity_rate)
-# 计算相关系数矩阵
-correlation_matrix <- cor(data_selected_2)
+data_selected_desease <-data %>% select(diabetes_rate,cardio_rate,smoke_rate,elder_rate,obesity_rate)
+# Calculate the correlation matrix
+correlation_matrix <- cor(data_selected_desease)
 
-# 可视化相关系数矩阵
+# Visualize the correlation matrix
 corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
 ```
+
+Based on the heatmap, it can be observed that the variables diabetes_rate, cardio_rate, and obesity_rate are highly correlated. Among these variables, we ultimately chose to delete obesity_rate and diabetes_rate while retaining cardio_rate. Some studies have indicated a certain association between heart disease and Alzheimer's disease. Heart disease may affect blood supply to the brain, which is related to cognitive decline. Therefore, retaining the cardio_rate as a predictive variable may help capture this potential association.
 
 
 ## Part III Correlation and Scatter Plot:
-
-
 
 ```{r}
 
