@@ -13,7 +13,7 @@
 
 <title>EDA</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -32,11 +32,11 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -309,6 +309,12 @@ $(document).ready(function () {
 library(dplyr)
 library(corrplot)</code></pre>
 <pre><code>## corrplot 0.92 loaded</code></pre>
+<pre class="r"><code>library(cowplot)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lubridate&#39;:
+## 
+##     stamp</code></pre>
 <pre class="r"><code>data=read_csv(&quot;./Data/geo_data.csv&quot;)</code></pre>
 <pre><code>## New names:
 ## • `` -&gt; `...1`</code></pre>
@@ -374,7 +380,6 @@ population ratio (ELDER_RATE), and obesity rate, among others.</p>
 ##     layout</code></pre>
 <pre class="r"><code>library(dplyr)
 
-# 计算每个变量的缺失值数量
 missing_data &lt;- data %&gt;% 
   summarise_all(funs(sum(is.na(.)))) %&gt;% 
   gather(key = &quot;Variable&quot;, value = &quot;MissingValues&quot;)</code></pre>
@@ -388,13 +393,12 @@ missing_data &lt;- data %&gt;%
 ## # Using lambdas list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 ## generated.</code></pre>
-<pre class="r"><code># 使用plotly创建交互式条形图
-plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = &quot;bar&quot;) %&gt;%
+<pre class="r"><code>plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = &quot;bar&quot;) %&gt;%
   layout(title = &quot;Missing Data Visualization&quot;,
          xaxis = list(title = &quot;Variables&quot;),
          yaxis = list(title = &quot;Number of Missing Values&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-00e5421c03f8702abcba" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-00e5421c03f8702abcba">{"x":{"visdat":{"763248bfa1ab":["function () ","plotlyVisDat"]},"cur_data":"763248bfa1ab","attrs":{"763248bfa1ab":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Missing Data Visualization","xaxis":{"domain":[0,1],"automargin":true,"title":"Variables","type":"category","categoryorder":"array","categoryarray":["...1","cardio_rate","death_rate","diabetes_rate","edu_level","elder_rate","employment","gdp","hc_exp","income","obesity_rate","pce","rpp","smoke_rate","state","year"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of Missing Values"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["...1","state","year","death_rate","gdp","pce","rpp","employment","hc_exp","income","edu_level","diabetes_rate","cardio_rate","smoke_rate","elder_rate","obesity_rate"],"y":[0,0,0,4,0,0,0,0,0,0,0,14,14,6,1,1],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-125071bb243a663aa1dd" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-125071bb243a663aa1dd">{"x":{"visdat":{"dd44841c128":["function () ","plotlyVisDat"]},"cur_data":"dd44841c128","attrs":{"dd44841c128":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Missing Data Visualization","xaxis":{"domain":[0,1],"automargin":true,"title":"Variables","type":"category","categoryorder":"array","categoryarray":["...1","cardio_rate","death_rate","diabetes_rate","edu_level","elder_rate","employment","gdp","hc_exp","income","obesity_rate","pce","rpp","smoke_rate","state","year"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of Missing Values"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["...1","state","year","death_rate","gdp","pce","rpp","employment","hc_exp","income","edu_level","diabetes_rate","cardio_rate","smoke_rate","elder_rate","obesity_rate"],"y":[0,0,0,4,0,0,0,0,0,0,0,14,14,6,1,1],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="part-ii-missing-value-analysis" class="section level2">
 <h2>Part II Missing Value Analysis</h2>
@@ -418,8 +422,8 @@ library(plotly)
 plot_ly(data, x = ~death_rate, type = &quot;histogram&quot;, nbinsx = 30) %&gt;%
   layout(title = &quot;Histogram of Death Rate&quot;)</code></pre>
 <pre><code>## Warning: Ignoring 4 observations</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-f8c4691fb2d2c8b91a7d" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-f8c4691fb2d2c8b91a7d">{"x":{"visdat":{"7632458ba612":["function () ","plotlyVisDat"]},"cur_data":"7632458ba612","attrs":{"7632458ba612":{"x":{},"nbinsx":30,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"histogram"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Histogram of Death Rate","xaxis":{"domain":[0,1],"automargin":true,"title":"death_rate"},"yaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[44.899999999999999,44.600000000000001,50.799999999999997,46.799999999999997,27.5,25.300000000000001,26.800000000000001,26.399999999999999,33,32.299999999999997,32.700000000000003,30.5,38.899999999999999,39.5,45.600000000000001,43.200000000000003,37.100000000000001,37,40.600000000000001,39.5,29.600000000000001,33.399999999999999,36.899999999999999,32.600000000000001,18.5,18.100000000000001,20.300000000000001,21.199999999999999,32.700000000000003,25.899999999999999,35.100000000000001,29.699999999999999,19.199999999999999,18.300000000000001,19.800000000000001,19.600000000000001,46.5,41.899999999999999,45.899999999999999,44.5,20.199999999999999,19.100000000000001,22.800000000000001,23.899999999999999,35,33.200000000000003,36.700000000000003,40.5,25.300000000000001,24.5,28.699999999999999,26.600000000000001,33.399999999999999,31.600000000000001,34.299999999999997,29.699999999999999,31.699999999999999,29.199999999999999,31.899999999999999,28.199999999999999,23.600000000000001,21.899999999999999,25.300000000000001,22.600000000000001,32.5,32.100000000000001,32.299999999999997,32.700000000000003,42.200000000000003,41.399999999999999,45.799999999999997,42.899999999999999,28.399999999999999,25.899999999999999,27.899999999999999,27.399999999999999,15.800000000000001,13.800000000000001,15.800000000000001,16.100000000000001,19.5,17.699999999999999,18.600000000000001,17.699999999999999,34.299999999999997,33.899999999999999,36.899999999999999,34.399999999999999,33.700000000000003,34.899999999999999,35,33.100000000000001,46,48.799999999999997,58,52.799999999999997,32.899999999999999,34.100000000000001,34.899999999999999,33,21.699999999999999,22.600000000000001,23.800000000000001,24.699999999999999,27.399999999999999,30.300000000000001,32.200000000000003,29.600000000000001,23.600000000000001,21.600000000000001,28.699999999999999,26.100000000000001,26.399999999999999,27.800000000000001,26.100000000000001,23.5,22.699999999999999,21.699999999999999,22.100000000000001,20.600000000000001,22.399999999999999,21.300000000000001,26.600000000000001,24.600000000000001,13.9,13.699999999999999,14,13.6,37.899999999999999,36.899999999999999,37.5,36.700000000000003,33.799999999999997,37.600000000000001,39.700000000000003,32.799999999999997,34.899999999999999,33.600000000000001,38,34.200000000000003,37.899999999999999,37.899999999999999,38.200000000000003,36,35.600000000000001,37.200000000000003,37,41,20.699999999999999,21.199999999999999,23.199999999999999,22.699999999999999,29.199999999999999,28.899999999999999,31.899999999999999,29.699999999999999,44.299999999999997,37.899999999999999,40.399999999999999,40.899999999999999,36.299999999999997,40.5,39.700000000000003,35.600000000000001,45,41.100000000000001,44.399999999999999,37.700000000000003,38.399999999999999,38.600000000000001,44.600000000000001,41.899999999999999,42.100000000000001,39,42.899999999999999,40.700000000000003,37.700000000000003,35.100000000000001,31,38.799999999999997,27.100000000000001,26.899999999999999,28.699999999999999,27.5,45.200000000000003,42.200000000000003,42.899999999999999,45.5,31,32.299999999999997,35.899999999999999,35.399999999999999,31.699999999999999,30.5,33.200000000000003,33,41.5,34.399999999999999,32.100000000000001,32.700000000000003],"nbinsx":30,"type":"histogram","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-02fd4524756779792583" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-02fd4524756779792583">{"x":{"visdat":{"dd46c9b0e01":["function () ","plotlyVisDat"]},"cur_data":"dd46c9b0e01","attrs":{"dd46c9b0e01":{"x":{},"nbinsx":30,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"histogram"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Histogram of Death Rate","xaxis":{"domain":[0,1],"automargin":true,"title":"death_rate"},"yaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[44.899999999999999,44.600000000000001,50.799999999999997,46.799999999999997,27.5,25.300000000000001,26.800000000000001,26.399999999999999,33,32.299999999999997,32.700000000000003,30.5,38.899999999999999,39.5,45.600000000000001,43.200000000000003,37.100000000000001,37,40.600000000000001,39.5,29.600000000000001,33.399999999999999,36.899999999999999,32.600000000000001,18.5,18.100000000000001,20.300000000000001,21.199999999999999,32.700000000000003,25.899999999999999,35.100000000000001,29.699999999999999,19.199999999999999,18.300000000000001,19.800000000000001,19.600000000000001,46.5,41.899999999999999,45.899999999999999,44.5,20.199999999999999,19.100000000000001,22.800000000000001,23.899999999999999,35,33.200000000000003,36.700000000000003,40.5,25.300000000000001,24.5,28.699999999999999,26.600000000000001,33.399999999999999,31.600000000000001,34.299999999999997,29.699999999999999,31.699999999999999,29.199999999999999,31.899999999999999,28.199999999999999,23.600000000000001,21.899999999999999,25.300000000000001,22.600000000000001,32.5,32.100000000000001,32.299999999999997,32.700000000000003,42.200000000000003,41.399999999999999,45.799999999999997,42.899999999999999,28.399999999999999,25.899999999999999,27.899999999999999,27.399999999999999,15.800000000000001,13.800000000000001,15.800000000000001,16.100000000000001,19.5,17.699999999999999,18.600000000000001,17.699999999999999,34.299999999999997,33.899999999999999,36.899999999999999,34.399999999999999,33.700000000000003,34.899999999999999,35,33.100000000000001,46,48.799999999999997,58,52.799999999999997,32.899999999999999,34.100000000000001,34.899999999999999,33,21.699999999999999,22.600000000000001,23.800000000000001,24.699999999999999,27.399999999999999,30.300000000000001,32.200000000000003,29.600000000000001,23.600000000000001,21.600000000000001,28.699999999999999,26.100000000000001,26.399999999999999,27.800000000000001,26.100000000000001,23.5,22.699999999999999,21.699999999999999,22.100000000000001,20.600000000000001,22.399999999999999,21.300000000000001,26.600000000000001,24.600000000000001,13.9,13.699999999999999,14,13.6,37.899999999999999,36.899999999999999,37.5,36.700000000000003,33.799999999999997,37.600000000000001,39.700000000000003,32.799999999999997,34.899999999999999,33.600000000000001,38,34.200000000000003,37.899999999999999,37.899999999999999,38.200000000000003,36,35.600000000000001,37.200000000000003,37,41,20.699999999999999,21.199999999999999,23.199999999999999,22.699999999999999,29.199999999999999,28.899999999999999,31.899999999999999,29.699999999999999,44.299999999999997,37.899999999999999,40.399999999999999,40.899999999999999,36.299999999999997,40.5,39.700000000000003,35.600000000000001,45,41.100000000000001,44.399999999999999,37.700000000000003,38.399999999999999,38.600000000000001,44.600000000000001,41.899999999999999,42.100000000000001,39,42.899999999999999,40.700000000000003,37.700000000000003,35.100000000000001,31,38.799999999999997,27.100000000000001,26.899999999999999,28.699999999999999,27.5,45.200000000000003,42.200000000000003,42.899999999999999,45.5,31,32.299999999999997,35.899999999999999,35.399999999999999,31.699999999999999,30.5,33.200000000000003,33,41.5,34.399999999999999,32.100000000000001,32.700000000000003],"nbinsx":30,"type":"histogram","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>Since our goal is to create a model to predict the death rate, we
 separately examine the distribution of predictor variables. As shown in
 the above chart, the distribution of death rate exhibits a slight right
@@ -480,6 +484,278 @@ variable may help capture this potential association.</p>
 </div>
 <div id="part-iii-correlation-and-scatter-plot" class="section level2">
 <h2>Part III Correlation and Scatter Plot:</h2>
+<pre class="r"><code># edu_level
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = edu_level, y = death_rate)) +
+      geom_point(alpha = 0.5, size = 0.5, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.5) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Educational Level&quot;) +
+      ylab(&quot;Death Rate&quot;) +
+      scale_x_continuous(limits = c(0.2, 0.4)) +
+      theme_minimal() +  # 使用简洁的主题
+      theme( # 自定义一些元素
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<pre class="r"><code>plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 4 rows containing non-finite values (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 3 rows containing non-finite values (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 3 rows containing missing values (`geom_point()`).</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 8 rows containing non-finite values (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 8 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 8 rows containing non-finite values (`stat_smooth()`).
+## Removed 8 rows containing missing values (`geom_point()`).</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Education Level&quot;,
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># income
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = income, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.8) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Income&quot;) + 
+      ylab(&quot;Death Rate&quot;) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}
+
+plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Income&quot;,  
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code># employment
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = employment, y = death_rate)) + 
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.8) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Employment&quot;) + 
+      ylab(&quot;Death Rate&quot;) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}
+
+plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Employment&quot;, 
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code># hc_exp
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = hc_exp, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.8) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Healthcare Expenditure&quot;) +  
+      ylab(&quot;Death Rate&quot;) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}
+
+plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Healthcare Expenditure&quot;,  
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code># elder_rate
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = elder_rate, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.8) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Elderly Population Rate&quot;) + 
+      ylab(&quot;Death Rate&quot;) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}
+
+plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Elderly Population Rate&quot;,
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code># smoke_rate
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = smoke_rate, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.8) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Smoking Rate&quot;) +  
+      ylab(&quot;Death Rate&quot;) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}
+
+plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Smoking Rate&quot;,  
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code># cardio rate
+
+myplots &lt;- vector(&#39;list&#39;, 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] &lt;- data %&gt;%
+      filter(year == i) %&gt;%
+      ggplot(aes(x = cardio_rate, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = &#39;lm&#39;, se = TRUE, color = &#39;red&#39;, size = 0.8) +
+      labs(title = sprintf(&quot;Year %s&quot;, i)) +
+      xlab(&quot;Cardiovascular Disease Rate&quot;) + 
+      ylab(&quot;Death Rate&quot;) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = &quot;grey20&quot;),
+        axis.title = element_text(color = &quot;grey20&quot;)
+      )
+}
+
+plot_row1 &lt;- plot_grid(myplots[[1]], myplots[[2]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>plot_row2 &lt;- plot_grid(myplots[[3]], myplots[[4]], align = &#39;v&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>title &lt;- ggdraw() +
+  draw_label(
+    &quot;Scatter Plot for Death Rate and Cardiovascular Disease Rate&quot;,  
+    fontface = &#39;bold&#39;,
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))</code></pre>
+<p><img src="EDA_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 </div>
 
