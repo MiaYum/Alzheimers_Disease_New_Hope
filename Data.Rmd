@@ -53,7 +53,7 @@ econ_data =
   mutate(year = as.numeric(str_replace(year, "x", "")),
          gdp = gdp/(population/1000000),
          pce = pce/(population/1000000),
-         employment = employment/(population/1000000),
+         employment = round(employment/(population), 4),
          hc_exp = hc_exp/(population/1000000),
          income = income/(population/1000000),
          ) |>
