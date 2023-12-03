@@ -9,4 +9,78 @@ library(tidyverse)
 
 # Exploratory data analysis
 
-## Part I
+这个数据集包含了关于美国各州的多个变量，包括年份、死亡率、GDP、个人消费支出（PCE）、区域价格平价（RPP）、就业情况、医疗支出、收入、教育水平以及一些健康指标（如糖尿病率、心脏病发病率、吸烟率、老年人口比例和肥胖率）。
+
+## Part I Missing data 
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(corrplot)
+data=read_csv("./Data/geo_data.csv")
+# 1. Descriptive statistics table for all variables
+summary(data)
+```
+
+数据概览:
+
+数据集共有`r nrow(data)`行和`r ncol(data)`列。
+包括州名（state）、年份（year）、死亡率（death_rate）、GDP、个人消费支出（pce）、区域价格平价（rpp）、就业情况（employment）、医疗支出（hc_exp）、收入（income）、教育水平（edu_level）、糖尿病率（diabetes_rate）、心脏病发病率（cardio_rate）、吸烟率（smoke_rate）、老年人口比例（elder_rate）和肥胖率（obesity_rate）等指标。
+
+缺失值:
+
+death_rate有4个缺失值。
+diabetes_rate、cardio_rate各有14个缺失值。
+smoke_rate有6个缺失值。
+elder_rate和obesity_rate各有1个缺失值。
+
+
+
+```{r}
+# 2. Explore distribution of results and consider potential transformations
+# Histograms for continuous variable
+ggplot(data, aes(x = death_rate)) + geom_histogram(bins = 30) + ggtitle("Histogram of Death Rate")
+```
+
+分布呈现出轻微的右偏态，大部分值集中在较低的死亡率区间。
+
+缺失值不多，我们直接删除
+
+
+## Part II Multi-colinearity Check
+```{r}
+# 处理缺失数据，这里我们选择删除含有缺失值的行
+data <- na.omit(data)
+```
+
+```{r}
+data_selected_1 <-data %>% select(gdp, pce, rpp, employment,hc_exp,income,edu_level)
+# 计算相关系数矩阵
+correlation_matrix <- cor(data_selected_1)
+
+# 可视化相关系数矩阵
+corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
+```
+
+```{r}
+data_selected_2 <-data %>% select(diabetes_rate,cardio_rate,smoke_rate,elder_rate,obesity_rate)
+# 计算相关系数矩阵
+correlation_matrix <- cor(data_selected_2)
+
+# 可视化相关系数矩阵
+corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
+```
+
+
+## Part III Correlation and Scatter Plot:
+
+
+
+```{r}
+
+```
+
+
+
+
+
