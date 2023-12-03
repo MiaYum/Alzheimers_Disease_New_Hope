@@ -154,22 +154,8 @@ geo_data = left_join(death_rate, econ_data, by = c("state", "year")) |>
 ```
 
 ```{r}
-write.csv(geo_data, "./Data/geo_data.csv")
+write.csv(geo_data, "./Data/geo_data.csv", row.names = FALSE)
 ```
-
-
-```{r}
-agen = 
-  read_csv("./Data/econdata.csv") |>
-  arrange(GeoName, Description)
-```
-
-
-
-
-
-
-
 
 ## Clinical Trials data
 Clinical Trials data is directly downloaded from **clinicaltrials.gov** for Alzheimer's Disease.

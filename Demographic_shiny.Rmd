@@ -18,27 +18,47 @@ library(ggplot2)
 ```
 
 ```{r, message = FALSE, warning = FALSE}
-geo_data =
+shiny_data =
   read_csv("./Data/geo_data.csv") |>
-  select(-...1)
+  select(-...1) |>
+  pivot_longer(
+    death_rate:obesity_rate,
+    names_to = "type",
+    values_to = "value") |>
+  mutate(type =
+    case_match(
+      type,
+      "death_rate" ~ "Death rate",
+      "gdp" ~ "GDP",
+      "pce" ~ "Consumption expenditures",
+      "rpp" ~ "Price parities",
+      "employment" ~ "Employment",
+      "hc_exp" ~ "Healthcare expenditures",
+      "income" ~ "Personal income",
+      "edu_level" ~ "Education level",
+      "diabetes_rate" ~ "Diabetes rate",
+      "cardio_rate" ~ "Cardio rate",
+      "smoke_rate" ~ "Smoke rate",
+      "elder_rate" ~ "Elder rate",
+      "obesity_rate" ~ "Obesity rate"))
 ```
 
 Column {.sidebar}
 -----------------------------------------------------------------------
 ```{r}
-geo_type = geo_data |>
-  select(-year) |>
-  variable.names()
-
-selectInput(
-  "geo_type", 
-  label = h3("Select geo type"),
-  choices = geo_type, selected = "death_rate")
-
 selectInput(
   "year", 
   label = h3("Select year"),
   choices = c(2018, 2019, 2020, 2021), selected = "2018")
+
+geo_type = unique(pull(shiny_data, type))
+
+radioButtons(
+  "geo_type", 
+  label = h3("Select Category"),
+  choices = geo_type, selected = "Death rate")
+
+
 ```
 
 Row
@@ -46,12 +66,13 @@ Row
 ### Demographic visualizations
 ```{r}
 renderPlotly({
-  ggplotly(plot_usmap(data = geo_data |>
-                        filter(year==input$year) |>
-                        mutate(tate = order(state),
+  ggplotly(plot_usmap(data = shiny_data |>
+                        filter(year == input$year,
+                               type == input$geo_type) |>
+                        mutate(state = order(state),
                                fips = pull(statepop, fips),
                                abbr = pull(statepop, abbr)),
-           values = input$geo_type,
+           values = "value",
            labels = TRUE))
   })
 ```
