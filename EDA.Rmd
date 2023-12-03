@@ -15,6 +15,7 @@ library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library(corrplot)
+library(cowplot)
 data=read_csv("./Data/geo_data.csv")
 # 1. Descriptive statistics table for all variables
 summary(data)
@@ -29,12 +30,10 @@ The dataset contains r nrow(data) rows and r ncol(data) columns. It includes var
 library(plotly)
 library(dplyr)
 
-# 计算每个变量的缺失值数量
 missing_data <- data %>% 
   summarise_all(funs(sum(is.na(.)))) %>% 
   gather(key = "Variable", value = "MissingValues")
 
-# 使用plotly创建交互式条形图
 plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = "bar") %>%
   layout(title = "Missing Data Visualization",
          xaxis = list(title = "Variables"),
@@ -94,7 +93,257 @@ Based on the heatmap, it can be observed that the variables diabetes_rate, cardi
 ## Part III Correlation and Scatter Plot:
 
 ```{r}
+# edu_level
 
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = edu_level, y = death_rate)) +
+      geom_point(alpha = 0.5, size = 0.5, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.5) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Educational Level") +
+      ylab("Death Rate") +
+      scale_x_continuous(limits = c(0.2, 0.4)) +
+      theme_minimal() +  # 使用简洁的主题
+      theme( # 自定义一些元素
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Education Level",
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
+```
+
+
+```{r}
+# income
+
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = income, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Income") + 
+      ylab("Death Rate") +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Income",  
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
+```
+
+```{r}
+# employment
+
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = employment, y = death_rate)) + 
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Employment") + 
+      ylab("Death Rate") +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Employment", 
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
+```
+
+```{r}
+# hc_exp
+
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = hc_exp, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Healthcare Expenditure") +  
+      ylab("Death Rate") +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Healthcare Expenditure",  
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
+```
+
+```{r}
+# elder_rate
+
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = elder_rate, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Elderly Population Rate") + 
+      ylab("Death Rate") +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Elderly Population Rate",
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
+```
+
+```{r}
+# smoke_rate
+
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = smoke_rate, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Smoking Rate") +  
+      ylab("Death Rate") +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Smoking Rate",  
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+ plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
+```
+
+```{r}
+# cardio rate
+
+myplots <- vector('list', 4)
+for (i in 2018:2021) {
+    myplots[[i-2017]] <- data %>%
+      filter(year == i) %>%
+      ggplot(aes(x = cardio_rate, y = death_rate)) +  
+      geom_point(alpha = 0.5, size = 0.8, shape = 3) +
+      geom_smooth(method = 'lm', se = TRUE, color = 'red', size = 0.8) +
+      labs(title = sprintf("Year %s", i)) +
+      xlab("Cardiovascular Disease Rate") + 
+      ylab("Death Rate") +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(color = "grey20"),
+        axis.title = element_text(color = "grey20")
+      )
+}
+
+plot_row1 <- plot_grid(myplots[[1]], myplots[[2]], align = 'v')
+plot_row2 <- plot_grid(myplots[[3]], myplots[[4]], align = 'v')
+
+title <- ggdraw() +
+  draw_label(
+    "Scatter Plot for Death Rate and Cardiovascular Disease Rate",  
+    fontface = 'bold',
+    x = 0.5,
+    hjust = 0.5
+  ) +
+  theme(plot.margin = margin(0, 0, 0, 7), plot.background = element_blank())
+
+plot_grid(title, plot_row1, plot_row2, ncol = 1, rel_heights = c(0.1, 1, 1))
 ```
 
 
