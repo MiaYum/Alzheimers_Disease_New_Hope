@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Regression model</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="Introduction.html">Introduction</a>
+</li>
+<li>
+  <a href="Data.html">Data Sources</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EDA.html">Exploratory Analysis</a>
+    </li>
+    <li>
+      <a href="EDA.html">Statistical Analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a>
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Regression model</h1>
+
+</div>
+
+
+<div id="data-set-splitting" class="section level1">
+<h1>Data Set Splitting</h1>
+<p>We firstly divide the data set into training and testing sets.</p>
+<pre class="r"><code>data=readRDS(&quot;data_for_model.rds&quot;) 
+training_data &lt;- filter(data, year &gt;= 2018 &amp; year &lt;= 2020)|&gt;select(-c(state,year))
+testing_data &lt;- filter(data, year == 2021)|&gt;select(-c(state,year))</code></pre>
+</div>
+<div id="multiple-linear-regression" class="section level1">
+<h1>Multiple Linear Regression</h1>
+<div id="model-selection" class="section level2">
+<h2>Model Selection</h2>
+<p>Explain why multiple linear regression was chosen. Describe the
+mathematical form of the model and assumptions.</p>
+</div>
+<div id="full-model-linear-regression" class="section level2">
+<h2>Full model-Linear regression</h2>
+<pre class="r"><code>model &lt;- lm(death_rate ~ ., data = training_data)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = death_rate ~ ., data = training_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -15.2013  -4.1827   0.2683   3.9637  17.5189 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    6.930e+01  3.028e+01   2.288  0.02377 *  
+## gdp           -1.696e-04  1.356e-04  -1.251  0.21327    
+## pce           -1.463e-06  4.834e-04  -0.003  0.99759    
+## rpp           -1.993e-01  2.082e-01  -0.957  0.34024    
+## employment     2.782e+01  2.114e+01   1.316  0.19054    
+## hc_exp        -1.941e-04  9.664e-04  -0.201  0.84117    
+## income        -2.277e-04  2.016e-04  -1.130  0.26078    
+## edu_level     -1.693e+01  2.283e+01  -0.741  0.45977    
+## diabetes_rate -1.251e+01  5.675e+01  -0.220  0.82590    
+## cardio_rate    1.309e+02  5.240e+01   2.498  0.01375 *  
+## smoke_rate    -7.626e+01  3.551e+01  -2.148  0.03365 *  
+## elder_rate    -1.665e+02  4.277e+01  -3.892  0.00016 ***
+## obesity_rate   8.232e-01  2.530e-01   3.254  0.00146 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.628 on 127 degrees of freedom
+## Multiple R-squared:  0.4976, Adjusted R-squared:  0.4501 
+## F-statistic: 10.48 on 12 and 127 DF,  p-value: 3.729e-14</code></pre>
+</div>
+<div id="backwards-elimination" class="section level2">
+<h2>Backwards Elimination</h2>
+<pre class="r"><code>backward_result=step(model, direction=&#39;backward&#39;)</code></pre>
+<pre><code>## Start:  AIC=541.91
+## death_rate ~ gdp + pce + rpp + employment + hc_exp + income + 
+##     edu_level + diabetes_rate + cardio_rate + smoke_rate + elder_rate + 
+##     obesity_rate
+## 
+##                 Df Sum of Sq    RSS    AIC
+## - pce            1      0.00 5578.7 539.91
+## - hc_exp         1      1.77 5580.5 539.96
+## - diabetes_rate  1      2.13 5580.9 539.96
+## - edu_level      1     24.15 5602.9 540.52
+## - rpp            1     40.25 5619.0 540.92
+## - income         1     56.05 5634.8 541.31
+## - gdp            1     68.73 5647.5 541.63
+## - employment     1     76.08 5654.8 541.81
+## &lt;none&gt;                       5578.7 541.91
+## - smoke_rate     1    202.59 5781.3 544.90
+## - cardio_rate    1    274.20 5852.9 546.63
+## - obesity_rate   1    465.04 6043.8 551.12
+## - elder_rate     1    665.49 6244.2 555.69
+## 
+## Step:  AIC=539.91
+## death_rate ~ gdp + rpp + employment + hc_exp + income + edu_level + 
+##     diabetes_rate + cardio_rate + smoke_rate + elder_rate + obesity_rate
+## 
+##                 Df Sum of Sq    RSS    AIC
+## - diabetes_rate  1      2.18 5580.9 537.97
+## - hc_exp         1      2.34 5581.1 537.97
+## - edu_level      1     26.07 5604.8 538.56
+## - rpp            1     40.59 5619.3 538.93
+## - income         1     60.51 5639.3 539.42
+## - gdp            1     70.59 5649.3 539.67
+## - employment     1     79.27 5658.0 539.89
+## &lt;none&gt;                       5578.7 539.91
+## - smoke_rate     1    236.26 5815.0 543.72
+## - cardio_rate    1    282.37 5861.1 544.82
+## - obesity_rate   1    467.37 6046.1 549.17
+## - elder_rate     1    776.78 6355.5 556.16
+## 
+## Step:  AIC=537.97
+## death_rate ~ gdp + rpp + employment + hc_exp + income + edu_level + 
+##     cardio_rate + smoke_rate + elder_rate + obesity_rate
+## 
+##                Df Sum of Sq    RSS    AIC
+## - hc_exp        1      1.29 5582.2 536.00
+## - edu_level     1     26.23 5607.1 536.62
+## - rpp           1     39.66 5620.6 536.96
+## - income        1     60.06 5641.0 537.46
+## - gdp           1     77.01 5657.9 537.88
+## &lt;none&gt;                      5580.9 537.97
+## - employment    1    124.45 5705.4 539.05
+## - smoke_rate    1    240.13 5821.1 541.86
+## - cardio_rate   1    294.70 5875.6 543.17
+## - obesity_rate  1    538.24 6119.2 548.86
+## - elder_rate    1    832.55 6413.5 555.43
+## 
+## Step:  AIC=536
+## death_rate ~ gdp + rpp + employment + income + edu_level + cardio_rate + 
+##     smoke_rate + elder_rate + obesity_rate
+## 
+##                Df Sum of Sq    RSS    AIC
+## - edu_level     1     25.41 5607.6 534.63
+## - rpp           1     46.88 5629.1 535.17
+## - income        1     67.73 5649.9 535.69
+## &lt;none&gt;                      5582.2 536.00
+## - gdp           1     86.20 5668.4 536.14
+## - employment    1    125.54 5707.8 537.11
+## - cardio_rate   1    301.29 5883.5 541.36
+## - smoke_rate    1    315.34 5897.6 541.69
+## - obesity_rate  1    537.65 6119.9 546.87
+## - elder_rate    1   1077.91 6660.1 558.72
+## 
+## Step:  AIC=534.63
+## death_rate ~ gdp + rpp + employment + income + cardio_rate + 
+##     smoke_rate + elder_rate + obesity_rate
+## 
+##                Df Sum of Sq    RSS    AIC
+## - gdp           1     73.66 5681.3 534.46
+## &lt;none&gt;                      5607.6 534.63
+## - rpp           1     85.45 5693.1 534.75
+## - employment    1    107.79 5715.4 535.30
+## - income        1    114.48 5722.1 535.46
+## - smoke_rate    1    303.53 5911.2 540.01
+## - cardio_rate   1    312.48 5920.1 540.23
+## - obesity_rate  1    539.02 6146.7 545.48
+## - elder_rate    1   1102.50 6710.1 557.76
+## 
+## Step:  AIC=534.46
+## death_rate ~ rpp + employment + income + cardio_rate + smoke_rate + 
+##     elder_rate + obesity_rate
+## 
+##                Df Sum of Sq    RSS    AIC
+## - employment    1     58.64 5739.9 533.90
+## &lt;none&gt;                      5681.3 534.46
+## - cardio_rate   1    321.96 6003.3 540.18
+## - smoke_rate    1    352.97 6034.3 540.90
+## - income        1    364.78 6046.1 541.17
+## - rpp           1    391.09 6072.4 541.78
+## - obesity_rate  1    468.95 6150.2 543.56
+## - elder_rate    1   1082.75 6764.0 556.88
+## 
+## Step:  AIC=533.9
+## death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
+##     obesity_rate
+## 
+##                Df Sum of Sq    RSS    AIC
+## &lt;none&gt;                      5739.9 533.90
+## - cardio_rate   1    263.70 6003.6 538.19
+## - smoke_rate    1    323.69 6063.6 539.58
+## - income        1    325.45 6065.4 539.62
+## - obesity_rate  1    415.31 6155.2 541.68
+## - rpp           1    487.18 6227.1 543.30
+## - elder_rate    1   1141.95 6881.9 557.30</code></pre>
+</div>
+<div id="selected-value" class="section level2">
+<h2>Selected value</h2>
+<pre class="r"><code>selected_model &lt;- lm(death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
+    obesity_rate, data = training_data)
+summary(selected_model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = death_rate ~ rpp + income + cardio_rate + smoke_rate + 
+##     elder_rate + obesity_rate, data = training_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -15.4142  -3.7690   0.3034   4.0269  16.2700 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.018e+02  1.908e+01   5.336 3.98e-07 ***
+## rpp          -4.556e-01  1.356e-01  -3.360  0.00102 ** 
+## income       -3.188e-04  1.161e-04  -2.746  0.00687 ** 
+## cardio_rate   1.100e+02  4.450e+01   2.472  0.01470 *  
+## smoke_rate   -6.975e+01  2.547e+01  -2.739  0.00702 ** 
+## elder_rate   -1.560e+02  3.033e+01  -5.144 9.42e-07 ***
+## obesity_rate  6.473e-01  2.087e-01   3.102  0.00235 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.569 on 133 degrees of freedom
+## Multiple R-squared:  0.4831, Adjusted R-squared:  0.4597 
+## F-statistic: 20.71 on 6 and 133 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="model-performation" class="section level2">
+<h2>Model Performation</h2>
+<pre class="r"><code>predictions &lt;- predict(selected_model, testing_data)
+
+mse &lt;- mean((testing_data$death_rate - predictions)^2)
+print(paste(&quot;MSE:&quot;, mse))</code></pre>
+<pre><code>## [1] &quot;MSE: 55.7575545402657&quot;</code></pre>
+<p>表现太差了-解释一下</p>
+</div>
+</div>
+<div id="random-forest-model" class="section level1">
+<h1>Random Forest Model</h1>
+<div id="model-selection-1" class="section level2">
+<h2>Model Selection</h2>
+<p>Justify the choice of the random forest model. Explain the
+fundamental principles of the model.</p>
+<pre class="r"><code>library(randomForest)</code></pre>
+<pre><code>## randomForest 4.7-1.1</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;randomForest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     margin</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre class="r"><code>rf_model &lt;- randomForest(death_rate ~ ., data = training_data)</code></pre>
+</div>
+<div id="model-performation-1" class="section level2">
+<h2>Model Performation</h2>
+<pre class="r"><code>rf_predictions &lt;- predict(rf_model, testing_data)
+
+rf_mse &lt;- mean((testing_data$death_rate - rf_predictions)^2)
+print(paste(&quot;Random Forest MSE:&quot;, rf_mse))</code></pre>
+<pre><code>## [1] &quot;Random Forest MSE: 39.9931288637273&quot;</code></pre>
+<pre class="r"><code>rf_predictions &lt;- predict(rf_model, training_data)
+
+# R²
+r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
+print(paste(&quot;R²:&quot;, r_squared))</code></pre>
+<pre><code>## [1] &quot;R²: 0.955273043733725&quot;</code></pre>
+<pre class="r"><code>rf_predictions &lt;- predict(rf_model, testing_data)
+
+# R²
+r_squared &lt;- cor(testing_data$death_rate, rf_predictions)^2
+print(paste(&quot;R²:&quot;, r_squared))</code></pre>
+<pre><code>## [1] &quot;R²: 0.461029277024342&quot;</code></pre>
+</div>
+<div id="results-and-discussion" class="section level2">
+<h2>Results and Discussion</h2>
+<pre class="r"><code>importance_values &lt;- importance(rf_model)
+
+
+print(importance_values)</code></pre>
+<pre><code>##               IncNodePurity
+## gdp                960.2565
+## pce                903.1508
+## rpp               1381.4524
+## employment         573.1952
+## hc_exp             871.8524
+## income             426.2694
+## edu_level          877.4729
+## diabetes_rate     1442.8842
+## cardio_rate        318.1239
+## smoke_rate         589.6429
+## elder_rate         813.3348
+## obesity_rate      1581.7351</code></pre>
+<pre class="r"><code>library(plotly)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     last_plot</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     layout</code></pre>
+<pre class="r"><code>importance_values &lt;- importance(rf_model)
+
+feature_importance &lt;- data.frame(Feature = rownames(importance_values), 
+                                 Importance = importance_values[,1]) %&gt;%
+  arrange(Importance) %&gt;% 
+  mutate(Feature = factor(Feature, levels = Feature)) 
+
+plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;, orientation = &#39;h&#39;) %&gt;%
+  layout(title = &quot;Feature Importance from Random Forest Model&quot;,
+         xaxis = list(title = &quot;Importance&quot;),
+         yaxis = list(title = &quot;Feature&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-977be9b1dbc13266ca24" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-977be9b1dbc13266ca24">{"x":{"visdat":{"b62a4394a653":["function () ","plotlyVisDat"]},"cur_data":"b62a4394a653","attrs":{"b62a4394a653":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","smoke_rate","elder_rate","hc_exp","edu_level","pce","gdp","rpp","diabetes_rate","obesity_rate"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[318.12387234361881,426.2693955212834,573.19519686278898,589.6428710415131,813.3348429227209,871.8523663814093,877.47290709505273,903.15076133292132,960.25647519519885,1381.4524390737815,1442.8841829548321,1581.7351442748741],"y":["cardio_rate","income","employment","smoke_rate","elder_rate","hc_exp","edu_level","pce","gdp","rpp","diabetes_rate","obesity_rate"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate最重要-待解释
+Summarize the performance of multiple linear regression and random
+forest models. Interpret model results and important features. Discuss
+limitations of the study and future work.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
