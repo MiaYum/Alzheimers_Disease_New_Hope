@@ -1,0 +1,116 @@
+---
+title: "Regression model"
+
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    code_folding: hide
+---
+
+```{r setup, include = FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(caret)
+```
+
+# regression model
+
+```{r}
+data=readRDS("data_for_model.rds") 
+```
+
+# 数据划分
+
+```{r}
+training_data <- filter(data, year >= 2018 & year <= 2020)|>select(-c(state,year))
+testing_data <- filter(data, year == 2021)|>select(-c(state,year))
+```
+
+# full model
+
+```{r}
+model <- lm(death_rate ~ ., data = training_data)
+summary(model)
+```
+
+# Backwards Elimination
+
+```{r}
+backward_result=step(model, direction='backward')
+```
+
+
+# Selected value
+
+```{r}
+selected_model <- lm(death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
+    obesity_rate, data = training_data)
+summary(selected_model)
+```
+
+```{r}
+# 使用测试数据来验证模型
+predictions <- predict(selected_model, testing_data)
+
+# 计算和打印性能指标
+mse <- mean((testing_data$death_rate - predictions)^2)
+print(paste("均方误差(MSE):", mse))
+```
+
+表现太差了
+
+
+# Random forest
+
+```{r}
+library(randomForest)
+
+# 构建随机森林模型
+rf_model <- randomForest(death_rate ~ ., data = training_data)
+
+# 使用测试数据进行预测
+rf_predictions <- predict(rf_model, testing_data)
+
+# 计算性能指标
+rf_mse <- mean((testing_data$death_rate - rf_predictions)^2)
+print(paste("随机森林 MSE:", rf_mse))
+
+# 使用训练数据进行预测
+rf_predictions <- predict(rf_model, training_data)
+
+# 计算R²值
+r_squared <- cor(training_data$death_rate, rf_predictions)^2
+print(paste("R²:", r_squared))
+
+# 使用测试数据进行预测
+rf_predictions <- predict(rf_model, testing_data)
+
+# 计算R²值
+r_squared <- cor(testing_data$death_rate, rf_predictions)^2
+print(paste("R²:", r_squared))
+```
+
+## 特征重要性
+
+```{r}
+# 获取特征重要性
+importance_values <- importance(rf_model)
+
+# 打印特征重要性
+print(importance_values)
+
+# 可视化特征重要性
+varImpPlot(rf_model)
+```
+
+数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate最重要-带解释
+
+
+
+
+
+
+
