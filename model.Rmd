@@ -14,14 +14,19 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(caret)
+library(purrr)
+library(tidyverse)
 ```
 
 
 
 # Data Set Splitting
 
-We firstly divide the data set into training and testing sets.
-```{r}
+We used data from the years 2018 to 2020 as our training set, and data from 2021 as our test set.
+
+All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
+
+```{r, message = FALSE, warning = FALSE}
 data=readRDS("data_for_model.rds") 
 training_data <- filter(data, year >= 2018 & year <= 2020)|>select(-c(state,year))
 testing_data <- filter(data, year == 2021)|>select(-c(state,year))
@@ -31,42 +36,89 @@ testing_data <- filter(data, year == 2021)|>select(-c(state,year))
 
 ## Model Selection
 
-Explain why multiple linear regression was chosen.
-Describe the mathematical form of the model and assumptions.
+The primary reason for initially choosing linear models in statistical analysis is their simplicity and ease of understanding. These models, by representing relationships in a straightforward linear manner, make it easier for us to comprehend how different variables interact with each other.
+
+Moreover, linear models are known for their robustness, offering reliable performance even with various types of data and statistical errors. Importantly, they serve as an effective benchmark in more complex modeling processes. 
+
+By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps in ensuring that the complexity of a model is justified by a significant improvement over the simpler linear model.
 
 ## Full model-Linear regression 
 
-```{r}
-model <- lm(death_rate ~ ., data = training_data)
-summary(model)
+```{r, message = FALSE, warning = FALSE}
+model <- lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
+summary(model) |> 
+broom::tidy() |>
+  knitr::kable()
+
+broom::glance(model) |>
+  mutate(model = "Full Linear Regression") |>
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
+  knitr::kable()
 ```
 
 ## Backwards Elimination
 
-```{r}
-backward_result=step(model, direction='backward')
+We use Backward Elimination for constructing our linear regression model to enhance its efficiency and interpretability. This method systematically removes the least significant variables, ensuring that only the most impactful predictors are retained. Consequently, it helps in reducing model complexity and avoiding overfitting, resulting in a more robust and meaningful model.
+
+
+```{r, message = FALSE, warning = FALSE}
+backward_result = step(model, direction = 'backward', trace = 0)
+  broom::tidy(backward_result) |>
+      knitr::kable()
 ```
 
 
 ## Selected value
 
-```{r}
-selected_model <- lm(death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
-    obesity_rate, data = training_data)
+```{r, message = FALSE, warning = FALSE}
+
+selected_model <- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 summary(selected_model)
+
 ```
+
+```{r}
+residuals <- resid(selected_model)
+
+qqnorm(residuals)
+qqline(residuals, col = "red")
+```
+
 ## Model Performation
 
-```{r}
-predictions <- predict(selected_model, testing_data)
+### Cross Validation for RMSE
 
-mse <- mean((testing_data$death_rate - predictions)^2)
-print(paste("MSE:", mse))
+```{r}
+library(modelr)
+# generate a cv dataframe 
+cv_df <-
+  crossv_mc(training_data, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+# fit the model to the generated CV dataframe
+cv_df <-
+  cv_df %>% 
+  mutate(
+    model  = map(train, ~lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+# plot the prediction error
+cv_df %>% 
+  select(rmse) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse") %>% 
+  ggplot(aes(x= model, y = rmse)) + 
+  geom_violin() +
+  labs(
+    title = "Prediction Errors For Our Model Under CV",
+    x = "Model lm",
+    y = "Prediction Errors"
+  ) 
 ```
 
-
-
-表现太差了-解释一下
+加入bootstrap
 
 
 # Random Forest Model
@@ -79,30 +131,85 @@ Explain the fundamental principles of the model.
 ```{r}
 library(randomForest)
 
-rf_model <- randomForest(death_rate ~ ., data = training_data)
+rf_model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
 ```
 
 ## Model Performation
 
 ```{r}
-rf_predictions <- predict(rf_model, testing_data)
+library(modelr)
+# generate a cv dataframe 
+cv_df <-
+  crossv_mc(training_data, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+# fit the model to the generated CV dataframe
+cv_df <-
+  cv_df %>% 
+  mutate(
+    model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+# plot the prediction error
+cv_df %>% 
+  select(rmse) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse") %>% 
+  ggplot(aes(x= model, y = rmse)) + 
+  geom_violin() +
+  labs(
+    title = "Prediction Errors For Our Model Under CV",
+    x = "Model rf",
+    y = "Prediction Errors"
+  ) 
+```
 
-rf_mse <- mean((testing_data$death_rate - rf_predictions)^2)
-print(paste("Random Forest MSE:", rf_mse))
-
-rf_predictions <- predict(rf_model, training_data)
-
+```{r}
 # R²
+rf_predictions <- predict(rf_model, training_data)
 r_squared <- cor(training_data$death_rate, rf_predictions)^2
 print(paste("R²:", r_squared))
-
-
-rf_predictions <- predict(rf_model, testing_data)
-
-# R²
-r_squared <- cor(testing_data$death_rate, rf_predictions)^2
-print(paste("R²:", r_squared))
 ```
+
+```{r}
+library(randomForest)
+library(boot)
+
+# 假设 your_data 是您的数据集
+# 假设响应变量是 target
+
+# 自举函数
+bootstrap_r2 <- function(data, indices) {
+  boot_data <- data[indices, ]
+  # 训练随机森林模型
+  model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
+  # 预测
+  predictions <- predict(model, boot_data)
+  # 计算R²值
+  r_squared <- cor(boot_data$death_rate, predictions)^2
+  return(r_squared)
+}
+
+# 执行自举
+set.seed(123)  # 为了可重复性
+results <- boot(data = training_data, statistic = bootstrap_r2, R = 10)
+
+# 绘制R²分布
+hist(results$t, breaks = 30, main = "Bootstrap Distribution of R²", xlab = "R² Values")
+
+```
+
+## Prediction
+
+```{r}
+# Assuming you have actual_values, predicted_values_lm, and predicted_values_rf
+
+# Create a scatter plot
+plot(testing_data$death_rate, predict(rf_model, testing_data), main = "Linear Regression Predictions", xlab = "Actual Values", ylab = "Predicted Values", col = "black")
+```
+
 
 
 ## Results and Discussion
@@ -128,10 +235,20 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
          yaxis = list(title = "Feature"))
 ```
 
-数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate最重要-待解释
+
+数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 - 待解释
+
 Summarize the performance of multiple linear regression and random forest models.
+
 Interpret model results and important features.
 Discuss limitations of the study and future work.
+
+
+
+
+
+
+
 
 
 
