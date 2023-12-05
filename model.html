@@ -13,7 +13,7 @@
 
 <title>Regression model</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,11 +36,11 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -419,9 +419,8 @@ performance level, against which the effectiveness of more sophisticated
 models can be measured. This stepwise approach helps in ensuring that
 the complexity of a model is justified by a significant improvement over
 the simpler linear model.</p>
-</div>
-<div id="full-model-linear-regression" class="section level2">
-<h2>Full model-Linear regression</h2>
+<div id="full-model-linear-regression" class="section level3">
+<h3>Full model-Linear regression</h3>
 <pre class="r"><code>model &lt;- lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
 summary(model) |&gt; 
 broom::tidy() |&gt;
@@ -529,9 +528,12 @@ broom::tidy() |&gt;
 </tr>
 </tbody>
 </table>
+<p>Based on the table of full model, some of the predictors are
+statistically significant while others are not, so we need a further
+selection of the model.</p>
 </div>
-<div id="backwards-elimination" class="section level2">
-<h2>Backwards Elimination</h2>
+<div id="backwards-elimination" class="section level3">
+<h3>Backwards Elimination</h3>
 <p>We use Backward Elimination for constructing our linear regression
 model to enhance its efficiency and interpretability. This method
 systematically removes the least significant variables, ensuring that
@@ -589,43 +591,111 @@ more robust and meaningful model.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="selected-value" class="section level2">
-<h2>Selected value</h2>
 <pre class="r"><code>selected_model &lt;- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
-summary(selected_model)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = death_rate ~ hc_exp + edu_level + cardio_rate + 
-##     elder_rate, data = training_data)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -16.9062  -4.7205   0.8188   5.0059  16.3380 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  7.422e+01  7.662e+00   9.687  &lt; 2e-16 ***
-## hc_exp      -1.402e-03  5.712e-04  -2.455 0.015375 *  
-## edu_level   -4.787e+01  1.288e+01  -3.717 0.000294 ***
-## cardio_rate  1.462e+02  4.676e+01   3.127 0.002166 ** 
-## elder_rate  -1.551e+02  3.389e+01  -4.576 1.06e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 7.11 on 135 degrees of freedom
-## Multiple R-squared:  0.3854, Adjusted R-squared:  0.3672 
-## F-statistic: 21.17 on 4 and 135 DF,  p-value: 1.448e-13</code></pre>
+summary(selected_model)|&gt;
+broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">74.2170216</td>
+<td align="right">7.6615066</td>
+<td align="right">9.687001</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">hc_exp</td>
+<td align="right">-0.0014021</td>
+<td align="right">0.0005712</td>
+<td align="right">-2.454649</td>
+<td align="right">0.0153748</td>
+</tr>
+<tr class="odd">
+<td align="left">edu_level</td>
+<td align="right">-47.8686408</td>
+<td align="right">12.8765984</td>
+<td align="right">-3.717491</td>
+<td align="right">0.0002939</td>
+</tr>
+<tr class="even">
+<td align="left">cardio_rate</td>
+<td align="right">146.1913832</td>
+<td align="right">46.7572070</td>
+<td align="right">3.126606</td>
+<td align="right">0.0021660</td>
+</tr>
+<tr class="odd">
+<td align="left">elder_rate</td>
+<td align="right">-155.1015760</td>
+<td align="right">33.8923959</td>
+<td align="right">-4.576294</td>
+<td align="right">0.0000106</td>
+</tr>
+</tbody>
+</table>
+<p>After applying Backward Elimination, we have obtained a linear
+regression model that is streamlined and comprises only the
+statistically significant predictors.</p>
+</div>
+</div>
+<div id="model-performation" class="section level2">
+<h2>Model Performation</h2>
 <pre class="r"><code>residuals &lt;- resid(selected_model)
 
 qqnorm(residuals)
 qqline(residuals, col = &quot;red&quot;)</code></pre>
 <p><img src="model_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-</div>
-<div id="model-performation" class="section level2">
-<h2>Model Performation</h2>
+<p>The QQ plot suggests although the slightly deviations at the tails
+indicate potential non-normality, the residuals from a statistical model
+are approximately normally distributed around the center.</p>
+<pre class="r"><code>broom::glance(selected_model) |&gt;
+  mutate(model = &quot;Selected Linear Regression&quot;) |&gt;
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="12%" />
+<col width="18%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">p.value</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Selected Linear Regression</td>
+<td align="right">0.3854173</td>
+<td align="right">0.3672074</td>
+<td align="right">0</td>
+<td align="right">953.4226</td>
+<td align="right">971.0725</td>
+</tr>
+</tbody>
+</table>
 <div id="cross-validation-for-rmse" class="section level3">
 <h3>Cross Validation for RMSE</h3>
+<p>We use the training and testing to train ans test two datasets 100
+times.</p>
 <pre class="r"><code>library(modelr)
 # generate a cv dataframe 
 cv_df &lt;-
@@ -653,7 +723,11 @@ cv_df %&gt;%
     x = &quot;Model lm&quot;,
     y = &quot;Prediction Errors&quot;
   ) </code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="model_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The RMSE range from 5.5 to 10,</p>
+</div>
+<div id="bootstrap-for" class="section level3">
+<h3>Bootstrap for</h3>
 <p>加入bootstrap</p>
 </div>
 </div>
@@ -662,37 +736,35 @@ cv_df %&gt;%
 <h1>Random Forest Model</h1>
 <div id="model-selection-1" class="section level2">
 <h2>Model Selection</h2>
-<p>Justify the choice of the random forest model. Explain the
-fundamental principles of the model.</p>
-<pre class="r"><code>library(randomForest)</code></pre>
-<pre><code>## Warning: package &#39;randomForest&#39; was built under R version 4.3.2</code></pre>
-<pre><code>## randomForest 4.7-1.1</code></pre>
-<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;randomForest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     margin</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
-<pre class="r"><code>rf_model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)</code></pre>
+<p>The Random Forest Model is an ensemble learning method, play an
+important role in classification and regression tasks by building
+multiple decision trees and aggregating their outputs. It handles large,
+complex datasets well and is robust against overfitting. Thus, we
+consider switching to Random Forest when linear models has limitations.
+It effectively captures complex, non-linear relationships in data,
+offering improved accuracy and deeper insights.</p>
+<pre class="r"><code>library(randomForest)
+
+rf_model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)</code></pre>
 </div>
 <div id="model-performation-1" class="section level2">
 <h2>Model Performation</h2>
-<pre class="r"><code>library(modelr)
-# generate a cv dataframe 
+<div id="cross-validation-for-rmse-1" class="section level3">
+<h3>Cross Validation for RMSE</h3>
+<pre class="r"><code># generate a cv dataframe 
 cv_df &lt;-
   crossv_mc(training_data, 100) %&gt;% 
   mutate(
     train = map(train, as_tibble),
     test = map(test, as_tibble))
+
 # fit the model to the generated CV dataframe
 cv_df &lt;-
   cv_df %&gt;% 
   mutate(
     model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
     rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+
 # plot the prediction error
 cv_df %&gt;% 
   select(rmse) %&gt;% 
@@ -704,15 +776,30 @@ cv_df %&gt;%
   geom_violin() +
   labs(
     title = &quot;Prediction Errors For Our Model Under CV&quot;,
-    x = &quot;Model rf&quot;,
+    x = &quot;Model RF&quot;,
     y = &quot;Prediction Errors&quot;
   ) </code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="model_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>From the plot, the RMSE is predominantly below 7, ranging from
+approximately 5.5 to 9. This level of RMSE is lower compared to that of
+the linear models we’ve previously evaluated, indicating that this model
+performs better. Lower RMSE values signify more accurate predictions,
+thus suggesting that this model is a more effective predictor for our
+dataset.</p>
 <pre class="r"><code># R²
 rf_predictions &lt;- predict(rf_model, training_data)
 r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
 print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.933748094846049&quot;</code></pre>
+<pre><code>## [1] &quot;R²: 0.932004976157009&quot;</code></pre>
+<p>Calculated using the training data, the R² is 0.932005, which
+indicates a very high level of explained variance in the model. This
+suggests that our model is highly effective in capturing and
+representing the relationships within the training dataset.</p>
+<p>We perform bootstrapping to evaluate the model’s stability and
+reliability. Bootstrapping, involving repeated sampling with
+replacement, ensures we are not just creating a model that works well
+for our current dataset (as indicated by a high R²) but also one that is
+likely to perform consistently across different, unseen datasets.</p>
 <pre class="r"><code>library(randomForest)
 library(boot)</code></pre>
 <pre><code>## 
@@ -720,28 +807,19 @@ library(boot)</code></pre>
 <pre><code>## The following object is masked from &#39;package:lattice&#39;:
 ## 
 ##     melanoma</code></pre>
-<pre class="r"><code># 假设 your_data 是您的数据集
-# 假设响应变量是 target
-
-# 自举函数
-bootstrap_r2 &lt;- function(data, indices) {
+<pre class="r"><code>bootstrap_r2 &lt;- function(data, indices) {
   boot_data &lt;- data[indices, ]
-  # 训练随机森林模型
   model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
-  # 预测
   predictions &lt;- predict(model, boot_data)
-  # 计算R²值
   r_squared &lt;- cor(boot_data$death_rate, predictions)^2
   return(r_squared)
 }
 
-# 执行自举
-set.seed(123)  # 为了可重复性
 results &lt;- boot(data = training_data, statistic = bootstrap_r2, R = 10)
 
-# 绘制R²分布
 hist(results$t, breaks = 30, main = &quot;Bootstrap Distribution of R²&quot;, xlab = &quot;R² Values&quot;)</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="model_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
 </div>
 <div id="prediction" class="section level2">
 <h2>Prediction</h2>
@@ -749,47 +827,21 @@ hist(results$t, breaks = 30, main = &quot;Bootstrap Distribution of R²&quot;, x
 
 # Create a scatter plot
 plot(testing_data$death_rate, predict(rf_model, testing_data), main = &quot;Linear Regression Predictions&quot;, xlab = &quot;Actual Values&quot;, ylab = &quot;Predicted Values&quot;, col = &quot;black&quot;)</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="model_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="results-and-discussion" class="section level2">
 <h2>Results and Discussion</h2>
 <pre class="r"><code>importance_values &lt;- importance(rf_model)
-
-
-print(importance_values)</code></pre>
-<pre><code>##             IncNodePurity
-## employment       1387.829
-## hc_exp           1779.170
-## income           1182.098
-## edu_level        1880.600
-## cardio_rate      1141.621
-## smoke_rate       1557.432
-## elder_rate       1523.054</code></pre>
-<pre class="r"><code>library(plotly)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plotly&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     last_plot</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     filter</code></pre>
-<pre><code>## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     layout</code></pre>
-<pre class="r"><code>importance_values &lt;- importance(rf_model)
-
 feature_importance &lt;- data.frame(Feature = rownames(importance_values), 
                                  Importance = importance_values[,1]) %&gt;%
   arrange(Importance) %&gt;% 
   mutate(Feature = factor(Feature, levels = Feature)) 
-
 plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;, orientation = &#39;h&#39;) %&gt;%
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-9f83ddb664a7353a4f3f" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-9f83ddb664a7353a4f3f">{"x":{"visdat":{"593448ca7aa9":["function () ","plotlyVisDat"]},"cur_data":"593448ca7aa9","attrs":{"593448ca7aa9":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1141.620816835476,1182.0978619725192,1387.8287322088379,1523.0538128295871,1557.4315047003458,1779.17033902448,1880.5998502382799],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0e27a5dd7718e07f6365" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-0e27a5dd7718e07f6365">{"x":{"visdat":{"b5127a43b7c4":["function () ","plotlyVisDat"]},"cur_data":"b5127a43b7c4","attrs":{"b5127a43b7c4":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["income","cardio_rate","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1159.6440492571876,1167.7696733577668,1442.5802354251396,1489.8580475914098,1492.1120095365204,1765.2347987248743,1895.3356731070876],"y":["income","cardio_rate","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 -
 待解释</p>
 <p>Summarize the performance of multiple linear regression and random

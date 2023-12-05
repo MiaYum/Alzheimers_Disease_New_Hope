@@ -16,6 +16,9 @@ library(ggplot2)
 library(caret)
 library(purrr)
 library(tidyverse)
+library(plotly)
+set.seed(15)
+
 ```
 
 
@@ -42,7 +45,7 @@ Moreover, linear models are known for their robustness, offering reliable perfor
 
 By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps in ensuring that the complexity of a model is justified by a significant improvement over the simpler linear model.
 
-## Full model-Linear regression 
+### Full model-Linear regression 
 
 ```{r, message = FALSE, warning = FALSE}
 model <- lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
@@ -55,8 +58,9 @@ broom::glance(model) |>
   select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
   knitr::kable()
 ```
+Based on the table of full model, some of the predictors are statistically significant while others are not, so we need a further selection of the model.
 
-## Backwards Elimination
+### Backwards Elimination
 
 We use Backward Elimination for constructing our linear regression model to enhance its efficiency and interpretability. This method systematically removes the least significant variables, ensuring that only the most impactful predictors are retained. Consequently, it helps in reducing model complexity and avoiding overfitting, resulting in a more robust and meaningful model.
 
@@ -68,27 +72,39 @@ backward_result = step(model, direction = 'backward', trace = 0)
 ```
 
 
-## Selected value
+```{r, message = FALSE, warning = FALSE}
+selected_model <- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
+summary(selected_model)|>
+broom::tidy() |>
+  knitr::kable()
+```
+After applying Backward Elimination, we have obtained a linear regression model that is streamlined and comprises only the statistically significant predictors.
+
+## Model Performation
+
 
 ```{r, message = FALSE, warning = FALSE}
-
-selected_model <- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
-summary(selected_model)
-
-```
-
-```{r}
 residuals <- resid(selected_model)
 
 qqnorm(residuals)
 qqline(residuals, col = "red")
 ```
 
-## Model Performation
+The QQ plot suggests although the slightly deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
+
+```{r, message = FALSE, warning = FALSE}
+broom::glance(selected_model) |>
+  mutate(model = "Selected Linear Regression") |>
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
+  knitr::kable()
+```
 
 ### Cross Validation for RMSE
 
-```{r}
+We use the training and testing to train ans test two datasets 100 times.
+
+```{r, message = FALSE, warning = FALSE}
+
 library(modelr)
 # generate a cv dataframe 
 cv_df <-
@@ -118,6 +134,9 @@ cv_df %>%
   ) 
 ```
 
+The RMSE range from 5.5 to 10, 
+
+### Bootstrap for 
 加入bootstrap
 
 
@@ -125,31 +144,35 @@ cv_df %>%
 
 ## Model Selection
 
-Justify the choice of the random forest model.
-Explain the fundamental principles of the model.
+The Random Forest Model is an ensemble learning method, play an important role in classification and regression tasks by building multiple decision trees and aggregating their outputs. It handles large, complex datasets well and is robust against overfitting. Thus, we consider switching to Random Forest when linear models has limitations. It effectively captures complex, non-linear relationships in data, offering improved accuracy and deeper insights.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
+
 library(randomForest)
 
 rf_model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
+
 ```
 
 ## Model Performation
 
+### Cross Validation for RMSE
 ```{r}
-library(modelr)
+
 # generate a cv dataframe 
 cv_df <-
   crossv_mc(training_data, 100) %>% 
   mutate(
     train = map(train, as_tibble),
     test = map(test, as_tibble))
+
 # fit the model to the generated CV dataframe
 cv_df <-
   cv_df %>% 
   mutate(
     model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
     rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+
 # plot the prediction error
 cv_df %>% 
   select(rmse) %>% 
@@ -161,10 +184,13 @@ cv_df %>%
   geom_violin() +
   labs(
     title = "Prediction Errors For Our Model Under CV",
-    x = "Model rf",
+    x = "Model RF",
     y = "Prediction Errors"
   ) 
 ```
+
+
+From the plot, the RMSE is predominantly below 7, ranging from approximately 5.5 to 9. This level of RMSE is lower compared to that of the linear models we've previously evaluated, indicating that this model performs better. Lower RMSE values signify more accurate predictions, thus suggesting that this model is a more effective predictor for our dataset.
 
 ```{r}
 # R²
@@ -173,37 +199,31 @@ r_squared <- cor(training_data$death_rate, rf_predictions)^2
 print(paste("R²:", r_squared))
 ```
 
+Calculated using the training data, the R² is `r r_squared`, which indicates a very high level of explained variance in the model. This suggests that our model is highly effective in capturing and representing the relationships within the training dataset.
+
+We perform bootstrapping to evaluate the model's stability and reliability. Bootstrapping, involving repeated sampling with replacement, ensures we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
+
 ```{r}
 library(randomForest)
 library(boot)
 
-# 假设 your_data 是您的数据集
-# 假设响应变量是 target
-
-# 自举函数
 bootstrap_r2 <- function(data, indices) {
   boot_data <- data[indices, ]
-  # 训练随机森林模型
   model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
-  # 预测
   predictions <- predict(model, boot_data)
-  # 计算R²值
   r_squared <- cor(boot_data$death_rate, predictions)^2
   return(r_squared)
 }
 
-# 执行自举
-set.seed(123)  # 为了可重复性
 results <- boot(data = training_data, statistic = bootstrap_r2, R = 10)
 
-# 绘制R²分布
 hist(results$t, breaks = 30, main = "Bootstrap Distribution of R²", xlab = "R² Values")
 
 ```
 
 ## Prediction
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # Assuming you have actual_values, predicted_values_lm, and predicted_values_rf
 
 # Create a scatter plot
@@ -214,21 +234,12 @@ plot(testing_data$death_rate, predict(rf_model, testing_data), main = "Linear Re
 
 ## Results and Discussion
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 importance_values <- importance(rf_model)
-
-
-print(importance_values)
-
-library(plotly)
-
-importance_values <- importance(rf_model)
-
 feature_importance <- data.frame(Feature = rownames(importance_values), 
                                  Importance = importance_values[,1]) %>%
   arrange(Importance) %>% 
   mutate(Feature = factor(Feature, levels = Feature)) 
-
 plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orientation = 'h') %>%
   layout(title = "Feature Importance from Random Forest Model",
          xaxis = list(title = "Importance"),
