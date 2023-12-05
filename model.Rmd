@@ -17,6 +17,8 @@ library(caret)
 library(purrr)
 library(tidyverse)
 library(plotly)
+library(modelr)
+library(tidyr)
 set.seed(15)
 
 ```
@@ -30,9 +32,12 @@ We used data from the years 2018 to 2020 as our training set, and data from 2021
 All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
 
 ```{r, message = FALSE, warning = FALSE}
-data=readRDS("data_for_model.rds") 
-training_data <- filter(data, year >= 2018 & year <= 2020)|>select(-c(state,year))
-testing_data <- filter(data, year == 2021)|>select(-c(state,year))
+data = readRDS("data_for_model.rds") 
+training_data = filter(data, year >= 2018 & year <= 2020) |>
+  select(-c(state,year))
+
+testing_data = filter(data, year == 2021) |>
+  select(-c(state,year))
 ```
 
 # Multiple Linear Regression
@@ -48,7 +53,7 @@ By starting with a linear model, we can establish a baseline performance level, 
 ### Full model-Linear regression 
 
 ```{r, message = FALSE, warning = FALSE}
-model <- lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
+model = lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
 summary(model) |> 
 broom::tidy() |>
   knitr::kable()
@@ -73,9 +78,10 @@ backward_result = step(model, direction = 'backward', trace = 0)
 
 
 ```{r, message = FALSE, warning = FALSE}
-selected_model <- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
+selected_model = lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
+
 summary(selected_model)|>
-broom::tidy() |>
+  broom::tidy() |>
   knitr::kable()
 ```
 After applying Backward Elimination, we have obtained a linear regression model that is streamlined and comprises only the statistically significant predictors.
@@ -84,7 +90,7 @@ After applying Backward Elimination, we have obtained a linear regression model 
 
 
 ```{r, message = FALSE, warning = FALSE}
-residuals <- resid(selected_model)
+residuals = resid(selected_model)
 
 qqnorm(residuals)
 qqline(residuals, col = "red")
@@ -105,40 +111,56 @@ We use the training and testing to train ans test two datasets 100 times.
 
 ```{r, message = FALSE, warning = FALSE}
 
-library(modelr)
 # generate a cv dataframe 
-cv_df <-
+cv_df =
   crossv_mc(training_data, 100) %>% 
   mutate(
     train = map(train, as_tibble),
     test = map(test, as_tibble))
 # fit the model to the generated CV dataframe
-cv_df <-
-  cv_df %>% 
+cv_df =
+  cv_df |>
   mutate(
     model  = map(train, ~lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
     rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
 # plot the prediction error
-cv_df %>% 
-  select(rmse) %>% 
+cv_df |>
+  select(rmse) |>
   pivot_longer(
     everything(),
     names_to = "model", 
     values_to = "rmse") %>% 
-  ggplot(aes(x= model, y = rmse)) + 
-  geom_violin() +
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_violin(fill = "blue", alpha = 0.5) +
   labs(
     title = "Prediction Errors For Our Model Under CV",
-    x = "Model lm",
+    x = "Model Linear Regression",
     y = "Prediction Errors"
-  ) 
+  ) +
+  theme_minimal()
 ```
 
 The RMSE range from 5.5 to 10, 
 
-### Bootstrap for 
-加入bootstrap
+### Bootstrap
 
+Bootstrapping, involving repeated sampling with replacement, ensures we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
+
+```{r}
+training_data |> 
+  modelr::bootstrap(n = 1000) |> 
+  mutate(
+    models = map(strap, \(df) lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = df)),
+    results = map(models, broom::glance)) |> 
+  select(results) |>
+  unnest(results) |>
+  ggplot(aes(x = r.squared)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = 'blue', alpha = 0.5) +
+  geom_density(alpha = .2, fill = "red") +
+  labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
+  theme_minimal()
+```
+Despite all the varibles are significant, R² value is around 0.4, which is suggests potential nonlinear relationships or multicollinearity issues in our dataset.
 
 # Random Forest Model
 
@@ -150,60 +172,69 @@ The Random Forest Model is an ensemble learning method, play an important role i
 
 library(randomForest)
 
-rf_model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
+rf_model <- randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
 
 ```
 
 ## Model Performation
 
 ### Cross Validation for RMSE
-```{r}
+
+```{r, message = FALSE, warning = FALSE}
 
 # generate a cv dataframe 
-cv_df <-
+cv_df =
   crossv_mc(training_data, 100) %>% 
   mutate(
     train = map(train, as_tibble),
     test = map(test, as_tibble))
 
 # fit the model to the generated CV dataframe
-cv_df <-
-  cv_df %>% 
+cv_df =
+  cv_df |> 
   mutate(
     model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
     rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
 
 # plot the prediction error
-cv_df %>% 
-  select(rmse) %>% 
+cv_df |>
+  select(rmse) |> 
   pivot_longer(
     everything(),
     names_to = "model", 
     values_to = "rmse") %>% 
   ggplot(aes(x= model, y = rmse)) + 
-  geom_violin() +
+  geom_violin(fill = "blue", alpha = 0.5) +
   labs(
     title = "Prediction Errors For Our Model Under CV",
-    x = "Model RF",
+    x = "Model Random Forest",
     y = "Prediction Errors"
-  ) 
+  ) +
+  theme_minimal()
+
 ```
 
 
 From the plot, the RMSE is predominantly below 7, ranging from approximately 5.5 to 9. This level of RMSE is lower compared to that of the linear models we've previously evaluated, indicating that this model performs better. Lower RMSE values signify more accurate predictions, thus suggesting that this model is a more effective predictor for our dataset.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # R²
 rf_predictions <- predict(rf_model, training_data)
 r_squared <- cor(training_data$death_rate, rf_predictions)^2
-print(paste("R²:", r_squared))
+data.frame(
+  model = "Random Forest Model",
+  r.squard = r_squared
+) |>
+  knitr::kable()
 ```
 
 Calculated using the training data, the R² is `r r_squared`, which indicates a very high level of explained variance in the model. This suggests that our model is highly effective in capturing and representing the relationships within the training dataset.
 
-We perform bootstrapping to evaluate the model's stability and reliability. Bootstrapping, involving repeated sampling with replacement, ensures we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
+## Bootstrap
 
-```{r}
+We perform bootstrapping to evaluate the model's stability and reliability. 
+
+```{r, message = FALSE, warning = FALSE}
 library(randomForest)
 library(boot)
 
@@ -215,31 +246,48 @@ bootstrap_r2 <- function(data, indices) {
   return(r_squared)
 }
 
-results <- boot(data = training_data, statistic = bootstrap_r2, R = 10)
+results <- boot(data = training_data, statistic = bootstrap_r2, R = 1000)
 
-hist(results$t, breaks = 30, main = "Bootstrap Distribution of R²", xlab = "R² Values")
+# Create a data frame from the bootstrapped R² values
+results_df <- data.frame(R_squared = results$t)
+
+# Use ggplot2 to create a histogram with a density curve
+ggplot(results_df, aes(x = R_squared)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = 'blue', alpha = 0.5) +
+  geom_density(alpha = .2, fill = "red") +
+  labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
+  theme_minimal()
 
 ```
+
+The bootstrap results of the Random Forest model showing an R² value around 0.96 indicate a high level of accuracy and consistency. This suggests that the model is not only effective in explaining a large portion of the variance in the data but also demonstrates robust performance across different samples.
 
 ## Prediction
 
 ```{r, message = FALSE, warning = FALSE}
-# Assuming you have actual_values, predicted_values_lm, and predicted_values_rf
 
-# Create a scatter plot
-plot(testing_data$death_rate, predict(rf_model, testing_data), main = "Linear Regression Predictions", xlab = "Actual Values", ylab = "Predicted Values", col = "black")
+testing_data$predicted_death_rate <- predict(rf_model, testing_data)
+ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
+  geom_point(color = "black") +  # Add the actual data points
+  geom_smooth(method = "lm",se = FALSE, color = "blue") +  
+  labs(title = "Linear Regression Predictions",
+       x = "Actual Values",
+       y = "Predicted Values") +
+  theme_minimal()
 ```
 
-
+Using the 2021 data to predict with the Random Forest model, we observed that the data points largely align with the fitted line, especially within the middle range of actual values. There are some outliers, particularly at higher actual values, but this indicates that the model's predictive accuracy is reasonable within the normal range.
 
 ## Results and Discussion
 
 ```{r, message = FALSE, warning = FALSE}
 importance_values <- importance(rf_model)
+
 feature_importance <- data.frame(Feature = rownames(importance_values), 
                                  Importance = importance_values[,1]) %>%
   arrange(Importance) %>% 
   mutate(Feature = factor(Feature, levels = Feature)) 
+
 plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orientation = 'h') %>%
   layout(title = "Feature Importance from Random Forest Model",
          xaxis = list(title = "Importance"),
@@ -247,22 +295,7 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
 ```
 
 
-数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 - 待解释
-
-Summarize the performance of multiple linear regression and random forest models.
-
-Interpret model results and important features.
-Discuss limitations of the study and future work.
-
-
-
-
-
-
-
-
-
-
+In the model, `hc_exp` emerges as the most important feature, holding the highest significance. Following it, `edu_level` stands as the second most crucial factor. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. This hierarchy of features reflects their relative influence on the model's predictions.
 
 
 
