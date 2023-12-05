@@ -22,9 +22,11 @@ library(tidyverse)
 
 # Data Set Splitting
 
-We firstly divide the data set into training and testing sets.
+We used data from the years 2018 to 2020 as our training set, and data from 2021 as our test set.
 
-```{r}
+All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
+
+```{r, message = FALSE, warning = FALSE}
 data=readRDS("data_for_model.rds") 
 training_data <- filter(data, year >= 2018 & year <= 2020)|>select(-c(state,year))
 testing_data <- filter(data, year == 2021)|>select(-c(state,year))
@@ -34,28 +36,45 @@ testing_data <- filter(data, year == 2021)|>select(-c(state,year))
 
 ## Model Selection
 
-Explain why multiple linear regression was chosen.
-Describe the mathematical form of the model and assumptions.
+The primary reason for initially choosing linear models in statistical analysis is their simplicity and ease of understanding. These models, by representing relationships in a straightforward linear manner, make it easier for us to comprehend how different variables interact with each other.
+
+Moreover, linear models are known for their robustness, offering reliable performance even with various types of data and statistical errors. Importantly, they serve as an effective benchmark in more complex modeling processes. 
+
+By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps in ensuring that the complexity of a model is justified by a significant improvement over the simpler linear model.
 
 ## Full model-Linear regression 
 
-```{r}
-model <- lm(death_rate ~ employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
-summary(model)
+```{r, message = FALSE, warning = FALSE}
+model <- lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
+summary(model) |> 
+broom::tidy() |>
+  knitr::kable()
+
+broom::glance(model) |>
+  mutate(model = "Full Linear Regression") |>
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
+  knitr::kable()
 ```
 
 ## Backwards Elimination
 
-```{r}
-backward_result=step(model, direction='backward')
+We use Backward Elimination for constructing our linear regression model to enhance its efficiency and interpretability. This method systematically removes the least significant variables, ensuring that only the most impactful predictors are retained. Consequently, it helps in reducing model complexity and avoiding overfitting, resulting in a more robust and meaningful model.
+
+
+```{r, message = FALSE, warning = FALSE}
+backward_result = step(model, direction = 'backward', trace = 0)
+  broom::tidy(backward_result) |>
+      knitr::kable()
 ```
 
 
 ## Selected value
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
+
 selected_model <- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 summary(selected_model)
+
 ```
 
 ```{r}

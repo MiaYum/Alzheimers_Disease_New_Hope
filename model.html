@@ -13,7 +13,7 @@
 
 <title>Regression model</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,11 +36,11 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -391,7 +391,12 @@ div.tocify {
 
 <div id="data-set-splitting" class="section level1">
 <h1>Data Set Splitting</h1>
-<p>We firstly divide the data set into training and testing sets.</p>
+<p>We used data from the years 2018 to 2020 as our training set, and
+data from 2021 as our test set.</p>
+<p>All these datasets have been filtered to remove any missing values
+and do not contain any outliers, ensuring that the data quality is high.
+This preprocessing step lays a strong foundation for building accurate
+and reliable models.</p>
 <pre class="r"><code>data=readRDS(&quot;data_for_model.rds&quot;) 
 training_data &lt;- filter(data, year &gt;= 2018 &amp; year &lt;= 2020)|&gt;select(-c(state,year))
 testing_data &lt;- filter(data, year == 2021)|&gt;select(-c(state,year))</code></pre>
@@ -400,90 +405,190 @@ testing_data &lt;- filter(data, year == 2021)|&gt;select(-c(state,year))</code><
 <h1>Multiple Linear Regression</h1>
 <div id="model-selection" class="section level2">
 <h2>Model Selection</h2>
-<p>Explain why multiple linear regression was chosen. Describe the
-mathematical form of the model and assumptions.</p>
+<p>The primary reason for initially choosing linear models in
+statistical analysis is their simplicity and ease of understanding.
+These models, by representing relationships in a straightforward linear
+manner, make it easier for us to comprehend how different variables
+interact with each other.</p>
+<p>Moreover, linear models are known for their robustness, offering
+reliable performance even with various types of data and statistical
+errors. Importantly, they serve as an effective benchmark in more
+complex modeling processes.</p>
+<p>By starting with a linear model, we can establish a baseline
+performance level, against which the effectiveness of more sophisticated
+models can be measured. This stepwise approach helps in ensuring that
+the complexity of a model is justified by a significant improvement over
+the simpler linear model.</p>
 </div>
 <div id="full-model-linear-regression" class="section level2">
 <h2>Full model-Linear regression</h2>
-<pre class="r"><code>model &lt;- lm(death_rate ~ employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
-summary(model)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = death_rate ~ employment + hc_exp + income + edu_level + 
-##     cardio_rate + smoke_rate + elder_rate, data = training_data)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -17.2997  -4.0685   0.0523   4.8335  16.0139 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  6.830e+01  1.342e+01   5.088 1.21e-06 ***
-## employment   2.492e+01  1.653e+01   1.507 0.134092    
-## hc_exp      -1.283e-03  7.332e-04  -1.749 0.082569 .  
-## income      -2.319e-04  1.776e-04  -1.306 0.193762    
-## edu_level   -4.570e+01  2.148e+01  -2.127 0.035250 *  
-## cardio_rate  1.803e+02  5.142e+01   3.506 0.000621 ***
-## smoke_rate  -1.141e+01  3.146e+01  -0.363 0.717429    
-## elder_rate  -1.529e+02  3.548e+01  -4.311 3.16e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 7.11 on 132 degrees of freedom
-## Multiple R-squared:  0.399,  Adjusted R-squared:  0.3672 
-## F-statistic: 12.52 on 7 and 132 DF,  p-value: 3.068e-12</code></pre>
+<pre class="r"><code>model &lt;- lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
+summary(model) |&gt; 
+broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">68.3037142</td>
+<td align="right">13.4233735</td>
+<td align="right">5.0884164</td>
+<td align="right">0.0000012</td>
+</tr>
+<tr class="even">
+<td align="left">employment</td>
+<td align="right">24.9223618</td>
+<td align="right">16.5331015</td>
+<td align="right">1.5074221</td>
+<td align="right">0.1340921</td>
+</tr>
+<tr class="odd">
+<td align="left">hc_exp</td>
+<td align="right">-0.0012826</td>
+<td align="right">0.0007332</td>
+<td align="right">-1.7492692</td>
+<td align="right">0.0825687</td>
+</tr>
+<tr class="even">
+<td align="left">income</td>
+<td align="right">-0.0002319</td>
+<td align="right">0.0001776</td>
+<td align="right">-1.3061814</td>
+<td align="right">0.1937624</td>
+</tr>
+<tr class="odd">
+<td align="left">edu_level</td>
+<td align="right">-45.7011712</td>
+<td align="right">21.4826355</td>
+<td align="right">-2.1273540</td>
+<td align="right">0.0352503</td>
+</tr>
+<tr class="even">
+<td align="left">cardio_rate</td>
+<td align="right">180.2845378</td>
+<td align="right">51.4160324</td>
+<td align="right">3.5063876</td>
+<td align="right">0.0006212</td>
+</tr>
+<tr class="odd">
+<td align="left">smoke_rate</td>
+<td align="right">-11.4113239</td>
+<td align="right">31.4644509</td>
+<td align="right">-0.3626735</td>
+<td align="right">0.7174288</td>
+</tr>
+<tr class="even">
+<td align="left">elder_rate</td>
+<td align="right">-152.9455140</td>
+<td align="right">35.4789569</td>
+<td align="right">-4.3108797</td>
+<td align="right">0.0000316</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>broom::glance(model) |&gt;
+  mutate(model = &quot;Full Linear Regression&quot;) |&gt;
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="31%" />
+<col width="13%" />
+<col width="19%" />
+<col width="10%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">p.value</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Full Linear Regression</td>
+<td align="right">0.3990315</td>
+<td align="right">0.367162</td>
+<td align="right">0</td>
+<td align="right">956.2865</td>
+<td align="right">982.7613</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="backwards-elimination" class="section level2">
 <h2>Backwards Elimination</h2>
-<pre class="r"><code>backward_result=step(model, direction=&#39;backward&#39;)</code></pre>
-<pre><code>## Start:  AIC=556.98
-## death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + 
-##     smoke_rate + elder_rate
-## 
-##               Df Sum of Sq    RSS    AIC
-## - smoke_rate   1      6.65 6679.6 555.12
-## - income       1     86.25 6759.2 556.78
-## &lt;none&gt;                     6672.9 556.98
-## - employment   1    114.87 6787.8 557.37
-## - hc_exp       1    154.69 6827.6 558.19
-## - edu_level    1    228.78 6901.7 559.70
-## - cardio_rate  1    621.53 7294.4 567.45
-## - elder_rate   1    939.45 7612.4 573.42
-## 
-## Step:  AIC=555.12
-## death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + 
-##     elder_rate
-## 
-##               Df Sum of Sq    RSS    AIC
-## - income       1     81.35 6760.9 554.82
-## &lt;none&gt;                     6679.6 555.12
-## - employment   1    109.81 6789.4 555.41
-## - hc_exp       1    196.67 6876.2 557.19
-## - edu_level    1    325.09 7004.6 559.78
-## - cardio_rate  1    626.74 7306.3 565.68
-## - elder_rate   1    942.16 7621.7 571.60
-## 
-## Step:  AIC=554.82
-## death_rate ~ employment + hc_exp + edu_level + cardio_rate + 
-##     elder_rate
-## 
-##               Df Sum of Sq    RSS    AIC
-## - employment   1     63.16 6824.1 554.12
-## &lt;none&gt;                     6760.9 554.82
-## - hc_exp       1    367.38 7128.3 560.23
-## - cardio_rate  1    552.45 7313.4 563.81
-## - edu_level    1    760.83 7521.7 567.75
-## - elder_rate   1    875.80 7636.7 569.87
-## 
-## Step:  AIC=554.12
-## death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate
-## 
-##               Df Sum of Sq    RSS    AIC
-## &lt;none&gt;                     6824.1 554.12
-## - hc_exp       1    304.57 7128.7 558.23
-## - cardio_rate  1    494.15 7318.2 561.91
-## - edu_level    1    698.57 7522.6 565.76
-## - elder_rate   1   1058.62 7882.7 572.31</code></pre>
+<p>We use Backward Elimination for constructing our linear regression
+model to enhance its efficiency and interpretability. This method
+systematically removes the least significant variables, ensuring that
+only the most impactful predictors are retained. Consequently, it helps
+in reducing model complexity and avoiding overfitting, resulting in a
+more robust and meaningful model.</p>
+<pre class="r"><code>backward_result = step(model, direction = &#39;backward&#39;, trace = 0)
+  broom::tidy(backward_result) |&gt;
+      knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">74.2170216</td>
+<td align="right">7.6615066</td>
+<td align="right">9.687001</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">hc_exp</td>
+<td align="right">-0.0014021</td>
+<td align="right">0.0005712</td>
+<td align="right">-2.454649</td>
+<td align="right">0.0153748</td>
+</tr>
+<tr class="odd">
+<td align="left">edu_level</td>
+<td align="right">-47.8686408</td>
+<td align="right">12.8765984</td>
+<td align="right">-3.717491</td>
+<td align="right">0.0002939</td>
+</tr>
+<tr class="even">
+<td align="left">cardio_rate</td>
+<td align="right">146.1913832</td>
+<td align="right">46.7572070</td>
+<td align="right">3.126606</td>
+<td align="right">0.0021660</td>
+</tr>
+<tr class="odd">
+<td align="left">elder_rate</td>
+<td align="right">-155.1015760</td>
+<td align="right">33.8923959</td>
+<td align="right">-4.576294</td>
+<td align="right">0.0000106</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="selected-value" class="section level2">
 <h2>Selected value</h2>
@@ -606,7 +711,7 @@ cv_df %&gt;%
 rf_predictions &lt;- predict(rf_model, training_data)
 r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
 print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.931511255291287&quot;</code></pre>
+<pre><code>## [1] &quot;R²: 0.932890562951905&quot;</code></pre>
 <pre class="r"><code>library(randomForest)
 library(boot)</code></pre>
 <pre><code>## 
@@ -652,13 +757,13 @@ plot(testing_data$death_rate, predict(rf_model, testing_data), main = &quot;Line
 
 print(importance_values)</code></pre>
 <pre><code>##             IncNodePurity
-## employment       1349.098
-## hc_exp           1890.299
-## income           1175.240
-## edu_level        1863.522
-## cardio_rate      1174.053
-## smoke_rate       1593.814
-## elder_rate       1449.319</code></pre>
+## employment       1425.180
+## hc_exp           1939.800
+## income           1178.581
+## edu_level        1848.300
+## cardio_rate      1097.238
+## smoke_rate       1516.892
+## elder_rate       1474.258</code></pre>
 <pre class="r"><code>library(plotly)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;plotly&#39;</code></pre>
@@ -682,8 +787,8 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-9f83ddb664a7353a4f3f" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-9f83ddb664a7353a4f3f">{"x":{"visdat":{"c2276d99c989":["function () ","plotlyVisDat"]},"cur_data":"c2276d99c989","attrs":{"c2276d99c989":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","edu_level","hc_exp"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1174.0527414885662,1175.2399537114477,1349.0978067481199,1449.3186812918539,1593.8137801174746,1863.5218412901525,1890.29924501904],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","edu_level","hc_exp"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9f83ddb664a7353a4f3f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-9f83ddb664a7353a4f3f">{"x":{"visdat":{"5e6932993d9b":["function () ","plotlyVisDat"]},"cur_data":"5e6932993d9b","attrs":{"5e6932993d9b":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","edu_level","hc_exp"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1097.2378886440249,1178.5814929703588,1425.1796401840083,1474.2576271557482,1516.8920527011812,1848.299946697033,1939.7995787428899],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","edu_level","hc_exp"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 -
 待解释</p>
 <p>Summarize the performance of multiple linear regression and random
