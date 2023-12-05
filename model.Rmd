@@ -98,6 +98,28 @@ qqline(residuals, col = "red")
 
 The QQ plot suggests although the slightly deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
 
+```{r}
+pre =
+  training_data |>
+  add_predictions(selected_model) |>
+  add_residuals(selected_model)
+
+ggplot(pre, aes(x = pred, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  xlab("Fitted Values") +
+  ylab("Residuals") +
+  ggtitle("Residuals vs Fitted Plot") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+The residuals versus fitted plot shows a random distribution of residuals around the zero line without any discernible patterns, indicating good model fit and homoscedasticity. No obvious outliers are present, suggesting that the linear regression model assumptions are likely being met.
+
 ```{r, message = FALSE, warning = FALSE}
 broom::glance(selected_model) |>
   mutate(model = "Selected Linear Regression") |>
@@ -137,10 +159,15 @@ cv_df |>
     x = "Model Linear Regression",
     y = "Prediction Errors"
   ) +
-  theme_minimal()
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
 ```
 
-The RMSE range from 5.5 to 10, 
+The violin plot indicates a relatively concentrated distribution of RMSE values for the linear regression model during cross-validation, primarily within the 7 to 8 range, suggesting consistent prediction errors without extreme variability. The symmetric shape around the center suggests a median error likely within this range, implying a stable model performance.
 
 ### Bootstrap
 
@@ -211,7 +238,12 @@ cv_df |>
     x = "Model Random Forest",
     y = "Prediction Errors"
   ) +
-  theme_minimal()
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
 
 ```
 
@@ -257,7 +289,12 @@ ggplot(results_df, aes(x = R_squared)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = 'blue', alpha = 0.5) +
   geom_density(alpha = .2, fill = "red") +
   labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
-  theme_minimal()
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
 
 ```
 
@@ -274,7 +311,12 @@ ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
   labs(title = "Linear Regression Predictions",
        x = "Actual Values",
        y = "Predicted Values") +
-  theme_minimal()
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
 ```
 
 Using the 2021 data to predict with the Random Forest model, we observed that the data points largely align with the fitted line, especially within the middle range of actual values. There are some outliers, particularly at higher actual values, but this indicates that the model's predictive accuracy is reasonable within the normal range.
