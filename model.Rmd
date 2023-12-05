@@ -37,7 +37,7 @@ Describe the mathematical form of the model and assumptions.
 ## Full model-Linear regression 
 
 ```{r}
-model <- lm(death_rate ~ ., data = training_data)
+model <- lm(death_rate ~ employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
 summary(model)
 ```
 
@@ -51,8 +51,7 @@ backward_result=step(model, direction='backward')
 ## Selected value
 
 ```{r}
-selected_model <- lm(death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
-    obesity_rate, data = training_data)
+selected_model <- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 summary(selected_model)
 ```
 ## Model Performation
@@ -62,7 +61,12 @@ predictions <- predict(selected_model, testing_data)
 
 mse <- mean((testing_data$death_rate - predictions)^2)
 print(paste("MSE:", mse))
+
+# R²
+r_squared <- cor(testing_data$death_rate, predictions)^2
+print(paste("R²:", r_squared))
 ```
+
 
 
 
@@ -79,7 +83,7 @@ Explain the fundamental principles of the model.
 ```{r}
 library(randomForest)
 
-rf_model <- randomForest(death_rate ~ ., data = training_data)
+rf_model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
 ```
 
 ## Model Performation
@@ -103,6 +107,19 @@ rf_predictions <- predict(rf_model, testing_data)
 r_squared <- cor(testing_data$death_rate, rf_predictions)^2
 print(paste("R²:", r_squared))
 ```
+
+```{r}
+# Assuming you have actual_values, predicted_values_lm, and predicted_values_rf
+
+# Create a scatter plot
+plot(testing_data$death_rate, predictions, main = "Linear Regression Predictions", xlab = "Actual Values", ylab = "Predicted Values", col = "black")
+
+
+
+
+
+```
+
 
 
 ## Results and Discussion
@@ -128,8 +145,11 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
          yaxis = list(title = "Feature"))
 ```
 
-数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate最重要-待解释
+
+数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 - 待解释
+
 Summarize the performance of multiple linear regression and random forest models.
+
 Interpret model results and important features.
 Discuss limitations of the study and future work.
 
