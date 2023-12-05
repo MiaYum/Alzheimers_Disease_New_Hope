@@ -1,13 +1,37 @@
 ---
 title: "Introduction"
+
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
 ---
 
-# Motivation
+# Motivation and Background
 
-Alzheimer’s disease is an irreversible, progressive brain disorder affecting more than 6.5 million Americans that slowly destroys memory and thinking skills and, eventually, the ability to carry out simple tasks. However, existing drugs only treat the symptoms of Alzheimer’s disease. They do not treat the root cause of the disease and do not slow down how quickly it gets worse. To date, there hasn’t been a new drug approved for Alzheimer’s disease in 20 years. 
+In the quiet twilight of memory, where the essence of a person's life - their joys, sorrows, and triumphs - slowly dims, lies the profound tragedy of Alzheimer's disease. It's a realm where the familiar contours of identity are relentlessly eroded, not by the passage of time, but by an insidious ailment that disassembles the core of who they are. This disease, more than a mere medical condition, is a poignant metaphor for the most profound loss: the gradual, inexorable fading of one's self. Each forgotten name, each lost memory, is a star winking out in the galaxy of a person's life story, leaving behind a haunting void where once there was a rich tapestry of experiences and connections.
 
-This year is an important year for AD because a breakthrough occurs in AD treatment: two promising drugs, Leqembi and Donanmab, for treating Alzheimer's disease bring fresh hope. Leqembi, the first treatment that shows an unequivocal slowing of decline in Alzheimer’s disease, is fully approved by FDA in July 2023. Donanemab is widely expected to be granted full FDA approval within the next year. These two medications are both with impressive Phase III clinical trial results. They represent an important advancement in the ongoing fight to effectively treat Alzheimer’s disease and could be the beginning of the end of Alzheimer's disease. 
+Alzheimer's, an irreversible brain disorder, affects over 6.5 million Americans, progressively destroying memory and cognitive skills. Current treatments only address symptoms, not the disease's root cause or the progression. To date, there hasn’t been a new drug approved for Alzheimer’s disease in 20 years.
+
+2023 marks a pivotal year in Alzheimer's research with the breakthrough of two promising drugs, Leqembi (Lecanemab) and Donanemab. Leqembi, the first drug to show a definitive slowing of Alzheimer's decline, received FDA approval in July 2023. Donanemab, with its impressive Phase III clinical trial results, is on the cusp of FDA approval. These drugs symbolize a significant leap forward in treating Alzheimer's, potentially heralding the beginning of the end for this devastating disease.
+
+Our project is driven by the desire to deeply understand Alzheimer's disease in its entirety - its distribution, influencing factors, and the transformative potential of these new drugs. We aim to explore how these advancements might alter the course of Alzheimer's, offering not just medical insights but hope for millions affected by this condition.
 
 # Related work
 
 # Initial Question
+
+From the available data we are interested in answering the following questions:
+
+*   Regarding Alzheimer Facts and Influencing Factors
+
+    *   How does the distribution and prevalence of Alzheimer's disease vary across the United States, and what are the key factors influencing these patterns? This question guides our exploration and visualization of the geographical trends and variances in Alzheimer's cases, along with an in-depth analysis of the socioeconomic and healthcare-related factors that may impact these distributions.
+
+    *   How can our data science models predict future trends in Alzheimer's cases across different states, and how might these predictions inform targeted interventions and resource allocation to mitigate the impact of Alzheimer's disease?
+
+*   Regarding Pipeline and Clinical Trials of New Alzheimer Drugs
+
+    *   How can we provide a comprehensive and detailed overview of the current Alzheimer's drug trials in the U.S., encompassing their stages, approaches, and geographical distribution?
+
+    *   How do Lecanemab and Donanemab, the newly FDA-approved Alzheimer's drugs, compare in terms of their development, efficacy, and potential impact?
