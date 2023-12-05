@@ -160,6 +160,7 @@ training_data |>
   labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
   theme_minimal()
 ```
+
 Despite all the varibles are significant, R² value is around 0.4, which is suggests potential nonlinear relationships or multicollinearity issues in our dataset.
 
 # Random Forest Model
@@ -230,7 +231,7 @@ data.frame(
 
 Calculated using the training data, the R² is `r r_squared`, which indicates a very high level of explained variance in the model. This suggests that our model is highly effective in capturing and representing the relationships within the training dataset.
 
-## Bootstrap
+### Bootstrap
 
 We perform bootstrapping to evaluate the model's stability and reliability. 
 
