@@ -146,7 +146,7 @@ The RMSE range from 5.5 to 10,
 
 Bootstrapping, involving repeated sampling with replacement, ensures we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 training_data |> 
   modelr::bootstrap(n = 1000) |> 
   mutate(
