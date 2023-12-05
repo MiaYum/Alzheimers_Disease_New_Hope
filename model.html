@@ -405,192 +405,152 @@ mathematical form of the model and assumptions.</p>
 </div>
 <div id="full-model-linear-regression" class="section level2">
 <h2>Full model-Linear regression</h2>
-<pre class="r"><code>model &lt;- lm(death_rate ~ ., data = training_data)
+<pre class="r"><code>model &lt;- lm(death_rate ~ employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
 summary(model)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = death_rate ~ ., data = training_data)
+## lm(formula = death_rate ~ employment + hc_exp + income + edu_level + 
+##     cardio_rate + smoke_rate + elder_rate, data = training_data)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -15.2013  -4.1827   0.2683   3.9637  17.5189 
+## -17.2997  -4.0685   0.0523   4.8335  16.0139 
 ## 
 ## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    6.930e+01  3.028e+01   2.288  0.02377 *  
-## gdp           -1.696e-04  1.356e-04  -1.251  0.21327    
-## pce           -1.463e-06  4.834e-04  -0.003  0.99759    
-## rpp           -1.993e-01  2.082e-01  -0.957  0.34024    
-## employment     2.782e+01  2.114e+01   1.316  0.19054    
-## hc_exp        -1.941e-04  9.664e-04  -0.201  0.84117    
-## income        -2.277e-04  2.016e-04  -1.130  0.26078    
-## edu_level     -1.693e+01  2.283e+01  -0.741  0.45977    
-## diabetes_rate -1.251e+01  5.675e+01  -0.220  0.82590    
-## cardio_rate    1.309e+02  5.240e+01   2.498  0.01375 *  
-## smoke_rate    -7.626e+01  3.551e+01  -2.148  0.03365 *  
-## elder_rate    -1.665e+02  4.277e+01  -3.892  0.00016 ***
-## obesity_rate   8.232e-01  2.530e-01   3.254  0.00146 ** 
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  6.830e+01  1.342e+01   5.088 1.21e-06 ***
+## employment   2.492e+01  1.653e+01   1.507 0.134092    
+## hc_exp      -1.283e-03  7.332e-04  -1.749 0.082569 .  
+## income      -2.319e-04  1.776e-04  -1.306 0.193762    
+## edu_level   -4.570e+01  2.148e+01  -2.127 0.035250 *  
+## cardio_rate  1.803e+02  5.142e+01   3.506 0.000621 ***
+## smoke_rate  -1.141e+01  3.146e+01  -0.363 0.717429    
+## elder_rate  -1.529e+02  3.548e+01  -4.311 3.16e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6.628 on 127 degrees of freedom
-## Multiple R-squared:  0.4976, Adjusted R-squared:  0.4501 
-## F-statistic: 10.48 on 12 and 127 DF,  p-value: 3.729e-14</code></pre>
+## Residual standard error: 7.11 on 132 degrees of freedom
+## Multiple R-squared:  0.399,  Adjusted R-squared:  0.3672 
+## F-statistic: 12.52 on 7 and 132 DF,  p-value: 3.068e-12</code></pre>
 </div>
 <div id="backwards-elimination" class="section level2">
 <h2>Backwards Elimination</h2>
 <pre class="r"><code>backward_result=step(model, direction=&#39;backward&#39;)</code></pre>
-<pre><code>## Start:  AIC=541.91
-## death_rate ~ gdp + pce + rpp + employment + hc_exp + income + 
-##     edu_level + diabetes_rate + cardio_rate + smoke_rate + elder_rate + 
-##     obesity_rate
+<pre><code>## Start:  AIC=556.98
+## death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + 
+##     smoke_rate + elder_rate
 ## 
-##                 Df Sum of Sq    RSS    AIC
-## - pce            1      0.00 5578.7 539.91
-## - hc_exp         1      1.77 5580.5 539.96
-## - diabetes_rate  1      2.13 5580.9 539.96
-## - edu_level      1     24.15 5602.9 540.52
-## - rpp            1     40.25 5619.0 540.92
-## - income         1     56.05 5634.8 541.31
-## - gdp            1     68.73 5647.5 541.63
-## - employment     1     76.08 5654.8 541.81
-## &lt;none&gt;                       5578.7 541.91
-## - smoke_rate     1    202.59 5781.3 544.90
-## - cardio_rate    1    274.20 5852.9 546.63
-## - obesity_rate   1    465.04 6043.8 551.12
-## - elder_rate     1    665.49 6244.2 555.69
+##               Df Sum of Sq    RSS    AIC
+## - smoke_rate   1      6.65 6679.6 555.12
+## - income       1     86.25 6759.2 556.78
+## &lt;none&gt;                     6672.9 556.98
+## - employment   1    114.87 6787.8 557.37
+## - hc_exp       1    154.69 6827.6 558.19
+## - edu_level    1    228.78 6901.7 559.70
+## - cardio_rate  1    621.53 7294.4 567.45
+## - elder_rate   1    939.45 7612.4 573.42
 ## 
-## Step:  AIC=539.91
-## death_rate ~ gdp + rpp + employment + hc_exp + income + edu_level + 
-##     diabetes_rate + cardio_rate + smoke_rate + elder_rate + obesity_rate
+## Step:  AIC=555.12
+## death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + 
+##     elder_rate
 ## 
-##                 Df Sum of Sq    RSS    AIC
-## - diabetes_rate  1      2.18 5580.9 537.97
-## - hc_exp         1      2.34 5581.1 537.97
-## - edu_level      1     26.07 5604.8 538.56
-## - rpp            1     40.59 5619.3 538.93
-## - income         1     60.51 5639.3 539.42
-## - gdp            1     70.59 5649.3 539.67
-## - employment     1     79.27 5658.0 539.89
-## &lt;none&gt;                       5578.7 539.91
-## - smoke_rate     1    236.26 5815.0 543.72
-## - cardio_rate    1    282.37 5861.1 544.82
-## - obesity_rate   1    467.37 6046.1 549.17
-## - elder_rate     1    776.78 6355.5 556.16
+##               Df Sum of Sq    RSS    AIC
+## - income       1     81.35 6760.9 554.82
+## &lt;none&gt;                     6679.6 555.12
+## - employment   1    109.81 6789.4 555.41
+## - hc_exp       1    196.67 6876.2 557.19
+## - edu_level    1    325.09 7004.6 559.78
+## - cardio_rate  1    626.74 7306.3 565.68
+## - elder_rate   1    942.16 7621.7 571.60
 ## 
-## Step:  AIC=537.97
-## death_rate ~ gdp + rpp + employment + hc_exp + income + edu_level + 
-##     cardio_rate + smoke_rate + elder_rate + obesity_rate
+## Step:  AIC=554.82
+## death_rate ~ employment + hc_exp + edu_level + cardio_rate + 
+##     elder_rate
 ## 
-##                Df Sum of Sq    RSS    AIC
-## - hc_exp        1      1.29 5582.2 536.00
-## - edu_level     1     26.23 5607.1 536.62
-## - rpp           1     39.66 5620.6 536.96
-## - income        1     60.06 5641.0 537.46
-## - gdp           1     77.01 5657.9 537.88
-## &lt;none&gt;                      5580.9 537.97
-## - employment    1    124.45 5705.4 539.05
-## - smoke_rate    1    240.13 5821.1 541.86
-## - cardio_rate   1    294.70 5875.6 543.17
-## - obesity_rate  1    538.24 6119.2 548.86
-## - elder_rate    1    832.55 6413.5 555.43
+##               Df Sum of Sq    RSS    AIC
+## - employment   1     63.16 6824.1 554.12
+## &lt;none&gt;                     6760.9 554.82
+## - hc_exp       1    367.38 7128.3 560.23
+## - cardio_rate  1    552.45 7313.4 563.81
+## - edu_level    1    760.83 7521.7 567.75
+## - elder_rate   1    875.80 7636.7 569.87
 ## 
-## Step:  AIC=536
-## death_rate ~ gdp + rpp + employment + income + edu_level + cardio_rate + 
-##     smoke_rate + elder_rate + obesity_rate
+## Step:  AIC=554.12
+## death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate
 ## 
-##                Df Sum of Sq    RSS    AIC
-## - edu_level     1     25.41 5607.6 534.63
-## - rpp           1     46.88 5629.1 535.17
-## - income        1     67.73 5649.9 535.69
-## &lt;none&gt;                      5582.2 536.00
-## - gdp           1     86.20 5668.4 536.14
-## - employment    1    125.54 5707.8 537.11
-## - cardio_rate   1    301.29 5883.5 541.36
-## - smoke_rate    1    315.34 5897.6 541.69
-## - obesity_rate  1    537.65 6119.9 546.87
-## - elder_rate    1   1077.91 6660.1 558.72
-## 
-## Step:  AIC=534.63
-## death_rate ~ gdp + rpp + employment + income + cardio_rate + 
-##     smoke_rate + elder_rate + obesity_rate
-## 
-##                Df Sum of Sq    RSS    AIC
-## - gdp           1     73.66 5681.3 534.46
-## &lt;none&gt;                      5607.6 534.63
-## - rpp           1     85.45 5693.1 534.75
-## - employment    1    107.79 5715.4 535.30
-## - income        1    114.48 5722.1 535.46
-## - smoke_rate    1    303.53 5911.2 540.01
-## - cardio_rate   1    312.48 5920.1 540.23
-## - obesity_rate  1    539.02 6146.7 545.48
-## - elder_rate    1   1102.50 6710.1 557.76
-## 
-## Step:  AIC=534.46
-## death_rate ~ rpp + employment + income + cardio_rate + smoke_rate + 
-##     elder_rate + obesity_rate
-## 
-##                Df Sum of Sq    RSS    AIC
-## - employment    1     58.64 5739.9 533.90
-## &lt;none&gt;                      5681.3 534.46
-## - cardio_rate   1    321.96 6003.3 540.18
-## - smoke_rate    1    352.97 6034.3 540.90
-## - income        1    364.78 6046.1 541.17
-## - rpp           1    391.09 6072.4 541.78
-## - obesity_rate  1    468.95 6150.2 543.56
-## - elder_rate    1   1082.75 6764.0 556.88
-## 
-## Step:  AIC=533.9
-## death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
-##     obesity_rate
-## 
-##                Df Sum of Sq    RSS    AIC
-## &lt;none&gt;                      5739.9 533.90
-## - cardio_rate   1    263.70 6003.6 538.19
-## - smoke_rate    1    323.69 6063.6 539.58
-## - income        1    325.45 6065.4 539.62
-## - obesity_rate  1    415.31 6155.2 541.68
-## - rpp           1    487.18 6227.1 543.30
-## - elder_rate    1   1141.95 6881.9 557.30</code></pre>
+##               Df Sum of Sq    RSS    AIC
+## &lt;none&gt;                     6824.1 554.12
+## - hc_exp       1    304.57 7128.7 558.23
+## - cardio_rate  1    494.15 7318.2 561.91
+## - edu_level    1    698.57 7522.6 565.76
+## - elder_rate   1   1058.62 7882.7 572.31</code></pre>
 </div>
 <div id="selected-value" class="section level2">
 <h2>Selected value</h2>
-<pre class="r"><code>selected_model &lt;- lm(death_rate ~ rpp + income + cardio_rate + smoke_rate + elder_rate + 
-    obesity_rate, data = training_data)
+<pre class="r"><code>selected_model &lt;- lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 summary(selected_model)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = death_rate ~ rpp + income + cardio_rate + smoke_rate + 
-##     elder_rate + obesity_rate, data = training_data)
+## lm(formula = death_rate ~ hc_exp + edu_level + cardio_rate + 
+##     elder_rate, data = training_data)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -15.4142  -3.7690   0.3034   4.0269  16.2700 
+## -16.9062  -4.7205   0.8188   5.0059  16.3380 
 ## 
 ## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   1.018e+02  1.908e+01   5.336 3.98e-07 ***
-## rpp          -4.556e-01  1.356e-01  -3.360  0.00102 ** 
-## income       -3.188e-04  1.161e-04  -2.746  0.00687 ** 
-## cardio_rate   1.100e+02  4.450e+01   2.472  0.01470 *  
-## smoke_rate   -6.975e+01  2.547e+01  -2.739  0.00702 ** 
-## elder_rate   -1.560e+02  3.033e+01  -5.144 9.42e-07 ***
-## obesity_rate  6.473e-01  2.087e-01   3.102  0.00235 ** 
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.422e+01  7.662e+00   9.687  &lt; 2e-16 ***
+## hc_exp      -1.402e-03  5.712e-04  -2.455 0.015375 *  
+## edu_level   -4.787e+01  1.288e+01  -3.717 0.000294 ***
+## cardio_rate  1.462e+02  4.676e+01   3.127 0.002166 ** 
+## elder_rate  -1.551e+02  3.389e+01  -4.576 1.06e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 6.569 on 133 degrees of freedom
-## Multiple R-squared:  0.4831, Adjusted R-squared:  0.4597 
-## F-statistic: 20.71 on 6 and 133 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 7.11 on 135 degrees of freedom
+## Multiple R-squared:  0.3854, Adjusted R-squared:  0.3672 
+## F-statistic: 21.17 on 4 and 135 DF,  p-value: 1.448e-13</code></pre>
+<pre class="r"><code>residuals &lt;- resid(selected_model)
+
+qqnorm(residuals)
+qqline(residuals, col = &quot;red&quot;)</code></pre>
+<p><img src="model_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="model-performation" class="section level2">
 <h2>Model Performation</h2>
-<pre class="r"><code>predictions &lt;- predict(selected_model, testing_data)
-
-mse &lt;- mean((testing_data$death_rate - predictions)^2)
-print(paste(&quot;MSE:&quot;, mse))</code></pre>
-<pre><code>## [1] &quot;MSE: 55.7575545402657&quot;</code></pre>
-<p>表现太差了-解释一下</p>
+<div id="cross-validation-for-rmse" class="section level3">
+<h3>Cross Validation for RMSE</h3>
+<pre class="r"><code>library(modelr)
+# generate a cv dataframe 
+cv_df &lt;-
+  crossv_mc(training_data, 100) %&gt;% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+# fit the model to the generated CV dataframe
+cv_df &lt;-
+  cv_df %&gt;% 
+  mutate(
+    model  = map(train, ~lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+# plot the prediction error
+cv_df %&gt;% 
+  select(rmse) %&gt;% 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;rmse&quot;) %&gt;% 
+  ggplot(aes(x= model, y = rmse)) + 
+  geom_violin() +
+  labs(
+    title = &quot;Prediction Errors For Our Model Under CV&quot;,
+    x = &quot;Model lm&quot;,
+    y = &quot;Prediction Errors&quot;
+  ) </code></pre>
+<p><img src="model_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>加入bootstrap</p>
+</div>
 </div>
 </div>
 <div id="random-forest-model" class="section level1">
@@ -610,27 +570,80 @@ fundamental principles of the model.</p>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     combine</code></pre>
-<pre class="r"><code>rf_model &lt;- randomForest(death_rate ~ ., data = training_data)</code></pre>
+<pre class="r"><code>rf_model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)</code></pre>
 </div>
 <div id="model-performation-1" class="section level2">
 <h2>Model Performation</h2>
-<pre class="r"><code>rf_predictions &lt;- predict(rf_model, testing_data)
-
-rf_mse &lt;- mean((testing_data$death_rate - rf_predictions)^2)
-print(paste(&quot;Random Forest MSE:&quot;, rf_mse))</code></pre>
-<pre><code>## [1] &quot;Random Forest MSE: 39.9931288637273&quot;</code></pre>
-<pre class="r"><code>rf_predictions &lt;- predict(rf_model, training_data)
-
-# R²
+<pre class="r"><code>library(modelr)
+# generate a cv dataframe 
+cv_df &lt;-
+  crossv_mc(training_data, 100) %&gt;% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+# fit the model to the generated CV dataframe
+cv_df &lt;-
+  cv_df %&gt;% 
+  mutate(
+    model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+# plot the prediction error
+cv_df %&gt;% 
+  select(rmse) %&gt;% 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;rmse&quot;) %&gt;% 
+  ggplot(aes(x= model, y = rmse)) + 
+  geom_violin() +
+  labs(
+    title = &quot;Prediction Errors For Our Model Under CV&quot;,
+    x = &quot;Model rf&quot;,
+    y = &quot;Prediction Errors&quot;
+  ) </code></pre>
+<p><img src="model_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code># R²
+rf_predictions &lt;- predict(rf_model, training_data)
 r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
 print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.955273043733725&quot;</code></pre>
-<pre class="r"><code>rf_predictions &lt;- predict(rf_model, testing_data)
+<pre><code>## [1] &quot;R²: 0.931511255291287&quot;</code></pre>
+<pre class="r"><code>library(randomForest)
+library(boot)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;boot&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lattice&#39;:
+## 
+##     melanoma</code></pre>
+<pre class="r"><code># 假设 your_data 是您的数据集
+# 假设响应变量是 target
 
-# R²
-r_squared &lt;- cor(testing_data$death_rate, rf_predictions)^2
-print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.461029277024342&quot;</code></pre>
+# 自举函数
+bootstrap_r2 &lt;- function(data, indices) {
+  boot_data &lt;- data[indices, ]
+  # 训练随机森林模型
+  model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
+  # 预测
+  predictions &lt;- predict(model, boot_data)
+  # 计算R²值
+  r_squared &lt;- cor(boot_data$death_rate, predictions)^2
+  return(r_squared)
+}
+
+# 执行自举
+set.seed(123)  # 为了可重复性
+results &lt;- boot(data = training_data, statistic = bootstrap_r2, R = 10)
+
+# 绘制R²分布
+hist(results$t, breaks = 30, main = &quot;Bootstrap Distribution of R²&quot;, xlab = &quot;R² Values&quot;)</code></pre>
+<p><img src="model_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="prediction" class="section level2">
+<h2>Prediction</h2>
+<pre class="r"><code># Assuming you have actual_values, predicted_values_lm, and predicted_values_rf
+
+# Create a scatter plot
+plot(testing_data$death_rate, predict(rf_model, testing_data), main = &quot;Linear Regression Predictions&quot;, xlab = &quot;Actual Values&quot;, ylab = &quot;Predicted Values&quot;, col = &quot;black&quot;)</code></pre>
+<p><img src="model_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="results-and-discussion" class="section level2">
 <h2>Results and Discussion</h2>
@@ -638,19 +651,14 @@ print(paste(&quot;R²:&quot;, r_squared))</code></pre>
 
 
 print(importance_values)</code></pre>
-<pre><code>##               IncNodePurity
-## gdp                960.2565
-## pce                903.1508
-## rpp               1381.4524
-## employment         573.1952
-## hc_exp             871.8524
-## income             426.2694
-## edu_level          877.4729
-## diabetes_rate     1442.8842
-## cardio_rate        318.1239
-## smoke_rate         589.6429
-## elder_rate         813.3348
-## obesity_rate      1581.7351</code></pre>
+<pre><code>##             IncNodePurity
+## employment       1349.098
+## hc_exp           1890.299
+## income           1175.240
+## edu_level        1863.522
+## cardio_rate      1174.053
+## smoke_rate       1593.814
+## elder_rate       1449.319</code></pre>
 <pre class="r"><code>library(plotly)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;plotly&#39;</code></pre>
@@ -674,12 +682,14 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-977be9b1dbc13266ca24" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-977be9b1dbc13266ca24">{"x":{"visdat":{"b62a4394a653":["function () ","plotlyVisDat"]},"cur_data":"b62a4394a653","attrs":{"b62a4394a653":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","smoke_rate","elder_rate","hc_exp","edu_level","pce","gdp","rpp","diabetes_rate","obesity_rate"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[318.12387234361881,426.2693955212834,573.19519686278898,589.6428710415131,813.3348429227209,871.8523663814093,877.47290709505273,903.15076133292132,960.25647519519885,1381.4524390737815,1442.8841829548321,1581.7351442748741],"y":["cardio_rate","income","employment","smoke_rate","elder_rate","hc_exp","edu_level","pce","gdp","rpp","diabetes_rate","obesity_rate"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate最重要-待解释
-Summarize the performance of multiple linear regression and random
-forest models. Interpret model results and important features. Discuss
-limitations of the study and future work.</p>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-9f83ddb664a7353a4f3f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-9f83ddb664a7353a4f3f">{"x":{"visdat":{"c2276d99c989":["function () ","plotlyVisDat"]},"cur_data":"c2276d99c989","attrs":{"c2276d99c989":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","edu_level","hc_exp"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1174.0527414885662,1175.2399537114477,1349.0978067481199,1449.3186812918539,1593.8137801174746,1863.5218412901525,1890.29924501904],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","edu_level","hc_exp"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 -
+待解释</p>
+<p>Summarize the performance of multiple linear regression and random
+forest models.</p>
+<p>Interpret model results and important features. Discuss limitations
+of the study and future work.</p>
 </div>
 </div>
 
