@@ -600,6 +600,7 @@ print(paste(&quot;MSE:&quot;, mse))</code></pre>
 <p>Justify the choice of the random forest model. Explain the
 fundamental principles of the model.</p>
 <pre class="r"><code>library(randomForest)</code></pre>
+<pre><code>## Warning: package &#39;randomForest&#39; was built under R version 4.3.2</code></pre>
 <pre><code>## randomForest 4.7-1.1</code></pre>
 <pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
 <pre><code>## 
@@ -618,19 +619,19 @@ fundamental principles of the model.</p>
 
 rf_mse &lt;- mean((testing_data$death_rate - rf_predictions)^2)
 print(paste(&quot;Random Forest MSE:&quot;, rf_mse))</code></pre>
-<pre><code>## [1] &quot;Random Forest MSE: 39.9931288637273&quot;</code></pre>
+<pre><code>## [1] &quot;Random Forest MSE: 37.10627301813&quot;</code></pre>
 <pre class="r"><code>rf_predictions &lt;- predict(rf_model, training_data)
 
 # R²
 r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
 print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.955273043733725&quot;</code></pre>
+<pre><code>## [1] &quot;R²: 0.957739963840764&quot;</code></pre>
 <pre class="r"><code>rf_predictions &lt;- predict(rf_model, testing_data)
 
 # R²
 r_squared &lt;- cor(testing_data$death_rate, rf_predictions)^2
 print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.461029277024342&quot;</code></pre>
+<pre><code>## [1] &quot;R²: 0.505014737212605&quot;</code></pre>
 </div>
 <div id="results-and-discussion" class="section level2">
 <h2>Results and Discussion</h2>
@@ -639,18 +640,18 @@ print(paste(&quot;R²:&quot;, r_squared))</code></pre>
 
 print(importance_values)</code></pre>
 <pre><code>##               IncNodePurity
-## gdp                960.2565
-## pce                903.1508
-## rpp               1381.4524
-## employment         573.1952
-## hc_exp             871.8524
-## income             426.2694
-## edu_level          877.4729
-## diabetes_rate     1442.8842
-## cardio_rate        318.1239
-## smoke_rate         589.6429
-## elder_rate         813.3348
-## obesity_rate      1581.7351</code></pre>
+## gdp                960.9141
+## pce                832.9262
+## rpp               1341.6328
+## employment         597.4505
+## hc_exp             875.4318
+## income             454.3537
+## edu_level          934.4636
+## diabetes_rate     1543.6994
+## cardio_rate        336.2557
+## smoke_rate         594.7083
+## elder_rate         839.1949
+## obesity_rate      1423.1711</code></pre>
 <pre class="r"><code>library(plotly)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;plotly&#39;</code></pre>
@@ -674,8 +675,8 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-977be9b1dbc13266ca24" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-977be9b1dbc13266ca24">{"x":{"visdat":{"b62a4394a653":["function () ","plotlyVisDat"]},"cur_data":"b62a4394a653","attrs":{"b62a4394a653":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","smoke_rate","elder_rate","hc_exp","edu_level","pce","gdp","rpp","diabetes_rate","obesity_rate"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[318.12387234361881,426.2693955212834,573.19519686278898,589.6428710415131,813.3348429227209,871.8523663814093,877.47290709505273,903.15076133292132,960.25647519519885,1381.4524390737815,1442.8841829548321,1581.7351442748741],"y":["cardio_rate","income","employment","smoke_rate","elder_rate","hc_exp","edu_level","pce","gdp","rpp","diabetes_rate","obesity_rate"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-e621965de3b5fb9da916" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-e621965de3b5fb9da916">{"x":{"visdat":{"689444f864f4":["function () ","plotlyVisDat"]},"cur_data":"689444f864f4","attrs":{"689444f864f4":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","smoke_rate","employment","pce","elder_rate","hc_exp","edu_level","gdp","rpp","obesity_rate","diabetes_rate"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[336.2556776577627,454.35369106916016,594.70832082878258,597.450505643425,832.92616894900664,839.19486914553897,875.43176078927797,934.46357159609704,960.91407380720375,1341.6328042120717,1423.1711122735392,1543.6993610757493],"y":["cardio_rate","income","smoke_rate","employment","pce","elder_rate","hc_exp","edu_level","gdp","rpp","obesity_rate","diabetes_rate"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate最重要-待解释
 Summarize the performance of multiple linear regression and random
 forest models. Interpret model results and important features. Discuss

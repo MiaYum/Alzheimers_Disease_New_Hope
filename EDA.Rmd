@@ -30,36 +30,52 @@ The prevalence and mortality rates of Alzheimer's Disease, along with other pert
 ```{r, message = FALSE, warning = FALSE}
 data = read_csv("./Data/geo_data.csv")
 # 1. Descriptive statistics table for all variables
-summary(data)
+skimr::skim(data)
 ```
 
-The dataset contains r nrow(data) rows and r ncol(data) columns. It includes variables such as state, year, death rate, GDP, personal consumption expenditure (PCE), regional price parity (RPP), employment, healthcare expenditure (HC_EXP), income, education level (EDU_LEVEL), diabetes rate, cardiovascular disease rate, smoking rate, elderly population ratio (ELDER_RATE), and obesity rate, among others.
+The dataset contains `r nrow(data)` rows and `r ncol(data)` columns, covering a wide array of variables categorized into several key areas:
+
+Demographic and Economic Indicators: This includes data on the state, year, death rate, Gross Domestic Product (`gdp`), Personal Consumption Expenditure (`pce`), Regional Price Parity (`rpp`), employment level (`employment_rate`), healthcare expenditure (`hc_exp`), and income.
+
+Public Health Metrics: The data provides detailed insights into various health-related statistics, such as the diabetes rate, cardiovascular disease rate, smoking rate, the proportion of the elderly population, and the obesity rate.
 
 ```{r, message = FALSE, warning = FALSE}
 missing_data <- data |>
   summarise_all(funs(sum(is.na(.)))) |>
-  gather(key = "Variable", value = "MissingValues")
+  gather(key = "Variable", value = "MissingValues") |>
+  mutate(Variable = fct_reorder(Variable, -MissingValues))
 
-plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = "bar") |>
+plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = "bar", marker = list(color = "rgba(55, 128, 191, 0.7)", line = list(color = "rgba(55, 128, 191, 0.7)", width = 2))) |>
   layout(title = "Missing Data Visualization",
          xaxis = list(title = "Variables"),
          yaxis = list(title = "Number of Missing Values"))
 ```
 
 # Part II Missing Value Analysis
+```{r}
+data = data |>
+  drop_na(death_rate)
+```
 
-From the above, we can see that there are 4 missing values in death_rate. Diabetes_rate and cardio_rate each have 14 missing values. Smoke_rate has 6 missing values. Elder_rate and obesity_rate each have 1 missing value. The reason for missing values in death_rate is that there is no available data for the District of Columbia. Since death_rate is the predictor variable of interest, we choose to directly delete all data for this state. In addition, the missing values for diabetes_rate, cardio_rate, and smoke_rate are due to the absence of data for these diseases in the states of Idaho and Illinois. We also choose to remove these states' data. The remaining missing values are relatively few, and we choose to directly delete rows containing missing values. In summary, because there are not many missing values and they are not easily imputed, we simply delete rows containing missing values.
+From the above, we can see that there are 4 missing values in death_rate. Diabetes_rate, cardio_rate and smoke_rate each have 2 missing values. Elder_rate and obesity_rate each have 1 missing value. The reason for missing values in death_rate is that there is no available data for the District of Columbia. Since death_rate is the predictor variable of interest, we choose to directly delete all data for this state. The remaining missing values are relatively few, and we choose to directly delete rows containing missing values. In summary, because there are not many missing values and they are not easily imputed, we simply delete rows containing missing values.
 
 
 ```{r, message = FALSE, warning = FALSE}
 # Explore distribution of results and consider potential transformations
 # Create a histogram
-plot_ly(data, x = ~death_rate, type = "histogram", nbinsx = 30) %>%
+plot_ly(data, x = ~death_rate, type = "histogram", nbinsx = 30, marker = list(color = "rgba(55, 128, 191, 0.7)", line = list(color = "rgba(55, 128, 191, 0.7)", width = 2))) %>%
   layout(title = "Histogram of Death Rate")
 ```
 
 Since our goal is to create a model to predict the death rate, we separately examine the distribution of predictor variables. As shown in the above chart, the distribution of death rate exhibits a slight right skew, with most values concentrated in lower death rate ranges. However, this mild skewness does not necessarily imply a departure from the normality assumption, so we do not perform any transformations on it for now.
 
+！！！【memo,下次meeting】Distribution above is symmetric (or slightly left skewed), not right skewed
+```{r}
+test = data |>
+  drop_na(death_rate)
+
+mean(test$death_rate) - median(test$death_rate)
+```
 
 # Part III Multi-colinearity Check
 
@@ -90,11 +106,105 @@ correlation_matrix <- cor(data_selected_desease)
 corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
 ```
 
-Based on the heatmap, it can be observed that the variables diabetes_rate, cardio_rate, and obesity_rate are highly correlated. Among these variables, we ultimately chose to delete obesity_rate and diabetes_rate while retaining cardio_rate. Some studies have indicated a certain association between heart disease and Alzheimer's disease. Heart disease may affect blood supply to the brain, which is related to cognitive decline. Therefore, retaining the cardio_rate as a predictive variable may help capture this potential association.
+Based on the heatmap, it can be observed that the variables diabetes_rate and obesity_rate are highly correlated. Among these variables, we ultimately chose to delete diabetes_rate while retaining cardio_rate. Some studies have indicated a certain association between heart disease and Alzheimer's disease. Heart disease may affect blood supply to the brain, which is related to cognitive decline. Therefore, retaining the cardio_rate as a predictive variable may help capture this potential association.
 
 
 # Part IV Correlation and Scatter Plot:
 
+```{r, message = FALSE, warning = FALSE}
+data |>
+  select(year, death_rate, smoke_rate, cardio_rate, obesity_rate, elder_rate) |>
+  pivot_longer(
+    smoke_rate:elder_rate,
+    names_to = "category",
+    values_to = "Rate") |>
+  mutate(year = as.character(year),
+         category = case_match(
+           category,
+           "smoke_rate" ~ "Smoke Rate",
+           "cardio_rate" ~ "Cardiovascular Disease Rate",
+           "obesity_rate" ~ "Obesity Rate",
+           "elder_rate" ~ "Elder Rate"
+         )) |>
+  ggplot(aes(x = Rate, y = death_rate, color = year)) +
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.5, color = 'red')  +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  ) +
+  labs(
+    title = "Scatter Plot for Death Rate and health related factors Across Years",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  facet_wrap(~category, scales = "free", ncol = 2)
+```
+
+There is a positive correlation between the proportion of smokers and the prevalence of obesity and cardiovascular disease, and the overall mortality rate. Conversely, the percentage of the population aged 65 and older shows a negative correlation with the mortality rate. This suggests that a higher percentage of older adults may reflect a more advanced state of medical care in that region, potentially leading to a lower rate of deaths attributed to Alzheimer's disease
+
+```{r, message = FALSE, warning = FALSE}
+data |>
+  select(year, death_rate, income, employment, hc_exp, rpp) |>
+  pivot_longer(
+    income:rpp,
+    names_to = "category",
+    values_to = "Value") |>
+  mutate(year = as.character(year),
+         category = case_match(
+           category,
+           "income" ~ "Income",
+           "employment" ~ "Empoyment Rate",
+           "hc_exp" ~ "Healthcare Expenditure",
+           "rpp" ~ "Regional price parities"
+         )) |>
+  ggplot(aes(x = Value, y = death_rate, color = year)) +
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.5, color = 'red')  +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  ) +
+  labs(
+    title = "Scatter Plot for Death Rate and health related factors Across Years",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  facet_wrap(~category, scales = "free", ncol = 2)
+```
+
+There are negative association between Alzheimer's disease mortality rates and factors such as income, employment, price index, and healthcare expenditure. Higher income and employment levels, often associated with better access to healthcare, correspond with lower Alzheimer's death rates. Similarly, regions with a higher price index and greater healthcare spending show fewer deaths from this disease.
+
+However, the data points show a lack of tight clustering, which suggests that a linear model might not fully capture the nuances of these relationships. This pattern hints at the potential for a more complex, non-linear relationship between these socio-economic factors and Alzheimer's mortality.
+
+```{r, message = FALSE, warning = FALSE}
+data |>
+  ggplot(aes(x = edu_level, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Education Level Across Years",
+    x = "Educational Level",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+The graph illustrates a trend where higher levels of educational attainment are associated with lower mortality rates. This pattern suggests that better education may contribute to improved health outcomes, potentially due to increased health awareness, better access to healthcare resources, or healthier lifestyle choices typically associated with higher education levels.
+
+【However, it's important to consider that Alzheimer's disease predominantly affects older individuals, and there may be a temporal discrepancy between the current education levels and those of the older population primarily impacted by this disease. This time-related difference suggests that while educational attainment appears to be a protective factor, the actual impact on Alzheimer's mortality might be influenced by historical changes in education over the decades. Therefore, when interpreting these results, we should be cautious about directly correlating current educational standards with Alzheimer's outcomes in an aging population.】
+
+# Appendix
 ```{r, message = FALSE, warning = FALSE}
 # edu_level
 
@@ -108,7 +218,7 @@ data |>
     y = "Death Rate",
     color = "Year"
   ) +
-  scale_x_continuous(limits = c(0.2, 0.4)) +
+  scale_x_continuous(limits = c(0.2, 0.5)) +
   theme_minimal() + 
   theme(
     plot.title = element_text(hjust = 0.5),
@@ -121,7 +231,7 @@ As shown in the graph, a higher level of education correlates with a lower death
 
 ```{r, message = FALSE, warning = FALSE}
 # income
- data |>
+data |>
   ggplot(aes(x = income, y = death_rate, color = as.factor(year))) + 
   geom_point(alpha = 0.5, size = 0.8) +
   geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
@@ -142,7 +252,7 @@ As shown in the graph, a higher level of education correlates with a lower death
 
 ```{r, message = FALSE, warning = FALSE}
 #employment
- data |>
+data |>
   ggplot(aes(x = employment, y = death_rate, color = as.factor(year))) + 
   geom_point(alpha = 0.5, size = 0.8) +
   geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
@@ -163,7 +273,7 @@ As shown in the graph, a higher level of education correlates with a lower death
 ```{r, message = FALSE, warning = FALSE}
 # hc_exp
 
- data |>
+data |>
   ggplot(aes(x = hc_exp, y = death_rate, color = as.factor(year))) + 
   geom_point(alpha = 0.5, size = 0.8) +
   geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
@@ -250,6 +360,14 @@ The proportion of the population over 65 years old is negatively correlated with
 
 The proportion of smokers and the rate of heart disease are positively correlated with the death rate.
 
+```{r}
+test = data |>
+  select(-state, -year) |>
+  drop_na(cardio_rate, diabetes_rate, smoke_rate, obesity_rate)
 
+for (i in variable.names(test)){
+  print(i)
+  print(cor(test$death_rate, pull(test, i)))
+}
 
-
+```

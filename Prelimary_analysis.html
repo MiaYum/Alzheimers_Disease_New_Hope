@@ -9,9 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Kairui Wang" />
 
-<meta name="date" content="2023-12-03" />
 
 <title>Prelimary Analysis</title>
 
@@ -31,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -220,7 +222,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -230,6 +298,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -289,11 +367,17 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Prelimary Analysis</h1>
-<h4 class="author">Kairui Wang</h4>
-<h4 class="date">2023-12-03</h4>
 
 </div>
 
@@ -309,15 +393,14 @@ $(document).ready(function () {
     state %in% c(&quot;Alabama&quot;, &quot;Arkansas&quot;, &quot;Delaware&quot;, &quot;District of Columbia&quot;, &quot;Florida&quot;, &quot;Georgia&quot;, &quot;Kentucky&quot;, &quot;Louisiana&quot;, &quot;Maryland&quot;, &quot;Mississippi&quot;, &quot;North Carolina&quot;, &quot;Oklahoma&quot;, &quot;South Carolina&quot;, &quot;Tennessee&quot;, &quot;Texas&quot;, &quot;Virginia&quot;, &quot;West Virginia&quot;) ~ &quot;South&quot;,
     state %in% c(&quot;Alaska&quot;, &quot;Arizona&quot;, &quot;California&quot;, &quot;Colorado&quot;, &quot;Hawaii&quot;, &quot;Idaho&quot;, &quot;Montana&quot;, &quot;Nevada&quot;, &quot;New Mexico&quot;, &quot;Oregon&quot;, &quot;Utah&quot;, &quot;Washington&quot;, &quot;Wyoming&quot;) ~ &quot;West&quot;
   ))</code></pre>
-<pre><code>## New names:
-## Rows: 204 Columns: 16
-## ── Column specification
-## ──────────────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
-## (1): state dbl (15): ...1, year, death_rate, gdp, pce, rpp, employment, hc_exp,
-## income,...
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-## Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## • `` -&gt; `...1`</code></pre>
+<pre><code>## Rows: 204 Columns: 15
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): state
+## dbl (14): year, death_rate, gdp, pce, rpp, employment, hc_exp, income, edu_l...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>data %&gt;%
   janitor::clean_names() %&gt;%
   group_by(region) %&gt;%
@@ -364,14 +447,7 @@ America has the lowest.</p></li>
   geom_boxplot() +
   labs(title = &quot;Boxplot of Death Rate by Regions&quot;, x = &quot;Region&quot;, y = &quot;Death Rate&quot;) +
   theme(axis.text.x = element_text(hjust = 1, angle = 10, size = 8))</code></pre>
-<pre><code>## Warning: `fct_reorder()` removing 4 missing values.
-## ℹ Use `.na_rm = TRUE` to silence this message.
-## ℹ Use `.na_rm = FALSE` to preserve NAs.
-## `fct_reorder()` removing 4 missing values.
-## ℹ Use `.na_rm = TRUE` to silence this message.
-## ℹ Use `.na_rm = FALSE` to preserve NAs.</code></pre>
-<pre><code>## Warning: Removed 4 rows containing non-finite values (`stat_boxplot()`).</code></pre>
-<p><img src="Prelimary_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="Prelimary_analysis_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
 <ul>
 <li><p>The boxplot shows the distribution of death rate in each
 region.</p></li>
@@ -540,11 +616,420 @@ class="section level3">
 </tbody>
 </table>
 </div>
+<div
+id="average-alzheimers-disease-death-rate-by-region-year-combination"
+class="section level3">
+<h3>4 Average Alzheimer’s Disease death rate by (region, year)
+Combination</h3>
+<pre class="r"><code>data |&gt;  
+  group_by(region,year) |&gt; 
+  summarise(avg_by_year_region = mean(death_rate,na.rm = T)) |&gt; 
+  pivot_wider(
+    names_from = region,
+    values_from = avg_by_year_region
+  ) |&gt;  
+  knitr::kable(digits = 3)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">Midwest</th>
+<th align="right">Northeast</th>
+<th align="right">South</th>
+<th align="right">West</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="right">31.583</td>
+<td align="right">24.111</td>
+<td align="right">36.269</td>
+<td align="right">31.885</td>
+</tr>
+<tr class="even">
+<td align="right">2019</td>
+<td align="right">31.883</td>
+<td align="right">23.344</td>
+<td align="right">34.869</td>
+<td align="right">30.662</td>
+</tr>
+<tr class="odd">
+<td align="right">2020</td>
+<td align="right">34.150</td>
+<td align="right">23.900</td>
+<td align="right">38.675</td>
+<td align="right">33.115</td>
+</tr>
+<tr class="even">
+<td align="right">2021</td>
+<td align="right">31.067</td>
+<td align="right">23.911</td>
+<td align="right">36.525</td>
+<td align="right">32.977</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data |&gt;  
+  group_by(region,year) |&gt; 
+  summarise(avg_by_year_region = mean(death_rate,na.rm = T)) %&gt;% 
+  ggplot(aes(x = year, y = avg_by_year_region, color = region)) +
+  geom_line() + 
+  geom_point() + 
+  labs(
+    y = &quot;Average Alzheimer&#39;s Disease death rate&quot;,
+    title = &quot;Average Alzheimer&#39;s Disease death rate by Region, Year&quot;) </code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p><img src="Prelimary_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" />
+* The table and line graph above show the descriptive statistics and
+overall trend. * It is clearly shown in the plot that Northeast region
+has a much lower and South resgion has a much higher average Alzheimer’s
+Disease death rate than the other regions. ### 5 Average Alzheimer’s
+Disease death rate by Income Level</p>
+<pre class="r"><code>  data |&gt; 
+  group_by(year) |&gt; 
+  select(year,income) |&gt; 
+  summarise(median_income_by_year = median(income,na.rm = T)) |&gt; 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">median_income_by_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="right">48986.21</td>
+</tr>
+<tr class="even">
+<td align="right">2019</td>
+<td align="right">49792.03</td>
+</tr>
+<tr class="odd">
+<td align="right">2020</td>
+<td align="right">52442.06</td>
+</tr>
+<tr class="even">
+<td align="right">2021</td>
+<td align="right">54057.93</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The table above shows the median personal annual income of each
+year.</p></li>
+<li><p>Then, we use the median personal annual income of each year to
+categorize different income groups (with”less than median income” as
+“Lower Income”, “more than 1.3 times of median income” as “Upper
+Income”, and those between these ranges as “Middle Income”.</p></li>
+<li><p>We use this income group division to calculate average
+Alzheimer’s Disease death rate of each group.</p></li>
+</ul>
+<pre class="r"><code>income_level_2018=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2018) |&gt; 
+  mutate(
+    income_group=case_when(
+      income &lt; 48986.21 ~&quot;Lower Income&quot;,
+      income &gt; 1.3* 48986.21 ~&quot;Upper Income&quot;,
+      TRUE ~  &quot;Middle income&quot;
+    )) 
+
+income_level_2019=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2019) |&gt; 
+  mutate(
+    income_group=case_when(
+      income &lt;49792.03 ~&quot;Lower Income&quot;,
+      income &gt; 1.3* 49792.03 ~&quot;Upper Income&quot;,
+      TRUE ~  &quot;Middle income&quot;
+    ))
+
+income_level_2020=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2020) |&gt; 
+  mutate(
+    income_group=case_when(
+      income &lt;52442.06 ~&quot;Lower Income&quot;,
+      income &gt; 1.3* 52442.06 ~&quot;Upper Income&quot;,
+      TRUE ~  &quot;Middle income&quot;
+    )) 
+    
+income_level_2021=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2021) |&gt; 
+  mutate(
+    income_group=case_when(
+      income &lt;54057.93 ~&quot;Lower Income&quot;,
+      income &gt; 1.3* 54057.93 ~&quot;Upper Income&quot;,
+      TRUE ~  &quot;Middle income&quot;
+    ))
+
+income_level=
+  bind_rows(income_level_2018,income_level_2019,income_level_2020,income_level_2021)
+
+income_level |&gt; 
+  filter(!is.na(income_group)) |&gt;  
+  group_by(income_group) |&gt; 
+  summarise(avg_by_income = mean(death_rate,na.rm = T)) |&gt;  
+  arrange(avg_by_income) |&gt; 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">income_group</th>
+<th align="right">avg_by_income</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Upper Income</td>
+<td align="right">18.300</td>
+</tr>
+<tr class="even">
+<td align="left">Middle income</td>
+<td align="right">28.971</td>
+</tr>
+<tr class="odd">
+<td align="left">Lower Income</td>
+<td align="right">35.270</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>income_level |&gt; 
+  filter(!is.na(income_group)) |&gt;  
+  group_by(income_group) |&gt; 
+  filter(!is.na(death_rate)) |&gt; 
+  ggplot(aes(x = fct_reorder(income_group,death_rate), y = death_rate,fill = income_group)) +
+  geom_boxplot() +
+  labs(
+  title = &quot;Boxplot of Alzheimer&#39;s Disease Death Rate by Income Groups&quot;, 
+  x=&quot;Income Groups&quot;,
+  y= &quot;Alzheimer&#39;s Disease death rate&quot;)</code></pre>
+<p><img src="Prelimary_analysis_files/figure-html/unnamed-chunk-14-1.png" width="90%" /></p>
+<ul>
+<li>The boxes of different income groups are almost not overlapping with
+each other.</li>
+<li>The pattern is clear that people from lower income group tend to
+have a higher Alzheimer’s Disease Death Rate.</li>
+<li><h1
+id="斜体居中-h0σ2group-i-σ2group-j-vs-h1σ2group-i-σ2group-j">斜体居中
+H0:σ2group i= σ2group j vs H1:σ2group i≠ σ2group j</h1></li>
+<li>We have performed variance test and conclude that the variances are
+equal between the two categories. Since the method is similar to what we
+have used and displayed when studying the regional differences, we do
+not show the process here.</li>
+</ul>
+<pre class="r"><code>bartlett.test(death_rate ~ factor(income_group), data = income_level) |&gt; 
+  broom::tidy() |&gt; 
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="left">method</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5.190105</td>
+<td align="right">0.0746419</td>
+<td align="right">2</td>
+<td align="left">Bartlett test of homogeneity of variances</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>mean t test TBD</li>
+</ul>
+</div>
+<div id="average-alzheimers-disease-death-rate-by-employment"
+class="section level3">
+<h3>6 Average Alzheimer’s Disease death rate by Employment</h3>
+<pre class="r"><code>  data |&gt; 
+  group_by(year) |&gt; 
+  select(year,employment) |&gt; 
+  summarise(med_employ_by_year = median(employment,na.rm = T)) |&gt; 
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">med_employ_by_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2018</td>
+<td align="right">0.617</td>
+</tr>
+<tr class="even">
+<td align="right">2019</td>
+<td align="right">0.617</td>
+</tr>
+<tr class="odd">
+<td align="right">2020</td>
+<td align="right">0.588</td>
+</tr>
+<tr class="even">
+<td align="right">2021</td>
+<td align="right">0.612</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The table above shows the median personal annual income of each
+year.</p></li>
+<li><p>Then, we use the median employment rate of each year to
+categorize different employment groups (with”less than or equal to
+median” as “Lower Employment Rate”, “more than median” as “High
+Employment Rate”.</p></li>
+<li><p>We use this employment group division to calculate average
+Alzheimer’s Disease death rate of each group.</p></li>
+</ul>
+<pre class="r"><code>employ_2018=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2018) |&gt; 
+  mutate(
+    employ_group=case_when(
+      employment &lt;= 0.617 ~&quot;Low Employment Rate&quot;,
+      employment &gt;0.617~&quot;High Employment Rate&quot;,
+    )) 
+  
+employ_2019=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2019) |&gt; 
+  mutate(
+    employ_group=case_when(
+      employment &lt;= 0.617 ~&quot;Low Employment Rate&quot;,
+      employment &gt; 0.617~&quot;High Employment Rate&quot;,
+    )) 
+
+employ_2020=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2020) |&gt; 
+  mutate(
+    employ_group=case_when(
+      employment &lt;= 0.588 ~&quot;Low Employment Rate&quot;,
+      employment &gt; 0.588~&quot;High Employment Rate&quot;,
+    )) 
+    
+employ_2021=
+  data |&gt;  
+  group_by(year) |&gt; 
+  filter(year==2021) |&gt; 
+  mutate(
+    employ_group=case_when(
+      employment &lt;= 0.612 ~&quot;Low Employment Rate&quot;,
+      employment &gt;0.612~&quot;High Employment Rate&quot;,
+    )) 
+
+employ_level=
+  bind_rows(employ_2018,employ_2019,employ_2020,employ_2021)
+
+employ_level |&gt; 
+  group_by(employ_group) |&gt; 
+  summarise(avg_by_employ = mean(death_rate,na.rm = T)) |&gt;  
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">employ_group</th>
+<th align="right">avg_by_employ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">High Employment Rate</td>
+<td align="right">29.345</td>
+</tr>
+<tr class="even">
+<td align="left">Low Employment Rate</td>
+<td align="right">34.701</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>employ_level |&gt; 
+  group_by(employ_group) |&gt; 
+  ggplot(aes(x = employ_group, y = death_rate,fill = employ_group)) +
+  geom_boxplot() +
+  labs(
+  title = &quot;Boxplot of Alzheimer&#39;s Disease Death Rate by Employment Rate&quot;,
+  x=&quot;Employment Rate&quot;,
+  y=&quot;Alzheimer&#39;s Disease Death Rate&quot;)</code></pre>
+<p><img src="Prelimary_analysis_files/figure-html/unnamed-chunk-18-1.png" width="90%" /></p>
+<ul>
+<li>The pattern is clear that low employment tend to a higher
+Alzheimer’s Disease Death Rate.</li>
+<li><h1
+id="斜体居中h0σ2high-employment-σ2-low-employment-vs-h1σ2-high-employment-σ2low-employment">斜体居中H0:σ2high
+employment = σ2 low employment vs H1:σ2 high employment≠ σ2low
+employment</h1></li>
+<li>We have performed variance test and conclude that the variances are
+equal between the two categories. Since the method is similar to what we
+have used and displayed when studying the regional differences, we do
+not show the process here. （见下方，之后删掉）</li>
+</ul>
+<pre class="r"><code>bartlett.test(death_rate ~ factor(employ_group), data = employ_level) |&gt; 
+  broom::tidy() |&gt; 
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="left">method</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.2488522</td>
+<td align="right">0.6178844</td>
+<td align="right">1</td>
+<td align="left">Bartlett test of homogeneity of variances</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>斜体居中 H0:mean high employment= mean low employment vs H1:mean
+high employment≠mean low employment</li>
+<li>TBD</li>
+</ul>
 </div>
 </div>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -576,7 +1061,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
