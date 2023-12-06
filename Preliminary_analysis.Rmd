@@ -43,7 +43,7 @@ data<- read_csv("data/geo_data.csv") %>%
   ))
 ```
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 data %>%
   janitor::clean_names() %>%
   group_by(region) %>%
@@ -56,7 +56,7 @@ data %>%
 
 * South America has the highest average death rate while Northeast America has the lowest.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 data %>%
   janitor::clean_names() %>%
   group_by(region) %>%
@@ -76,7 +76,7 @@ data %>%
 
 <center> *H~0~ : Equal  variance  among  regions  vs  H~1~ : Unequal  variance*<center>
 
-```{r}
+```{r,, message = FALSE, warning = FALSE}
 bartlett.test(death_rate ~ factor(region), data = data) %>%
   broom::tidy() %>%
   knitr::kable()
@@ -90,7 +90,7 @@ From the boxplot above, we find that the death rate in West America and Midwest 
 
 ### extract death rate in West America and Midwest America
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 west_death_rate <- data %>% 
   filter(region == "West") %>% 
   pull(death_rate)
@@ -102,7 +102,7 @@ midwest_death_rate <- data %>%
 
 ```
 
-```{r}
+```{r,, message = FALSE, warning = FALSE}
 var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level = 0.95) %>% 
   broom::tidy() %>% 
   knitr::kable()
@@ -112,7 +112,7 @@ The null hypothesis for the variance test is that the two variance are equal. Th
 
 ### 2 sample t.test with unknown unequal variances
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) %>% 
   broom::tidy() %>% 
   knitr::kable()
@@ -121,7 +121,7 @@ t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95
 
 ## 3 Average Alzheimer's Disease death rate by (region, year) Combination
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 data |>  
   group_by(region,year) |> 
   summarise(avg_by_year_region = mean(death_rate,na.rm = T)) |> 
@@ -132,7 +132,7 @@ data |>
   knitr::kable(digits = 3)
 ```
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 data |>  
   group_by(region,year) |> 
   summarise(avg_by_year_region = mean(death_rate,na.rm = T)) %>% 
@@ -150,7 +150,7 @@ data |>
 
 ## 4 Average Alzheimer's Disease death rate by Income Level
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
   data |> 
   group_by(year) |> 
   select(year,income) |> 
@@ -164,7 +164,7 @@ data |>
 
 * We use this income group division to calculate average Alzheimer's Disease death rate of each group.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 income_level_2018=
   data |>  
   group_by(year) |> 
@@ -220,7 +220,7 @@ income_level |>
   knitr::kable(digits = 3)
 ```  
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 income_level |> 
   filter(!is.na(income_group)) |>  
   group_by(income_group) |> 
@@ -237,17 +237,7 @@ income_level |>
 
 * The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
 
-<center> *H~0~ : σ^2^group i = σ^2^ group j  vs  H~1~ : σ^2^group i ≠ σ^2^group j*<center>
 
-* We have performed variance test and conclude that the variances are equal between the two categories. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
-
-```{r}
-bartlett.test(death_rate ~ factor(income_group), data = income_level) |> 
-  broom::tidy() |> 
-  knitr::kable()
-```
-
-### mean t test TBD
 
 <center> *H~0~ : mean death_rate group 1 = mean death_rate group 2  vs  H~1~ :  mean death_rate group 1 ≠ mean death_rate group 2*<center>
  
@@ -279,7 +269,7 @@ In summary, there are statistically significant variations in life expectancy ac
 
 ## 5 Average Alzheimer's Disease death rate by Employment
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
   data |> 
   group_by(year) |> 
   select(year,employment) |> 
@@ -292,7 +282,7 @@ In summary, there are statistically significant variations in life expectancy ac
 
 * We use this employment group division to calculate average Alzheimer's Disease death rate of each group.  
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 employ_2018=
   data |>  
   group_by(year) |> 
@@ -342,7 +332,7 @@ employ_level |>
   knitr::kable(digits = 3)
 ```  
   
-```{r}
+```{r, message = FALSE, warning = FALSE}
 employ_level |> 
   group_by(employ_group) |> 
   ggplot(aes(x = employ_group, y = death_rate,fill = employ_group)) +
@@ -355,21 +345,9 @@ employ_level |>
 
 * The pattern is clear that low employment tend to a higher Alzheimer's Disease Death Rate. 
 
-<center> *H~0~ : σ^2^high employment = σ^2^ low employment  vs  H~1~ : σ^2^ high employment≠ σ2low employment*<center>
-
-* We have performed variance test and conclude that the variances are equal between the two categories. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
-
-（见下方，之后删掉）
-
-```{r, message = FALSE, warning = FALSE}
-bartlett.test(death_rate ~ factor(employ_group), data = employ_level) |> 
-  broom::tidy() |> 
-  knitr::kable()
 ```
 
 <center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment*<center>
-
-### TBD
 
 ```{r, message = FALSE, warning = FALSE}
 t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) %>% 
