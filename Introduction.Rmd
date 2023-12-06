@@ -10,7 +10,7 @@ output:
 
 # Motivation and Background
 
-In the quiet twilight of memory, where the essence of a person's life - their joys, sorrows, and triumphs - slowly dims, lies the profound tragedy of Alzheimer's disease. It's a realm where the familiar contours of identity are relentlessly eroded, not by the passage of time, but by an insidious ailment that disassembles the core of who they are. This disease, more than a mere medical condition, is a poignant metaphor for the most profound loss: the gradual, inexorable fading of one's self. Each forgotten name, each lost memory, is a star winking out in the galaxy of a person's life story, leaving behind a haunting void where once there was a rich tapestry of experiences and connections.
+In the quiet twilight of memory, where the essence of a person’s life - their joys, sorrows, and triumphs - slowly dims, lies the profound tragedy of Alzheimer’s disease. It’s a realm where the familiar contours of identity are relentlessly eroded, not by the passage of time, but by an insidious ailment that disassembles the core of who they are. Each forgotten name, each lost memory, is a star winking out in the galaxy of a person’s life story, leaving behind a haunting void where once there was a rich tapestry of experiences and connections.
 
 Alzheimer's, an irreversible brain disorder, affects over 6.5 million Americans, progressively destroying memory and cognitive skills. Current treatments only address symptoms, not the disease's root cause or the progression. To date, there hasn’t been a new drug approved for Alzheimer’s disease in 20 years.
 

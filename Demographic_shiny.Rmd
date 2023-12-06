@@ -20,7 +20,6 @@ library(ggplot2)
 ```{r, message = FALSE, warning = FALSE}
 shiny_data =
   read_csv("./Data/geo_data.csv") |>
-  select(-...1) |>
   pivot_longer(
     death_rate:obesity_rate,
     names_to = "type",

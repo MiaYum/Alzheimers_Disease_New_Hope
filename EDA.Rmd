@@ -24,7 +24,7 @@ library(dplyr)
 
 The prevalence and mortality rates of Alzheimer's Disease, along with other pertinent factors, exhibit significant variation across different states and over various years. To effectively visualize and have a direct overview of these geographical and temporal trends, we have developed a Shiny app. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
 
-![](project_image/demo_shiny.jpg)
+<img src="project_image/demo_shiny.jpg" style="width:75%">
 
 # Part I Data Overview
 ```{r, message = FALSE, warning = FALSE}

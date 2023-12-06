@@ -337,9 +337,6 @@ div.tocify {
         <li>
   <a href="Introduction.html">Introduction</a>
 </li>
-<li>
-  <a href="Data.html">Data Sources</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
@@ -348,10 +345,37 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="Data.html">Data Sources</a>
+    </li>
+    <li>
       <a href="EDA.html">Exploratory Analysis</a>
     </li>
     <li>
-      <a href="EDA.html">Statistical Analysis</a>
+      <a href="Preliminary_analysis.html">Preliminary Analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Model.html">Model</a>
+</li>
+<li>
+  <a href="Clinical_trials.html">Clinical Trials</a>
+</li>
+<li>
+  <a href="Conclusion.html">Conclusion</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Shiny
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Demographic</a>
+    </li>
+    <li>
+      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Clinical Trials</a>
     </li>
   </ul>
 </li>
@@ -361,11 +385,21 @@ div.tocify {
      
   </a>
 </li>
-<li>
-  <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-github fa-lg"></span>
      
+     
+    <span class="caret"></span>
   </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Website Repository</a>
+    </li>
+    <li>
+      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Shiny Repository</a>
+    </li>
+  </ul>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -851,11 +885,6 @@ dataset.</p>
 <pre class="r"><code># R²
 rf_predictions &lt;- predict(rf_model, training_data)
 r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
-<<<<<<< HEAD
-print(paste(&quot;R²:&quot;, r_squared))</code></pre>
-<pre><code>## [1] &quot;R²: 0.932004976157008&quot;</code></pre>
-<p>Calculated using the training data, the R² is 0.932005, which
-=======
 data.frame(
   model = &quot;Random Forest Model&quot;,
   r.squard = r_squared
@@ -876,7 +905,6 @@ data.frame(
 </tbody>
 </table>
 <p>Calculated using the training data, the R² is 0.9325145, which
->>>>>>> c3527086eb6b10a73cc01393784d9f341e923f00
 indicates a very high level of explained variance in the model. This
 suggests that our model is highly effective in capturing and
 representing the relationships within the training dataset.</p>
@@ -956,18 +984,8 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<<<<<<< HEAD
-<div class="plotly html-widget html-fill-item" id="htmlwidget-4d85f1287e310f010893" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-4d85f1287e310f010893">{"x":{"visdat":{"3e542ea66a2b":["function () ","plotlyVisDat"]},"cur_data":"3e542ea66a2b","attrs":{"3e542ea66a2b":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["income","cardio_rate","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1159.6440492571876,1167.7696733577668,1442.5802354251396,1489.8580475914098,1492.1120095365204,1765.2347987248743,1895.3356731070876],"y":["income","cardio_rate","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p>数值较高的特征被视为更重要，diabetes_rate，rpp，obesity_rate 最重要 -
-待解释</p>
-<p>Summarize the performance of multiple linear regression and random
-forest models.</p>
-<p>Interpret model results and important features. Discuss limitations
-of the study and future work.</p>
-=======
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-8b96c1fd0fa3677d1984" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-8b96c1fd0fa3677d1984">{"x":{"visdat":{"d4d01fefedf2":["function () ","plotlyVisDat"]},"cur_data":"d4d01fefedf2","attrs":{"d4d01fefedf2":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-d04cd2376695903ec2ad" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-d04cd2376695903ec2ad">{"x":{"visdat":{"86a01bad5e0e":["function () ","plotlyVisDat"]},"cur_data":"86a01bad5e0e","attrs":{"86a01bad5e0e":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>In the model, <code>hc_exp</code> emerges as the most important
 feature, holding the highest significance. Following it,
 <code>edu_level</code> stands as the second most crucial factor. Other
@@ -977,7 +995,6 @@ features like <code>smoke_rate</code>, <code>elder_rate</code>,
 indicating a gradual decrease in their significance within the model.
 This hierarchy of features reflects their relative influence on the
 model’s predictions.</p>
->>>>>>> c3527086eb6b10a73cc01393784d9f341e923f00
 </div>
 </div>
 

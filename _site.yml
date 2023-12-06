@@ -5,18 +5,34 @@ navbar:
   right:
     - text: "Introduction"
       href: Introduction.html
-    - text: "Data Sources"
-      href: Data.html
     - text: "Analysis"
       menu:
+      - text: "Data Sources"
+        href: Data.html
       - text: "Exploratory Analysis"
         href: EDA.html
-      - text: "Statistical Analysis"
-        href: EDA.html
+      - text: "Preliminary Analysis"
+        href: Preliminary_analysis.html
+    - text: "Model"
+      href: Model.html
+    - text: "Clinical Trials"
+      href: Clinical_trials.html
+    - text: "Conclusion"
+      href: Conclusion.html
+    - text: "Shiny"
+      menu:
+      - text: "Demographic"
+        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+      - text: "Clinical Trials"
+        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
     - icon: fa-envelope fa-lg
       href: 
     - icon: fa-github fa-lg
-      href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+      menu:
+      - text: "Website Repository"
+        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+      - text: "Shiny Repository"
+        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
 output:
   html_document:
     theme: cosmo
