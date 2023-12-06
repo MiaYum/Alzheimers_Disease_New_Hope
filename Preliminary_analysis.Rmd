@@ -57,9 +57,9 @@ data %>%
   knitr::kable(digits = 3)
 ```
 
-* The table shows the arranged average death rate of each region from 2018 to 2021.
+* The table shows the arranged average death rate of Alzheimer’s Disease of each region from 2018 to 2021.
 
-* South America has the highest average death rate while Northeast America has the lowest.
+* South region has the highest average Alzheimer’s Disease death rate while Northeast region has the lowest.
 
 ```{r, message = FALSE, warning = FALSE}
 data %>%
@@ -73,7 +73,7 @@ data %>%
 
 * The boxplot shows the distribution of death rate in each region.
 
-* The variance of death rate is higher in South America.
+* The variance of death rate is higher in South region.
 
 * We can roughly tell from the plot that the variances of death rate among regions are not equal. Thus, we may perform a statistical test to check heteroscedasticity
 
@@ -91,7 +91,7 @@ Based on the less-than-significance level of the p-value (usually 0.05), we have
 
 ## 2. t.test : Compare Mean Death Rate Between West America and Midwest America
 
-From the boxplot above, we find that the death rate in West America and Midwest America distribute almost in the same interval. Though the median of Midwest America is higher, the variance in West America seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
+From the boxplot above, we find that the Alzheimer’s Disease death rate in West region and Midwest region are almost overlapping. Though the median of Midwest region is higher, the variance in West region seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
 
 ### extract death rate in West America and Midwest America
 
@@ -348,7 +348,7 @@ employ_level |>
   y="Alzheimer's Disease Death Rate")
 ```
 
-* The pattern is clear that low employment tend to a higher Alzheimer's Disease Death Rate. 
+* The pattern is clear that low employment tend to a higher Alzheimer's Disease death rate. 
 
 <center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment*<center>
 
@@ -359,4 +359,11 @@ t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "les
 ```
 
 * We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
+
+## Summary
+
+In this part, we applied statistical analysis to studying the differences in  Alzheimer's Disease death rate caused by various factors. We first examine the distribution features and then choose appropriate tests to perform.
+We draw the following conclusions from the tests and plots result :
+* South region has the highest Alzheimer's Disease average death rate while Northeast region has the lowest.
+* 
 
