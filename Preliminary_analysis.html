@@ -340,7 +340,7 @@ $(document).ready(function () {
     state %in% c(&quot;Alaska&quot;, &quot;Arizona&quot;, &quot;California&quot;, &quot;Colorado&quot;, &quot;Hawaii&quot;, &quot;Idaho&quot;, &quot;Montana&quot;, &quot;Nevada&quot;, &quot;New Mexico&quot;, &quot;Oregon&quot;, &quot;Utah&quot;, &quot;Washington&quot;, &quot;Wyoming&quot;) ~ &quot;West&quot;
   ))</code></pre>
 <pre><code>## Rows: 204 Columns: 15
-## ── Column specification ───────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (1): state
 ## dbl (14): year, death_rate, gdp, pce, rpp, employment, hc_exp, income, edu_l...
@@ -575,8 +575,8 @@ Combination</h3>
     values_from = avg_by_year_region
   ) |&gt;  
   knitr::kable(digits = 3)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can
-## override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -627,8 +627,8 @@ Combination</h3>
   labs(
     y = &quot;Average Alzheimer&#39;s Disease death rate&quot;,
     title = &quot;Average Alzheimer&#39;s Disease death rate by Region, Year&quot;) </code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can
-## override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" />
 * The table and line graph above show the descriptive statistics and
 overall trend. * It is clearly shown in the plot that Northeast region

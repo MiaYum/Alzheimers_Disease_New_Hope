@@ -443,23 +443,464 @@ the full dashboard can be accessed [here].</p>
 <div id="lsm" class="section level2">
 <h2>LSM</h2>
 </div>
-<div id="km" class="section level2">
-<h2>KM</h2>
+<div id="hazard-plots" class="section level2">
+<h2>Hazard Plots</h2>
+<p>The Phase III trials of Lecanemab and Donanemab both use cumulative
+hazard ratio to indicate the risk of progression assessed using CDR-SB
+score. The hazard plot for Donanemab is as following</p>
 <pre class="r"><code>Don_KM = 
-  read_excel(&quot;./Data/Donanemab.xlsx&quot;, sheet = &quot;K-M&quot;, range = &quot;A10:C18&quot;) |&gt;
+  read_excel(&quot;./Data/Donanemab.xlsx&quot;, sheet = &quot;K-M&quot;, range = &quot;A1:D16&quot;) |&gt;
   janitor::clean_names()
 
 plot_ly(Don_KM |&gt;
+                 filter(test == &quot;CDR-SB&quot;) |&gt;
                  pivot_longer(
                    donanemab:placebo,
                    names_to = &quot;drug&quot;,
                    values_to = &quot;ratio&quot;
-                 ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = &quot;hv&quot;), colors = &quot;viridis&quot;) </code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-004c9b0e095832d1772b" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-004c9b0e095832d1772b">{"x":{"visdat":{"adec1ca96eed":["function () ","plotlyVisDat"]},"cur_data":"adec1ca96eed","attrs":{"adec1ca96eed":{"x":{},"y":{},"line":{"shape":"hv"},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"time"},"yaxis":{"domain":[0,1],"automargin":true,"title":"ratio"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.042999999999999997,0.064000000000000001,0.070000000000000007,0.13500000000000001,0.26200000000000001,0.26200000000000001],"line":{"color":"rgba(68,1,84,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.068000000000000005,0.122,0.13100000000000001,0.19500000000000001,0.36299999999999999,0.36299999999999999],"line":{"color":"rgba(253,231,37,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+                 ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = &quot;hv&quot;), colors = &quot;viridis&quot;) |&gt;
+  layout(title = &quot;Plot 1 Title&quot;,
+             xaxis = list(title = &quot;X-axis Label for Plot 1&quot;),
+             yaxis = list(title = &quot;Y-axis Label for Plot 1&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-6aa1f0a830e75161f31c" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-6aa1f0a830e75161f31c">{"x":{"visdat":{"c914572e69ab":["function () ","plotlyVisDat"]},"cur_data":"c914572e69ab","attrs":{"c914572e69ab":{"x":{},"y":{},"line":{"shape":"hv"},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Plot 1 Title","xaxis":{"domain":[0,1],"automargin":true,"title":"X-axis Label for Plot 1"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Y-axis Label for Plot 1"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.035000000000000003,0.070000000000000007,0.078,0.154,0.26300000000000001,0.26300000000000001],"line":{"color":"rgba(68,1,84,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.081000000000000003,0.14999999999999999,0.17000000000000001,0.246,0.38700000000000001,0.38700000000000001],"line":{"color":"rgba(253,231,37,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="ae" class="section level2">
-<h2>AE</h2>
+<div id="adverse-events" class="section level2">
+<h2>Adverse Events</h2>
+<p>As we progress in our comprehensive exploration of Alzheimer’s
+disease and its treatment options, we now turn our focus to a critical
+aspect of drug evaluation: the analysis of adverse events associated
+with the two promising drugs, Lecanemab and Donanemab. This analysis is
+pivotal in understanding the safety profile and potential risks of these
+newly FDA-approved treatments, which stand at the forefront of
+Alzheimer’s research.</p>
+<pre class="r"><code>lec_safety = read_excel(&quot;./Data/Lecanemab.xlsx&quot;, sheet = &quot;safety&quot;, range = &quot;A1:C5&quot;) |&gt;
+  janitor::clean_names()
+
+don_safety = read_excel(&quot;./Data/Donanemab.xlsx&quot;, sheet = &quot;safety&quot;, range = &quot;A1:C5&quot;) |&gt;
+  janitor::clean_names()
+
+merge_safety = left_join(lec_safety, don_safety, by = &quot;events&quot;)</code></pre>
+<pre class="r"><code>plot_ly(merge_safety |&gt;
+  mutate(events = fct_reorder(events, -lecanemab)) |&gt;
+  pivot_longer(
+    lecanemab:donanemab_placebo,
+    names_to = &quot;drug&quot;,
+    values_to = &quot;cases&quot;
+  ), 
+  x = ~events, y = ~cases, color = ~drug, type = &#39;bar&#39;, colors = &quot;viridis&quot;)</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-92573ef35287de80b044" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-92573ef35287de80b044">{"x":{"visdat":{"c91443fc6471":["function () ","plotlyVisDat"]},"cur_data":"c91443fc6471","attrs":{"c91443fc6471":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"events","type":"category","categoryorder":"array","categoryarray":["Participants with ≥1 Aes","Participants with ≥1 serious AE","Study discontinuations due to Aes","Death"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"cases"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Participants with ≥1 Aes","Participants with ≥1 serious AE","Study discontinuations due to Aes","Death"],"y":[759,148,69,16],"type":"bar","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 Aes","Participants with ≥1 serious AE","Study discontinuations due to Aes","Death"],"y":[718,138,32,10],"type":"bar","name":"donanemab_placebo","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 Aes","Participants with ≥1 serious AE","Study discontinuations due to Aes","Death"],"y":[798,126,62,6],"type":"bar","name":"lecanemab","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 Aes","Participants with ≥1 serious AE","Study discontinuations due to Aes","Death"],"y":[735,101,26,7],"type":"bar","name":"lecanemab_placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Deaths occurred in 0.7% (6 cases) of the participants in the
+lecanemab group and 0.8% (7 cases) of those in the placebo group. No
+deaths were considered by the investigators to be related to lecanemab
+or occurred with ARIA. Serious adverse events occurred in 14.0% (126
+cases) of the participants in the lecanemab group and 11.3% (101 cases)
+of those in the placebo group. The incidence of death was 1.9% (16
+cases) in the donanemab group and 1.1% (10 cases) in the placebo group,
+while the incidence of serious adverse events was 17.4% (148 cases) in
+the donanemab group and 15.8% (138 cases) in the placebo group.</p>
+<pre class="r"><code>safety_test = function(a, b, c, d, n1, n2){
+  RD = round(a/n1 - b/n2, 4)
+  RR = round((a/n1)/(b/n2), 4)
+  OR = round((a*d)/(b*c), 4)
+  Chis = round(prop.test(x = c(a, b), n = c(c, d), alternative = &quot;two.sided&quot;, correct = FALSE)$statistic, 4)
+  p_value = round(prop.test(x = c(a, b), n = c(n1, n2), alternative = &quot;two.sided&quot;, correct = FALSE)$p.value, 6)
+  return (tibble(Risk_Diff = RD, Risk_Ratio = RR, Odds_Ratio = OR, Xsquared = Chis, P.value = p_value))
+  }</code></pre>
+<pre class="r"><code>lec_safety_test = safety_test(126, 101, 772, 796, 898, 897)
+don_safety_test = safety_test(148, 138, 705, 736, 853, 874)
+comp_safety_test = safety_test(126, 148, 772, 705, 898, 853)
+safety_merge = bind_rows(lec_safety_test, don_safety_test, comp_safety_test) |&gt;
+  mutate(Test = c(&quot;Lec vs Placebo&quot;, &quot;Don vs Placebo&quot;, &quot;Lec vs Don&quot;)) |&gt;
+  select(Test, everything())
+
+kable(safety_merge)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Test</th>
+<th align="right">Risk_Diff</th>
+<th align="right">Risk_Ratio</th>
+<th align="right">Odds_Ratio</th>
+<th align="right">Xsquared</th>
+<th align="right">P.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Lec vs Placebo</td>
+<td align="right">0.0277</td>
+<td align="right">1.2461</td>
+<td align="right">1.2863</td>
+<td align="right">4.1774</td>
+<td align="right">0.077332</td>
+</tr>
+<tr class="even">
+<td align="left">Don vs Placebo</td>
+<td align="right">0.0156</td>
+<td align="right">1.0989</td>
+<td align="right">1.1196</td>
+<td align="right">1.1387</td>
+<td align="right">0.382920</td>
+</tr>
+<tr class="odd">
+<td align="left">Lec vs Don</td>
+<td align="right">-0.0332</td>
+<td align="right">0.8087</td>
+<td align="right">0.7775</td>
+<td align="right">5.3225</td>
+<td align="right">0.056015</td>
+</tr>
+</tbody>
+</table>
+<p>In our statistical analysis of serious adverse events associated with
+Lecanemab, Donanemab, and their placebos, we have identified key
+findings. With a significance level set at 0.1, our results indicate a
+significant difference in serious adverse events between Lecanemab and
+its placebo, suggesting a higher risk associated with Lecanemab. In
+contrast, Donanemab did not show a significant difference in serious
+adverse events compared to its placebo, implying a potentially safer
+profile. Additionally, a significant difference was observed between
+Lecanemab and Donanemab, highlighting distinct safety profiles for these
+drugs.</p>
+<p>Then, we further investigate the differences of specific adverse
+events for two drugs.</p>
+<pre class="r"><code>lec_ae = read_excel(&quot;./Data/Lecanemab.xlsx&quot;, sheet = &quot;AE&quot;, range = &quot;A1:C10&quot;) |&gt;
+  janitor::clean_names()
+
+don_ae = read_excel(&quot;./Data/Donanemab.xlsx&quot;, sheet = &quot;AE&quot;, range = &quot;A1:C10&quot;) |&gt;
+  janitor::clean_names()
+
+merge_ae = left_join(lec_ae, don_ae, by = &quot;ae&quot;)</code></pre>
+<pre class="r"><code>plot_ly(merge_ae |&gt;
+  mutate(ae = fct_reorder(ae, donanemab)) |&gt;
+  pivot_longer(
+    lecanemab:donanemab_placebo,
+    names_to = &quot;drug&quot;,
+    values_to = &quot;cases&quot;
+  ), 
+  x = ~ae, y = ~cases, color = ~drug, type = &#39;bar&#39;, colors = &quot;viridis&quot;)</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-cb04fc4a44c5599bafd2" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-cb04fc4a44c5599bafd2">{"x":{"visdat":{"c91443241720":["function () ","plotlyVisDat"]},"cur_data":"c91443241720","attrs":{"c91443241720":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"ae","type":"category","categoryorder":"array","categoryarray":["Diarrhea","Urinary tract infection","Arrthralgia","Dizziness","Infusion-related reaction","Fall","Headache","ARIA-H","ARIA-E"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"cases"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[74,205,168,119,114,45,49,53,43],"type":"bar","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[4,17,65,86,110,59,42,48,50],"type":"bar","name":"donanemab_placebo","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[237,113,155,100,93,78,53,49,48],"type":"bar","name":"lecanemab","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[66,15,81,73,86,82,62,46,58],"type":"bar","name":"lecanemab_placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>[Interpretation]</p>
+<p>Lecanemab vs Placebo</p>
+<pre class="r"><code># test = lec_ae |&gt;
+#   mutate(p = lecanemab_placebo/sum(lecanemab_placebo))
+# chisq.test(test$lecanemab, p = test$p, correct = FALSE) \
+lec_ae_result = lec_ae |&gt;
+  mutate(testresult = map2(lecanemab, lecanemab_placebo, \(a, b) safety_test(a, b, 898-a, 897-b, 898, 897))) |&gt;
+  unnest(testresult) |&gt;
+  select(-lecanemab, -lecanemab_placebo)
+
+kable(lec_ae_result)</code></pre>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="13%" />
+<col width="14%" />
+<col width="14%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">ae</th>
+<th align="right">Risk_Diff</th>
+<th align="right">Risk_Ratio</th>
+<th align="right">Odds_Ratio</th>
+<th align="right">Xsquared</th>
+<th align="right">P.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Infusion-related reaction</td>
+<td align="right">0.1903</td>
+<td align="right">3.5869</td>
+<td align="right">4.5144</td>
+<td align="right">177.2332</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">ARIA-E</td>
+<td align="right">0.1091</td>
+<td align="right">7.5249</td>
+<td align="right">8.4642</td>
+<td align="right">94.4143</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIA-H</td>
+<td align="right">0.0823</td>
+<td align="right">1.9114</td>
+<td align="right">2.1016</td>
+<td align="right">36.1979</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">Headache</td>
+<td align="right">0.0300</td>
+<td align="right">1.3683</td>
+<td align="right">1.4145</td>
+<td align="right">5.7372</td>
+<td align="right">0.031416</td>
+</tr>
+<tr class="odd">
+<td align="left">Fall</td>
+<td align="right">0.0077</td>
+<td align="right">1.0802</td>
+<td align="right">1.0895</td>
+<td align="right">0.3691</td>
+<td align="right">0.586741</td>
+</tr>
+<tr class="even">
+<td align="left">Urinary tract infection</td>
+<td align="right">-0.0046</td>
+<td align="right">0.9502</td>
+<td align="right">0.9454</td>
+<td align="right">0.1396</td>
+<td align="right">0.734818</td>
+</tr>
+<tr class="odd">
+<td align="left">Arrthralgia</td>
+<td align="right">-0.0101</td>
+<td align="right">0.8539</td>
+<td align="right">0.8447</td>
+<td align="right">0.8755</td>
+<td align="right">0.382293</td>
+</tr>
+<tr class="even">
+<td align="left">Dizziness</td>
+<td align="right">0.0033</td>
+<td align="right">1.0640</td>
+<td align="right">1.0677</td>
+<td align="right">0.1080</td>
+<td align="right">0.756031</td>
+</tr>
+<tr class="odd">
+<td align="left">Diarrhea</td>
+<td align="right">-0.0112</td>
+<td align="right">0.8267</td>
+<td align="right">0.8169</td>
+<td align="right">1.1504</td>
+<td align="right">0.313832</td>
+</tr>
+</tbody>
+</table>
+<p>Donanemab vs Placebo</p>
+<pre class="r"><code># test = don_ae |&gt;
+#   mutate(p = donanemab_placebo/sum(donanemab_placebo))
+# chisq.test(test$donanemab, p = test$p, correct = FALSE)
+
+don_ae_result = don_ae |&gt;
+  mutate(testresult = map2(donanemab, donanemab_placebo, \(a, b) safety_test(a, b, 853-a, 874-b, 853, 874))) |&gt;
+  unnest(testresult) |&gt;
+  select(-donanemab, -donanemab_placebo)
+
+kable(don_ae_result)</code></pre>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="13%" />
+<col width="14%" />
+<col width="14%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">ae</th>
+<th align="right">Risk_Diff</th>
+<th align="right">Risk_Ratio</th>
+<th align="right">Odds_Ratio</th>
+<th align="right">Xsquared</th>
+<th align="right">P.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Infusion-related reaction</td>
+<td align="right">0.0822</td>
+<td align="right">18.9555</td>
+<td align="right">20.6611</td>
+<td align="right">74.5253</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">ARIA-E</td>
+<td align="right">0.2209</td>
+<td align="right">12.3557</td>
+<td align="right">15.9482</td>
+<td align="right">258.0030</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIA-H</td>
+<td align="right">0.1226</td>
+<td align="right">2.6482</td>
+<td align="right">3.0525</td>
+<td align="right">76.6319</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">Headache</td>
+<td align="right">0.0411</td>
+<td align="right">1.4178</td>
+<td align="right">1.4855</td>
+<td align="right">9.1550</td>
+<td align="right">0.008271</td>
+</tr>
+<tr class="odd">
+<td align="left">Fall</td>
+<td align="right">0.0078</td>
+<td align="right">1.0619</td>
+<td align="right">1.0714</td>
+<td align="right">0.3132</td>
+<td align="right">0.630088</td>
+</tr>
+<tr class="even">
+<td align="left">Urinary tract infection</td>
+<td align="right">-0.0148</td>
+<td align="right">0.7815</td>
+<td align="right">0.7693</td>
+<td align="right">1.8867</td>
+<td align="right">0.197644</td>
+</tr>
+<tr class="odd">
+<td align="left">Arrthralgia</td>
+<td align="right">0.0094</td>
+<td align="right">1.1954</td>
+<td align="right">1.2073</td>
+<td align="right">0.8524</td>
+<td align="right">0.382567</td>
+</tr>
+<tr class="even">
+<td align="left">Dizziness</td>
+<td align="right">0.0072</td>
+<td align="right">1.1314</td>
+<td align="right">1.1401</td>
+<td align="right">0.4621</td>
+<td align="right">0.523000</td>
+</tr>
+<tr class="odd">
+<td align="left">Diarrhea</td>
+<td align="right">-0.0068</td>
+<td align="right">0.8812</td>
+<td align="right">0.8749</td>
+<td align="right">0.4388</td>
+<td align="right">0.531494</td>
+</tr>
+</tbody>
+</table>
+<p>Lecanemab vs Donanemab</p>
+<pre class="r"><code># test = don_ae |&gt;
+#   mutate(p = donanemab_placebo/sum(donanemab_placebo))
+# chisq.test(lec_ae$lecanemab, p = test$p, correct = FALSE) 
+com_ae =  don_ae |&gt;
+  mutate(lecanemab = lec_ae$lecanemab) |&gt;
+  select(-donanemab_placebo)
+
+com_ae_test = com_ae |&gt;
+  mutate(testresult = map2(lecanemab, donanemab, \(a, b) safety_test(a, b, 898-a, 853-b, 898, 853))) |&gt;
+  unnest(testresult) |&gt;
+  select(-donanemab, -lecanemab)
+
+kable(com_ae_test)</code></pre>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="13%" />
+<col width="14%" />
+<col width="14%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">ae</th>
+<th align="right">Risk_Diff</th>
+<th align="right">Risk_Ratio</th>
+<th align="right">Odds_Ratio</th>
+<th align="right">Xsquared</th>
+<th align="right">P.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Infusion-related reaction</td>
+<td align="right">0.1772</td>
+<td align="right">3.0422</td>
+<td align="right">3.7744</td>
+<td align="right">146.6853</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="even">
+<td align="left">ARIA-E</td>
+<td align="right">-0.1145</td>
+<td align="right">0.5236</td>
+<td align="right">0.4550</td>
+<td align="right">61.1095</td>
+<td align="right">0.000000</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIA-H</td>
+<td align="right">-0.0243</td>
+<td align="right">0.8764</td>
+<td align="right">0.8506</td>
+<td align="right">2.7340</td>
+<td align="right">0.189228</td>
+</tr>
+<tr class="even">
+<td align="left">Headache</td>
+<td align="right">-0.0281</td>
+<td align="right">0.7982</td>
+<td align="right">0.7729</td>
+<td align="right">4.2289</td>
+<td align="right">0.075111</td>
+</tr>
+<tr class="odd">
+<td align="left">Fall</td>
+<td align="right">-0.0301</td>
+<td align="right">0.7749</td>
+<td align="right">0.7489</td>
+<td align="right">4.9795</td>
+<td align="right">0.051323</td>
+</tr>
+<tr class="even">
+<td align="left">Urinary tract infection</td>
+<td align="right">0.0341</td>
+<td align="right">1.6465</td>
+<td align="right">1.7080</td>
+<td align="right">9.0587</td>
+<td align="right">0.005251</td>
+</tr>
+<tr class="odd">
+<td align="left">Arrthralgia</td>
+<td align="right">0.0016</td>
+<td align="right">1.0274</td>
+<td align="right">1.0292</td>
+<td align="right">0.0224</td>
+<td align="right">0.888098</td>
+</tr>
+<tr class="even">
+<td align="left">Dizziness</td>
+<td align="right">-0.0076</td>
+<td align="right">0.8782</td>
+<td align="right">0.8712</td>
+<td align="right">0.5171</td>
+<td align="right">0.499163</td>
+</tr>
+<tr class="odd">
+<td align="left">Diarrhea</td>
+<td align="right">0.0030</td>
+<td align="right">1.0603</td>
+<td align="right">1.0637</td>
+<td align="right">0.0917</td>
+<td align="right">0.774401</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 

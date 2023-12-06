@@ -13,6 +13,16 @@ library(readxl)
 library(tidyverse)
 library(plotly)
 library(ggplot2)
+library(knitr)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	message = FALSE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
 ```
 
 # Clinical Trials Pipeline
@@ -24,19 +34,139 @@ In our quest to deepen the understanding of Alzheimer's disease and its treatmen
 ## Demo
 ## LSM
 
-## KM
+## Hazard Plots
+The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
 ```{r, message = FALSE, warning = FALSE}
 Don_KM = 
-  read_excel("./Data/Donanemab.xlsx", sheet = "K-M", range = "A10:C18") |>
+  read_excel("./Data/Donanemab.xlsx", sheet = "K-M", range = "A1:D16") |>
   janitor::clean_names()
 
 plot_ly(Don_KM |>
+                 filter(test == "CDR-SB") |>
                  pivot_longer(
                    donanemab:placebo,
                    names_to = "drug",
                    values_to = "ratio"
-                 ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = "hv"), colors = "viridis") 
+                 ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = "hv"), colors = "viridis") |>
+  layout(title = "Plot 1 Title",
+             xaxis = list(title = "X-axis Label for Plot 1"),
+             yaxis = list(title = "Y-axis Label for Plot 1"))
 ```
 
+## Adverse Events
+As we progress in our comprehensive exploration of Alzheimer's disease and its treatment options, we now turn our focus to a critical aspect of drug evaluation: the analysis of adverse events associated with the two promising drugs, Lecanemab and Donanemab. This analysis is pivotal in understanding the safety profile and potential risks of these newly FDA-approved treatments, which stand at the forefront of Alzheimer's research.
 
-## AE
+```{r}
+lec_safety = read_excel("./Data/Lecanemab.xlsx", sheet = "safety", range = "A1:C5") |>
+  janitor::clean_names()
+
+don_safety = read_excel("./Data/Donanemab.xlsx", sheet = "safety", range = "A1:C5") |>
+  janitor::clean_names()
+
+merge_safety = left_join(lec_safety, don_safety, by = "events")
+```
+
+```{r}
+plot_ly(merge_safety |>
+  mutate(events = fct_reorder(events, -lecanemab)) |>
+  pivot_longer(
+    lecanemab:donanemab_placebo,
+    names_to = "drug",
+    values_to = "cases"
+  ), 
+  x = ~events, y = ~cases, color = ~drug, type = 'bar', colors = "viridis")
+```
+Deaths occurred in 0.7% (6 cases) of the participants in the lecanemab group and 0.8% (7 cases) of those in the placebo group. No deaths were considered by the investigators to be related to lecanemab or occurred with ARIA. Serious adverse events occurred in 14.0% (126 cases) of the participants in the lecanemab group and 11.3% (101 cases) of those in the placebo group. The incidence of death was 1.9% (16 cases) in the donanemab group and 1.1% (10 cases) in the placebo group, while the incidence of serious adverse events was 17.4% (148 cases) in the donanemab group and 15.8% (138 cases) in the placebo group. 
+
+```{r}
+safety_test = function(a, b, c, d, n1, n2){
+  RD = round(a/n1 - b/n2, 4)
+  RR = round((a/n1)/(b/n2), 4)
+  OR = round((a*d)/(b*c), 4)
+  Chis = round(prop.test(x = c(a, b), n = c(c, d), alternative = "two.sided", correct = FALSE)$statistic, 4)
+  p_value = round(prop.test(x = c(a, b), n = c(n1, n2), alternative = "two.sided", correct = FALSE)$p.value, 6)
+  return (tibble(Risk_Diff = RD, Risk_Ratio = RR, Odds_Ratio = OR, Xsquared = Chis, P.value = p_value))
+  }
+```
+
+```{r}
+lec_safety_test = safety_test(126, 101, 772, 796, 898, 897)
+don_safety_test = safety_test(148, 138, 705, 736, 853, 874)
+comp_safety_test = safety_test(126, 148, 772, 705, 898, 853)
+safety_merge = bind_rows(lec_safety_test, don_safety_test, comp_safety_test) |>
+  mutate(Test = c("Lec vs Placebo", "Don vs Placebo", "Lec vs Don")) |>
+  select(Test, everything())
+
+kable(safety_merge)
+```
+
+In our statistical analysis of serious adverse events associated with Lecanemab, Donanemab, and their placebos, we have identified key findings. With a significance level set at 0.1, our results indicate a significant difference in serious adverse events between Lecanemab and its placebo, suggesting a higher risk associated with Lecanemab. In contrast, Donanemab did not show a significant difference in serious adverse events compared to its placebo, implying a potentially safer profile. Additionally, a significant difference was observed between Lecanemab and Donanemab, highlighting distinct safety profiles for these drugs.
+
+Then, we further investigate the differences of specific adverse events for two drugs.
+
+```{r}
+lec_ae = read_excel("./Data/Lecanemab.xlsx", sheet = "AE", range = "A1:C10") |>
+  janitor::clean_names()
+
+don_ae = read_excel("./Data/Donanemab.xlsx", sheet = "AE", range = "A1:C10") |>
+  janitor::clean_names()
+
+merge_ae = left_join(lec_ae, don_ae, by = "ae")
+```
+
+```{r}
+plot_ly(merge_ae |>
+  mutate(ae = fct_reorder(ae, donanemab)) |>
+  pivot_longer(
+    lecanemab:donanemab_placebo,
+    names_to = "drug",
+    values_to = "cases"
+  ), 
+  x = ~ae, y = ~cases, color = ~drug, type = 'bar', colors = "viridis")
+```
+
+[Interpretation]
+
+Lecanemab vs Placebo
+```{r}
+# test = lec_ae |>
+#   mutate(p = lecanemab_placebo/sum(lecanemab_placebo))
+# chisq.test(test$lecanemab, p = test$p, correct = FALSE) \
+lec_ae_result = lec_ae |>
+  mutate(testresult = map2(lecanemab, lecanemab_placebo, \(a, b) safety_test(a, b, 898-a, 897-b, 898, 897))) |>
+  unnest(testresult) |>
+  select(-lecanemab, -lecanemab_placebo)
+
+kable(lec_ae_result)
+```
+
+Donanemab vs Placebo
+```{r}
+# test = don_ae |>
+#   mutate(p = donanemab_placebo/sum(donanemab_placebo))
+# chisq.test(test$donanemab, p = test$p, correct = FALSE)
+
+don_ae_result = don_ae |>
+  mutate(testresult = map2(donanemab, donanemab_placebo, \(a, b) safety_test(a, b, 853-a, 874-b, 853, 874))) |>
+  unnest(testresult) |>
+  select(-donanemab, -donanemab_placebo)
+
+kable(don_ae_result)
+```
+
+Lecanemab vs Donanemab
+```{r}
+# test = don_ae |>
+#   mutate(p = donanemab_placebo/sum(donanemab_placebo))
+# chisq.test(lec_ae$lecanemab, p = test$p, correct = FALSE) 
+com_ae =  don_ae |>
+  mutate(lecanemab = lec_ae$lecanemab) |>
+  select(-donanemab_placebo)
+
+com_ae_test = com_ae |>
+  mutate(testresult = map2(lecanemab, donanemab, \(a, b) safety_test(a, b, 898-a, 853-b, 898, 853))) |>
+  unnest(testresult) |>
+  select(-donanemab, -lecanemab)
+
+kable(com_ae_test)
+```
