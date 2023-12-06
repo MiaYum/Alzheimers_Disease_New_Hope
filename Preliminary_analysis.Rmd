@@ -1,6 +1,11 @@
 ---
 title: "Preliminary Analysis"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    code_folding: hide
 ---
 ```{r, include = FALSE, message = FALSE, warning = FALSE}
 library(tidyverse)
