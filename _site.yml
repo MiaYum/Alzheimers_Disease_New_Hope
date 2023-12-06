@@ -5,10 +5,10 @@ navbar:
   right:
     - text: "Introduction"
       href: Introduction.html
+    - text: "Data"
+      href: Data.html
     - text: "Analysis"
       menu:
-      - text: "Data Sources"
-        href: Data.html
       - text: "Exploratory Analysis"
         href: EDA.html
       - text: "Preliminary Analysis"

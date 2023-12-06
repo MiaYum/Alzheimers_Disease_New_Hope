@@ -337,6 +337,9 @@ div.tocify {
         <li>
   <a href="Introduction.html">Introduction</a>
 </li>
+<li>
+  <a href="Data.html">Data</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
@@ -344,9 +347,6 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="Data.html">Data Sources</a>
-    </li>
     <li>
       <a href="EDA.html">Exploratory Analysis</a>
     </li>
@@ -977,8 +977,9 @@ outliers, particularly at higher actual values, but this indicates that
 the model’s predictive accuracy is reasonable within the normal
 range.</p>
 </div>
-<div id="results-and-discussion" class="section level2">
-<h2>Results and Discussion</h2>
+</div>
+<div id="results-and-discussion" class="section level1">
+<h1>Results and Discussion</h1>
 <pre class="r"><code>importance_values &lt;- importance(rf_model)
 
 feature_importance &lt;- data.frame(Feature = rownames(importance_values), 
@@ -990,22 +991,23 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-8b96c1fd0fa3677d1984" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-8b96c1fd0fa3677d1984">{"x":{"visdat":{"f56f43b006d1":["function () ","plotlyVisDat"]},"cur_data":"f56f43b006d1","attrs":{"f56f43b006d1":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p>In the model, <code>edu_level</code> emerges as the most important
-feature, which suggests a strong correlation between educational
-attainment and mortality rates in Alzheimer’s patients. Following
-it,<code>hc_exp</code> stands as the second most crucial factor,
-indicating the importance of healthcare resources in managing
-Alzheimer’s disease. Other features like <code>smoke_rate</code>,
-<code>elder_rate</code>, <code>employment</code>, <code>income</code>,
-and <code>cardio_rate</code> are ranked in descending order of
-importance, indicating a gradual decrease in their significance within
-the model. These findings highlight the multifaceted nature of factors
-affecting Alzheimer’s patient outcomes and underscore the importance of
+<div class="plotly html-widget html-fill-item" id="htmlwidget-70e03e327b70e3d63a4a" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-70e03e327b70e3d63a4a">{"x":{"visdat":{"fbba78a5eef9":["function () ","plotlyVisDat"]},"cur_data":"fbba78a5eef9","attrs":{"fbba78a5eef9":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>After careful consideration, we chose the random forest to be our
+final mofel. And according to the model, <code>edu_level</code> emerges
+as the most important feature, which suggests a strong correlation
+between educational attainment and mortality rates in Alzheimer’s
+patients. Following it,<code>hc_exp</code> stands as the second most
+crucial factor, indicating the importance of healthcare resources in
+managing Alzheimer’s disease. Other features like
+<code>smoke_rate</code>, <code>elder_rate</code>,
+<code>employment</code>, <code>income</code>, and
+<code>cardio_rate</code> are ranked in descending order of importance,
+indicating a gradual decrease in their significance within the model.
+These findings highlight the multifaceted nature of factors affecting
+Alzheimer’s patient outcomes and underscore the importance of
 socioeconomic and lifestyle factors in addition to healthcare
 provision.</p>
-</div>
 </div>
 
 
