@@ -54,8 +54,6 @@ data %>%
 
 * The table shows the arranged average death rate of each region from 2018 to 2021.
 
-* The range of average death rate among regions is about 
-
 * South America has the highest average death rate while Northeast America has the lowest.
 
 ```{r}
@@ -75,7 +73,8 @@ data %>%
 * We can roughly tell from the plot that the variances of death rate among regions are not equal. Thus, we may perform a statistical test to check heteroscedasticity
 
 ### test of equal variances
-# 斜体居中H0:Equal  variance  among  regions  vs  H1:Unequal  variance
+
+<center> *H~0~ : Equal  variance  among  regions  vs  H~1~ : Unequal  variance*<center>
 
 ```{r}
 bartlett.test(death_rate ~ factor(region), data = data) %>%
@@ -113,14 +112,14 @@ The null hypothesis for the variance test is that the two variance are equal. Th
 
 ### 2 sample t.test with unknown unequal variances
 
-
-
 ```{r}
 t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) %>% 
   broom::tidy() %>% 
   knitr::kable()
 ```
-### 4 Average Alzheimer's Disease death rate by (region, year) Combination
+
+
+## 3 Average Alzheimer's Disease death rate by (region, year) Combination
 
 ```{r}
 data |>  
@@ -144,9 +143,12 @@ data |>
     y = "Average Alzheimer's Disease death rate",
     title = "Average Alzheimer's Disease death rate by Region, Year") 
 ```
+
 * The table and line graph above show the descriptive statistics and overall trend.
+
 * It is clearly shown in the plot that Northeast region has a much lower and South resgion has a much higher average Alzheimer's Disease death rate than the other regions.
-### 5 Average Alzheimer's Disease death rate by Income Level
+
+## 4 Average Alzheimer's Disease death rate by Income Level
 
 ```{r}
   data |> 
@@ -155,10 +157,13 @@ data |>
   summarise(median_income_by_year = median(income,na.rm = T)) |> 
   knitr::kable(digits = 3)
 ```
+
 * The table above shows the median personal annual income of each year.
 
 * Then, we use the median personal annual income of each year to categorize different income groups (with"less than median income" as "Lower Income", "more than 1.3 times of median income" as "Upper Income", and those between these ranges as "Middle Income".
+
 * We use this income group division to calculate average Alzheimer's Disease death rate of each group.
+
 ```{r}
 income_level_2018=
   data |>  
@@ -229,18 +234,50 @@ income_level |>
 ```
 
 * The boxes of different income groups are almost not overlapping with each other.
+
 * The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
-* # 斜体居中 H0:σ2group i= σ2group j  vs  H1:σ2group i≠ σ2group j
+
+<center> *H~0~ : σ^2^group i = σ^2^ group j  vs  H~1~ : σ^2^group i ≠ σ^2^group j*<center>
+
 * We have performed variance test and conclude that the variances are equal between the two categories. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
+
 ```{r}
 bartlett.test(death_rate ~ factor(income_group), data = income_level) |> 
   broom::tidy() |> 
   knitr::kable()
 ```
 
-* mean t test TBD
+### mean t test TBD
 
-### 6 Average Alzheimer's Disease death rate by Employment
+<center> *H~0~ : mean death_rate group 1 = mean death_rate group 2  vs  H~1~ :  mean death_rate group 1 ≠ mean death_rate group 2*<center>
+ 
+```{r, message = FALSE, warning = FALSE}
+aov(death_rate ~ factor(income_group), data = income_level) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+ 
+<center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal*<center>
+
+```{r, message = FALSE, warning = FALSE}
+anova_result <- aov(death_rate ~ factor(income_group), data = income_level)
+
+TukeyHSD(anova_result) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+* The ANOVA results indicate a significant difference in mean life expectancy among different income groups (p < 0.05). The post hoc tests further reveal:
+
+* A significant difference in mean life expectancy between Middle Income and Lower Income groups.
+
+* A significant difference in mean life expectancy between Upper Income and Lower Income groups.
+
+* No significant difference in mean life expectancy between Upper Income and Middle Income groups.
+
+In summary, there are statistically significant variations in life expectancy across income groups, with specific differences observed in pairwise comparisons between Middle Income vs. Lower Income and Upper Income vs. Lower Income.
+
+## 5 Average Alzheimer's Disease death rate by Employment
 
 ```{r}
   data |> 
@@ -252,7 +289,9 @@ bartlett.test(death_rate ~ factor(income_group), data = income_level) |>
 * The table above shows the median personal annual income of each year.  
   
 * Then, we use the median employment rate of each year to categorize different employment groups (with"less than or equal to median" as "Lower Employment Rate", "more than median" as "High Employment Rate".
+
 * We use this employment group division to calculate average Alzheimer's Disease death rate of each group.  
+
 ```{r}
 employ_2018=
   data |>  
@@ -315,17 +354,28 @@ employ_level |>
 ```
 
 * The pattern is clear that low employment tend to a higher Alzheimer's Disease Death Rate. 
-* # 斜体居中H0:σ2high employment = σ2 low employment  vs  H1:σ2 high employment≠ σ2low employment
+
+<center> *H~0~ : σ^2^high employment = σ^2^ low employment  vs  H~1~ : σ^2^ high employment≠ σ2low employment*<center>
+
 * We have performed variance test and conclude that the variances are equal between the two categories. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
+
 （见下方，之后删掉）
-```{r}
+
+```{r, message = FALSE, warning = FALSE}
 bartlett.test(death_rate ~ factor(employ_group), data = employ_level) |> 
   broom::tidy() |> 
   knitr::kable()
 ```
-* 斜体居中 H0:mean high employment= mean low employment  vs  H1:mean high employment≠mean low employment
-* TBD
 
+<center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment*<center>
 
+### TBD
 
+```{r, message = FALSE, warning = FALSE}
+t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) %>% 
+  broom::tidy() %>% 
+  knitr::kable()
+```
+
+* We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
 

@@ -337,6 +337,9 @@ div.tocify {
         <li>
   <a href="Introduction.html">Introduction</a>
 </li>
+<li>
+  <a href="Data.html">Data</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
@@ -344,9 +347,6 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="Data.html">Data Sources</a>
-    </li>
     <li>
       <a href="EDA.html">Exploratory Analysis</a>
     </li>
@@ -458,12 +458,18 @@ plot_ly(Don_KM |&gt;
                    donanemab:placebo,
                    names_to = &quot;drug&quot;,
                    values_to = &quot;ratio&quot;
+<<<<<<< HEAD
                  ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = &quot;hv&quot;), colors = &quot;viridis&quot;) |&gt;
   layout(title = &quot;Plot 1 Title&quot;,
              xaxis = list(title = &quot;X-axis Label for Plot 1&quot;),
              yaxis = list(title = &quot;Y-axis Label for Plot 1&quot;))</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-6aa1f0a830e75161f31c" style="width:90%;height:345.6px;"></div>
 <script type="application/json" data-for="htmlwidget-6aa1f0a830e75161f31c">{"x":{"visdat":{"c914572e69ab":["function () ","plotlyVisDat"]},"cur_data":"c914572e69ab","attrs":{"c914572e69ab":{"x":{},"y":{},"line":{"shape":"hv"},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Plot 1 Title","xaxis":{"domain":[0,1],"automargin":true,"title":"X-axis Label for Plot 1"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Y-axis Label for Plot 1"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.035000000000000003,0.070000000000000007,0.078,0.154,0.26300000000000001,0.26300000000000001],"line":{"color":"rgba(68,1,84,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.081000000000000003,0.14999999999999999,0.17000000000000001,0.246,0.38700000000000001,0.38700000000000001],"line":{"color":"rgba(253,231,37,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+=======
+                 ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = &quot;hv&quot;), colors = &quot;viridis&quot;) </code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-ef8e9dbb8f49b8456459" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-ef8e9dbb8f49b8456459">{"x":{"visdat":{"fbba21553a7d":["function () ","plotlyVisDat"]},"cur_data":"fbba21553a7d","attrs":{"fbba21553a7d":{"x":{},"y":{},"line":{"shape":"hv"},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"time"},"yaxis":{"domain":[0,1],"automargin":true,"title":"ratio"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.042999999999999997,0.064000000000000001,0.070000000000000007,0.13500000000000001,0.26200000000000001,0.26200000000000001],"line":{"color":"rgba(68,1,84,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.068000000000000005,0.122,0.13100000000000001,0.19500000000000001,0.36299999999999999,0.36299999999999999],"line":{"color":"rgba(253,231,37,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+>>>>>>> a3151077897cd41954322672f5c7bec5f377af0d
 </div>
 <div id="adverse-events" class="section level2">
 <h2>Adverse Events</h2>

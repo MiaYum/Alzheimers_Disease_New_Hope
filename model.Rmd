@@ -323,7 +323,7 @@ ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
 
 Using the 2021 data to predict with the Random Forest model, we observed that the data points largely align with the fitted line, especially within the middle range of actual values. There are some outliers, particularly at higher actual values, but this indicates that the model's predictive accuracy is reasonable within the normal range.
 
-## Results and Discussion
+# Results and Discussion
 
 ```{r, message = FALSE, warning = FALSE}
 importance_values <- importance(rf_model)
@@ -340,7 +340,7 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
 ```
 
 
-In the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
+After careful consideration, we chose the random forest to be our final mofel. And according to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
 
 
 
