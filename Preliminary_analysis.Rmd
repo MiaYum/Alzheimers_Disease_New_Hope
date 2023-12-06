@@ -350,8 +350,6 @@ employ_level |>
 
 * The pattern is clear that low employment tend to a higher Alzheimer's Disease Death Rate. 
 
-```
-
 <center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment*<center>
 
 ```{r, message = FALSE, warning = FALSE}
