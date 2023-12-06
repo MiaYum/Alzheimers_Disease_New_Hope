@@ -38,7 +38,7 @@ library(tidyverse)
    
 ## 1. Death rate by Regions
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 data<- read_csv("data/geo_data.csv") %>%
   mutate(region = case_when(
     state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont") ~ "Northeast",
