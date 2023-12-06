@@ -31,7 +31,35 @@ In our quest to deepen the understanding of Alzheimer's disease and its treatmen
 <img src="project_image/shiny_CT1.png" style="width:85%">
 
 # Lecanemab and Donanemab
-## Demo
+
+## Participants' Baseline Demographics for both drugs
+
+```{r, message = FALSE, warning = FALSE}
+sex_df=
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Sex", range = "A1:C5") |> 
+  janitor::clean_names()
+sex_df |> 
+  plot_ly(x=~drug, y=~sex_prop, type = "bar", color = ~sex) |> 
+  layout(barmode = "stack",
+         title = "Distribution of Participants' Baseline Sex by drugs",
+         xaxis = list(title = "Drug"),
+         yaxis = list(title = "Percentage (%)"))
+```
+* From the plot, we can see that there are more female participants in Donanemab's clinical trial than that in Lecanemab's clinical trial.
+
+```{r, message = FALSE, warning = FALSE}
+race_df=
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
+  janitor::clean_names()
+race_df |> 
+  plot_ly(x=~drug, y=~race_prop, type = "bar", color = ~race) |> 
+  layout(barmode = "stack",
+         title = "Distribution of Participants' Baseline Race by drugs",
+         xaxis = list(title = "Drug"),
+         yaxis = list(title = "Percentage (%)"))
+```
+* From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupies a larger proportion of participants in Lecanemab's clinical trial than that in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
+
 ## LSM
 
 ## Hazard Plots
