@@ -1,20 +1,51 @@
 ---
-title: "Data"
+title: "Data Sources"
+
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    code_folding: hide
 ---
 
 ```{r setup, include = FALSE}
 suppressMessages(library(tidyverse))
 suppressMessages(library(dbplyr))
 library(readxl)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	message = FALSE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
 ```
 
-# Introduction of the datasets
+# Associated Factors Datasets
 
-## Geo
-The data for analysis is obtained by merging several Alzheimer's Disease related datasets.
+To study the complex interplay of factors contributing to Alzheimer's Disease, we have sourced a diverse range of datasets, including age, socioeconomic status, healthcare access, education level, etc. We collected data from authoritative and reliable sources such as government website and professional institude. The final data for analysis is obtained by merging these Alzheimer's Disease related datasets.
+The cleaning process include variable selection, converting variable to the type we need, and transforming the dataframe to tidy format. The details of importing and cleaning of all datasets are as following:
 
-The first dataset `death_rate` contains the mortality of Alzheimer’s Disease in each state from 2014 to 2021, which can be accessed [here](https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm).
-```{r, message = FALSE, warning = FALSE}
+*   The first dataset `death_rate` contains the mortality of Alzheimer’s Disease in each state from 2014 to 2021, which can be accessed from [CDC](https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm).
+
+*   `econdata` dataset contains the economic status of each state from 2008 to 2021, including GDP, income, price index, expenditure on healthcare etc. The data is downloaded from [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==).
+
+*   `edu_level` dataset contains the percentage of population obtained Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
+
+*   `diabetes` dataset contains the rate of diabetes by state from 2018 to 2021. The data can be accessed [here](https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
+
+*   `smoke` dataset contains the rate of smoking by state. The sources of the data are [CDC](https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm) and [KFF](https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
+
+*   `Cardiovascular Disease` dataset contains the Cardiovascular Disease rate, and the data can be accessed [here](https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
+
+*   `age_over_65` dataset contains the percentage of elderly people (>65 years old). This data is extracted from [Census Bureau](https://data.census.gov/table/ACSDP1Y2021.DP05?g=010XX00US$0400000&moe=false) and [PRB](https://www.prb.org/resources/which-us-states-are-the-oldest/).
+
+*   `obesity` dataset contains the percent of adults aged 18 years and older who have obesity in each state, and the data can be accessed from [CDC](https://nccd.cdc.gov/dnpao_dtm/rdPage.aspx?rdReport=DNPAO_DTM.ExploreByTopic&islClass=OWS&islTopic=&go=GO).
+
+```{r}
 death_rate = 
   read_csv("./Data/death_rate.csv") |>
   janitor::clean_names() |>
@@ -22,10 +53,7 @@ death_rate =
   select(state, year, death_rate) |>
   filter(year >= 2018) |>
   arrange(state, year)
-```
 
-`econdata` dataset contains the economic status of each state from 2008 to 2021, including GDP, income, price index, expenditure on healthcare etc. The data is downloaded from [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==).
-```{r, message = FALSE, warning = FALSE}
 econ_data = 
   read_csv("./Data/econdata.csv") |>
   janitor::clean_names() |>
@@ -59,10 +87,7 @@ econ_data =
          ) |>
   select(-population) |>
   arrange(state, year)
-```
 
-`edu_level` dataset contains the percentage of population obtained Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
-```{r, message = FALSE, warning = FALSE}
 edu_level = 
   read_excel("./Data/edu_level.xlsx") |>
   janitor::clean_names() |>
@@ -75,10 +100,7 @@ edu_level =
   mutate(year = as.numeric(str_replace(year, "x", "")),
          edu_level = edu_level/100) |>
   arrange(state, year)
-```
 
-`diabetes` dataset contains the rate of diabetes by state from 2018 to 2021. The data can be accessed [here](https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
-```{r, message = FALSE, warning = FALSE}
 diabetes_rate = 
   read_excel("./Data/diabetes.xlsx", range = "A1:C205") |>
   janitor::clean_names() |>
@@ -86,10 +108,7 @@ diabetes_rate =
   mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3),
          year = as.numeric(year)) |>
   arrange(state, year)
-```
 
-`Cardiovascular Disease` dataset contains the Cardiovascular Disease rate, and the data can be accessed [here](https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
-```{r, message = FALSE, warning = FALSE}
 cardio_rate = 
   read_excel("./Data/Cardiovascular Disease.xlsx", range = "A1:E52") |>
   janitor::clean_names() |>
@@ -100,10 +119,7 @@ cardio_rate =
   ) |>
   mutate(year = as.numeric(str_replace(year, "x", ""))) |>
   arrange(state, year)
-```
 
-`smoke` dataset contains the rate of smoking by state. The sources of the data are [CDC](https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm) and [KFF](https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
-```{r, message = FALSE, warning = FALSE}
 smoke_rate =
   read_excel("./Data/smoke.xlsx") |>
   janitor::clean_names() |>
@@ -115,10 +131,7 @@ smoke_rate =
   mutate(year = as.numeric(str_replace(year, "x", "")),
          smoke_rate = smoke_rate/100) |>
   arrange(state, year)
-```
 
-`age_over_65` dataset contains the percentage of elderly people (>65 years old). This data is extracted from [Census Bureau](https://data.census.gov/table/ACSDP1Y2021.DP05?g=010XX00US$0400000&moe=false) and [PRB](https://www.prb.org/resources/which-us-states-are-the-oldest/).
-```{r, message = FALSE, warning = FALSE}
 elderly_rate = read_excel("./Data/age_over_65/age_over_65.xlsx") |>
   janitor::clean_names() |>
   pivot_longer(
@@ -128,9 +141,7 @@ elderly_rate = read_excel("./Data/age_over_65/age_over_65.xlsx") |>
   ) |>
   mutate(year = as.numeric(str_replace(year, "x", "")))|>
   arrange(state, year)
-```
 
-```{r}
 obesity_rate = read_csv("./Data/obesity.csv") |>
   janitor::clean_names() |>
   pivot_longer(
@@ -142,8 +153,7 @@ obesity_rate = read_csv("./Data/obesity.csv") |>
   arrange(state, year)
 ```
 
-These datasets were tidied and merged to generate
-```{r, message = FALSE, warning = FALSE}
+```{r}
 geo_data = left_join(death_rate, econ_data, by = c("state", "year")) |>
   left_join(edu_level, by = c("state", "year")) |>
   left_join(diabetes_rate, by = c("state", "year")) |>
@@ -152,40 +162,81 @@ geo_data = left_join(death_rate, econ_data, by = c("state", "year")) |>
   left_join(elderly_rate, by = c("state", "year")) |>
   left_join(obesity_rate, by = c("state", "year"))
 ```
+These datasets were tidied and merged as `geo_data` for our future study. The final `geo_data` contains `r nrow(geo_data)` and `r length(geo_data)` variables, including `r variable.names(geo_data)`
 
 ```{r}
 write.csv(geo_data, "./Data/geo_data.csv", row.names = FALSE)
 ```
 
-## Clinical Trials data
-Clinical Trials data is directly downloaded from **clinicaltrials.gov** for Alzheimer's Disease.
-```{r read data, include = FALSE}
+# Clinical Trials data
+Clinicaltrials.gov provided complete and detailed information of all current Alzheimer's disease drugs. Clinical Trials data is directly downloaded from [clinicaltrials.gov](https://clinicaltrials.gov/search?cond=Alzheimer).
+```{r}
 CT_data = 
   read_csv("./Data/ClinicalTrials_raw_data.csv") |>
-  janitor::clean_names() 
+  janitor::clean_names() |>
+  select(-study_title, -acronym, -study_results, -conditions, -brief_summary, -primary_outcome_measures, -secondary_outcome_measures, -other_outcome_measures, -study_design, -other_i_ds, - primary_completion_date, -first_posted, -results_first_posted, -last_update_posted)
 ```
-There are a total of```r nrow(CT_data)```` and ```r length(CT_data)``` variables. Variables and description is listed below:
+The raw data is too complicated with redundant information, so we did an initial variable selection to omit useless variables. There are a total of `r nrow(CT_data)` and `r length(CT_data)` variables. Variables and description is listed below:
 
-*```r colnames(CT_data)[1]```: 
+*   ```r colnames(CT_data)[1]```: Unique Identification of clinical trials
 
-*```r colnames(CT_data)[2]```: 
+*   ```r colnames(CT_data)[2]```: Website address for more details of the study
 
-*```r colnames(CT_data)[3]```: 
+*   ```r colnames(CT_data)[3]```: Study status
 
-*```r colnames(CT_data)[4]```:
+*   ```r colnames(CT_data)[4]```: Intervention methods of study
 
-*```r colnames(CT_data)[5]```:
+*   ```r colnames(CT_data)[5]```: Study sponsor
 
-*```r colnames(CT_data)[6]```:
+*   ```r colnames(CT_data)[6]```: Study collaborator
 
-*```r colnames(CT_data)[7]```:
+*   ```r colnames(CT_data)[7]```: Gender of study participants (include "MALE", "FEMALE", "ALL", "OBSERVATIONAL", and missing value)
 
-*```r colnames(CT_data)[8]```:
+*   ```r colnames(CT_data)[8]```: Age of study participants (include combination of Chiled, Adult, Oler Adult, and missing value)
 
-*```r colnames(CT_data)[9]```:
+*   ```r colnames(CT_data)[9]```: Phases of the study
 
-*```r colnames(CT_data)[10]```:
+*   ```r colnames(CT_data)[10]```: Number of Participants enrolled in the study
 
-*```r colnames(CT_data)[11]```:
+*   ```r colnames(CT_data)[11]```: Type of sponsor
 
-# should simplify variables later 
+*   ```r colnames(CT_data)[12]```: Type of study ("INTERVENTIONAL", "OBSERVATIONAL", "EXPANDED_ACCESS", and missing value)
+
+*   ```r colnames(CT_data)[13]```: Start date of study
+
+*   ```r colnames(CT_data)[14]```: Completion date of study
+
+*   ```r colnames(CT_data)[15]```: Location(s) of study (Locations were divided by "|" for study conducted in more than one location)
+
+Data for further investigation on two latest drugs Lecanemab and Donanemab are from their published Phase III study results. Relevant website could be accessd from [Lecanemab](https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material) and [Donanemab](https://jamanetwork.com/journals/jama/article-abstract/2807533). Both study contians data for participants basic information, adverse events statistics, survival analysis and treatment evaluation.
+
+```{r}
+# Safety data for Lecanemab
+lec_safety =
+  readxl::read_excel("data/Lecanemab.xlsx",sheet="safety", range = "A1:C5")
+
+# Adverse Events data for Lecanemab
+lec_AE =
+  readxl::read_excel("data/Lecanemab.xlsx",sheet="AE", range = "A1:C10")
+
+# Treatment evluation data for Lecanemab
+lec_result =
+  readxl::read_excel("data/Lecanemab.xlsx",sheet="safety", range = "A1:H15")
+
+# Safety data for Donanemab
+don_safety =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="safety", range = "A1:C5")
+
+# Adverse Events data for Donanemab
+don_AE =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="AE", range = "A1:C10")
+
+# Hazard ratio analysis data for Donanemab
+don_hazard =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="K-M", range = "A1:D17")
+
+# Treatment evluation data for Donanemab
+don_result =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="safety", range = "A1:H33")
+```
+
