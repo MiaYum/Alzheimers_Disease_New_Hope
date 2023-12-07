@@ -39,7 +39,7 @@ library(tidyverse)
 ## 1. Death rate by Regions
 
 ```{r, message = FALSE, warning = FALSE}
-data<- read_csv("data/geo_data.csv") %>%
+data<- read_csv("data/geo_data.csv") |> 
   mutate(region = case_when(
     state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont") ~ "Northeast",
     state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin") ~ "Midwest",
@@ -49,11 +49,11 @@ data<- read_csv("data/geo_data.csv") %>%
 ```
 
 ```{r, message = FALSE, warning = FALSE}
-data %>%
-  janitor::clean_names() %>%
-  group_by(region) %>%
-  summarise(avg_death_rate = mean(death_rate, na.rm = TRUE)) %>%
-  arrange(avg_death_rate) %>%
+data |> 
+  janitor::clean_names() |> 
+  group_by(region) |> 
+  summarise(avg_death_rate = mean(death_rate, na.rm = TRUE)) |> 
+  arrange(avg_death_rate) |> 
   knitr::kable(digits = 3)
 ```
 
@@ -62,9 +62,9 @@ data %>%
 * South region has the highest average Alzheimer’s Disease death rate while Northeast region has the lowest.
 
 ```{r, message = FALSE, warning = FALSE}
-data %>%
-  janitor::clean_names() %>%
-  group_by(region) %>%
+data  |> 
+  janitor::clean_names()  |> 
+  group_by(region)  |> 
   ggplot(aes(x = fct_reorder(region, death_rate), y = death_rate, fill = region)) +
   geom_boxplot() +
   labs(title = "Boxplot of Death Rate by Regions", x = "Region", y = "Death Rate") +
@@ -82,8 +82,8 @@ data %>%
 <center> *H~0~ : Equal  variance  among  regions  vs  H~1~ : Unequal  variance*<center>
 
 ```{r,, message = FALSE, warning = FALSE}
-bartlett.test(death_rate ~ factor(region), data = data) %>%
-  broom::tidy() %>%
+bartlett.test(death_rate ~ factor(region), data = data) |> 
+  broom::tidy() |> 
   knitr::kable()
 ```
 
@@ -96,20 +96,20 @@ From the boxplot above, we find that the Alzheimer’s Disease death rate in Wes
 ### extract death rate in West America and Midwest America
 
 ```{r, message = FALSE, warning = FALSE}
-west_death_rate <- data %>% 
-  filter(region == "West") %>% 
+west_death_rate <- data |> 
+  filter(region == "West") |> 
   pull(death_rate)
 
-midwest_death_rate <- data %>% 
-  janitor::clean_names() %>% 
-  filter(region == "Midwest") %>% 
+midwest_death_rate <- data |>  
+  janitor::clean_names() |> 
+  filter(region == "Midwest") |> 
   pull(death_rate)
 
 ```
 
 ```{r,, message = FALSE, warning = FALSE}
-var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level = 0.95) %>% 
-  broom::tidy() %>% 
+var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level = 0.95) |>  
+  broom::tidy() |> 
   knitr::kable()
 ```
 
@@ -118,11 +118,12 @@ The null hypothesis for the variance test is that the two variance are equal. Th
 ### 2 sample t.test with unknown unequal variances
 
 ```{r, message = FALSE, warning = FALSE}
-t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) %>% 
-  broom::tidy() %>% 
+t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) |> 
+  broom::tidy() |> 
   knitr::kable()
 ```
 
+* The p-value is greater than the conventional significance level of 0.05, suggesting that there is not enough evidence to reject the null hypothesis. The results indicate that, based on the data, there is no significant difference in death rates between the "west" and "midwest" regions, or the death rate in the "west" region is not significantly less than the death rate in the "midwest" region.
 
 ## 3 Average Alzheimer's Disease death rate by (region, year) Combination
 
