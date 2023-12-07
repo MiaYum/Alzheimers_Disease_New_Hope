@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -218,7 +222,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -228,6 +298,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -321,6 +401,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Preliminary Analysis</h1>
@@ -339,18 +427,6 @@ $(document).ready(function () {
     state %in% c(&quot;Alabama&quot;, &quot;Arkansas&quot;, &quot;Delaware&quot;, &quot;District of Columbia&quot;, &quot;Florida&quot;, &quot;Georgia&quot;, &quot;Kentucky&quot;, &quot;Louisiana&quot;, &quot;Maryland&quot;, &quot;Mississippi&quot;, &quot;North Carolina&quot;, &quot;Oklahoma&quot;, &quot;South Carolina&quot;, &quot;Tennessee&quot;, &quot;Texas&quot;, &quot;Virginia&quot;, &quot;West Virginia&quot;) ~ &quot;South&quot;,
     state %in% c(&quot;Alaska&quot;, &quot;Arizona&quot;, &quot;California&quot;, &quot;Colorado&quot;, &quot;Hawaii&quot;, &quot;Idaho&quot;, &quot;Montana&quot;, &quot;Nevada&quot;, &quot;New Mexico&quot;, &quot;Oregon&quot;, &quot;Utah&quot;, &quot;Washington&quot;, &quot;Wyoming&quot;) ~ &quot;West&quot;
   ))</code></pre>
-<pre><code>## Rows: 204 Columns: 15
-<<<<<<< HEAD
-## ── Column specification ────────────────────────────────────────────────────────
-=======
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────
->>>>>>> a3151077897cd41954322672f5c7bec5f377af0d
-## Delimiter: &quot;,&quot;
-## chr  (1): state
-## dbl (14): year, death_rate, gdp, pce, rpp, employment, hc_exp, income, edu_l...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>data %&gt;%
   janitor::clean_names() %&gt;%
   group_by(region) %&gt;%
@@ -384,10 +460,10 @@ $(document).ready(function () {
 </tbody>
 </table>
 <ul>
-<li><p>The table shows the arranged average death rate of each region
-from 2018 to 2021.</p></li>
-<li><p>South America has the highest average death rate while Northeast
-America has the lowest.</p></li>
+<li><p>The table shows the arranged average death rate of Alzheimer’s
+Disease of each region from 2018 to 2021.</p></li>
+<li><p>South region has the highest average Alzheimer’s Disease death
+rate while Northeast region has the lowest.</p></li>
 </ul>
 <pre class="r"><code>data %&gt;%
   janitor::clean_names() %&gt;%
@@ -400,7 +476,7 @@ America has the lowest.</p></li>
 <ul>
 <li><p>The boxplot shows the distribution of death rate in each
 region.</p></li>
-<li><p>The variance of death rate is higher in South America.</p></li>
+<li><p>The variance of death rate is higher in South region.</p></li>
 <li><p>We can roughly tell from the plot that the variances of death
 rate among regions are not equal. Thus, we may perform a statistical
 test to check heteroscedasticity</p></li>
@@ -451,10 +527,10 @@ id="t.test-compare-mean-death-rate-between-west-america-and-midwest-america"
 class="section level2">
 <h2>2. t.test : Compare Mean Death Rate Between West America and Midwest
 America</h2>
-<p>From the boxplot above, we find that the death rate in West America
-and Midwest America distribute almost in the same interval. Though the
-median of Midwest America is higher, the variance in West America seems
-smaller. Thus, we want to study if the mean death rate in the two
+<p>From the boxplot above, we find that the Alzheimer’s Disease death
+rate in West region and Midwest region are almost overlapping. Though
+the median of Midwest region is higher, the variance in West region
+seems smaller. Thus, we want to study if the mean death rate in the two
 regions are significantly different.</p>
 <div id="extract-death-rate-in-west-america-and-midwest-america"
 class="section level3">
@@ -470,7 +546,6 @@ midwest_death_rate &lt;- data %&gt;%
 <pre class="r"><code>var.test(west_death_rate,midwest_death_rate,alternative = &quot;two.sided&quot;,conf.level = 0.95) %&gt;% 
   broom::tidy() %&gt;% 
   knitr::kable()</code></pre>
-<pre><code>## Multiple parameters; naming those columns num.df, den.df</code></pre>
 <table>
 <colgroup>
 <col width="8%" />
@@ -579,8 +654,6 @@ Combination</h2>
     values_from = avg_by_year_region
   ) |&gt;  
   knitr::kable(digits = 3)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can override using the
-## `.groups` argument.</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -631,16 +704,6 @@ Combination</h2>
   labs(
     y = &quot;Average Alzheimer&#39;s Disease death rate&quot;,
     title = &quot;Average Alzheimer&#39;s Disease death rate by Region, Year&quot;) </code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;region&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<<<<<<< HEAD
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" />
-* The table and line graph above show the descriptive statistics and
-overall trend. * It is clearly shown in the plot that Northeast region
-has a much lower and South resgion has a much higher average Alzheimer’s
-Disease death rate than the other regions. ### 5 Average Alzheimer’s
-Disease death rate by Income Level</p>
-=======
 <p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <ul>
 <li><p>The table and line graph above show the descriptive statistics
@@ -653,7 +716,6 @@ death rate than the other regions.</p></li>
 <div id="average-alzheimers-disease-death-rate-by-income-level"
 class="section level2">
 <h2>4 Average Alzheimer’s Disease death rate by Income Level</h2>
->>>>>>> a3151077897cd41954322672f5c7bec5f377af0d
 <pre class="r"><code>  data |&gt; 
   group_by(year) |&gt; 
   select(year,income) |&gt; 
@@ -788,45 +850,6 @@ with each other.</p></li>
 have a higher Alzheimer’s Disease Death Rate.</p></li>
 </ul>
 <center>
-<em>H<sub>0</sub> : σ<sup>2</sup>group i = σ<sup>2</sup> group j vs
-H<sub>1</sub> : σ<sup>2</sup>group i ≠ σ<sup>2</sup>group j</em>
-<center>
-<ul>
-<li>We have performed variance test and conclude that the variances are
-equal between the two categories. Since the method is similar to what we
-have used and displayed when studying the regional differences, we do
-not show the process here.</li>
-</ul>
-<pre class="r"><code>bartlett.test(death_rate ~ factor(income_group), data = income_level) |&gt; 
-  broom::tidy() |&gt; 
-  knitr::kable()</code></pre>
-<table>
-<colgroup>
-<col width="13%" />
-<col width="13%" />
-<col width="13%" />
-<col width="58%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="left">method</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">5.190105</td>
-<td align="right">0.0746419</td>
-<td align="right">2</td>
-<td align="left">Bartlett test of homogeneity of variances</td>
-</tr>
-</tbody>
-</table>
-<div id="mean-t-test-tbd" class="section level3">
-<h3>mean t test TBD</h3>
-<center>
 <em>H<sub>0</sub> : mean death_rate group 1 = mean death_rate group 2 vs
 H<sub>1</sub> : mean death_rate group 1 ≠ mean death_rate group 2</em>
 <center>
@@ -938,7 +961,6 @@ Income and Middle Income groups.</p></li>
 expectancy across income groups, with specific differences observed in
 pairwise comparisons between Middle Income vs. Lower Income and Upper
 Income vs. Lower Income.</p>
-</div>
 </div>
 <div id="average-alzheimers-disease-death-rate-by-employment"
 class="section level2">
@@ -1057,56 +1079,15 @@ employ_level |&gt;
   title = &quot;Boxplot of Alzheimer&#39;s Disease Death Rate by Employment Rate&quot;,
   x=&quot;Employment Rate&quot;,
   y=&quot;Alzheimer&#39;s Disease Death Rate&quot;)</code></pre>
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
+<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
 <ul>
 <li>The pattern is clear that low employment tend to a higher
-Alzheimer’s Disease Death Rate.</li>
+Alzheimer’s Disease death rate.</li>
 </ul>
-<center>
-<em>H<sub>0</sub> : σ<sup>2</sup>high employment = σ<sup>2</sup> low
-employment vs H<sub>1</sub> : σ<sup>2</sup> high employment≠ σ2low
-employment</em>
-<center>
-<ul>
-<li>We have performed variance test and conclude that the variances are
-equal between the two categories. Since the method is similar to what we
-have used and displayed when studying the regional differences, we do
-not show the process here.</li>
-</ul>
-<p>（见下方，之后删掉）</p>
-<pre class="r"><code>bartlett.test(death_rate ~ factor(employ_group), data = employ_level) |&gt; 
-  broom::tidy() |&gt; 
-  knitr::kable()</code></pre>
-<table>
-<colgroup>
-<col width="13%" />
-<col width="13%" />
-<col width="13%" />
-<col width="58%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="left">method</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">0.2488522</td>
-<td align="right">0.6178844</td>
-<td align="right">1</td>
-<td align="left">Bartlett test of homogeneity of variances</td>
-</tr>
-</tbody>
-</table>
 <center>
 <em>H<sub>0</sub> : mean high employment = mean low employment vs
 H<sub>1</sub> : mean high employment ≠ mean low employment</em>
 <center>
-<div id="tbd" class="section level3">
-<h3>TBD</h3>
 <pre class="r"><code>t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = TRUE ) %&gt;% 
   broom::tidy() %&gt;% 
   knitr::kable()</code></pre>
@@ -1159,11 +1140,21 @@ Since the method is similar to what we have used and displayed when
 studying the regional differences, we do not show the process here.</li>
 </ul>
 </div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>In this part, we applied statistical analysis to studying the
+differences in Alzheimer’s Disease death rate caused by various factors.
+We first examine the distribution features and then choose appropriate
+tests to perform. We draw the following conclusions from the tests and
+plots result : * South region has the highest Alzheimer’s Disease
+average death rate while Northeast region has the lowest. *</p>
 </div>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1195,7 +1186,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
