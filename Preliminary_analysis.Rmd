@@ -243,15 +243,6 @@ income_level |>
 
 * The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
 
-
-
-<center> *H~0~ : mean death_rate group 1 = mean death_rate group 2  vs  H~1~ :  mean death_rate group 1 ≠ mean death_rate group 2*<center>
- 
-```{r, message = FALSE, warning = FALSE}
-aov(death_rate ~ factor(income_group), data = income_level) %>%
-  broom::tidy() %>%
-  knitr::kable()
-```
  
 <center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal*<center>
 
