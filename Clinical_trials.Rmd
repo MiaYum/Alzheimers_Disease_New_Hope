@@ -59,7 +59,7 @@ race_df |>
          title = "Distribution of Participants' Baseline Race by drugs",
          xaxis = list(title = "Drug"),
          yaxis = list(title = "Percentage (%)"),
-         width=500))
+         width=500)
 ```
 * From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupies a larger proportion of participants in Lecanemab's clinical trial than that in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
