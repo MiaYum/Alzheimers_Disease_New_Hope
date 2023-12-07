@@ -67,9 +67,8 @@ plot_ly(data, x = ~death_rate, type = "histogram", nbinsx = 30, marker = list(co
   layout(title = "Histogram of Death Rate")
 ```
 
-Since our goal is to create a model to predict the death rate, we separately examine the distribution of predictor variables. As shown in the above chart, the distribution of death rate exhibits a slight right skew, with most values concentrated in lower death rate ranges. However, this mild skewness does not necessarily imply a departure from the normality assumption, so we do not perform any transformations on it for now.
+Since our goal is to create a model to predict the death rate, we separately examine the distribution of predictor variables. As shown in the above chart, the distribution of death rate is almost symmetric, thus we do not perform any transformations on it for now.
 
-！！！【memo,下次meeting】Distribution above is symmetric (or slightly left skewed), not right skewed
 ```{r}
 test = data |>
   drop_na(death_rate)
@@ -136,7 +135,7 @@ data |>
     axis.title = element_text(color = "grey20")
   ) +
   labs(
-    title = "Scatter Plot for Death Rate and health related factors Across Years",
+    title = "Scatter Plot for Death Rate and Health Related Factors Across Years",
     y = "Death Rate",
     color = "Year"
   ) +
@@ -170,7 +169,7 @@ data |>
     axis.title = element_text(color = "grey20")
   ) +
   labs(
-    title = "Scatter Plot for Death Rate and health related factors Across Years",
+    title = "Scatter Plot for Death Rate and Social Related Factors Across Years",
     y = "Death Rate",
     color = "Year"
   ) +
@@ -202,7 +201,7 @@ data |>
 
 The graph illustrates a trend where higher levels of educational attainment are associated with lower mortality rates. This pattern suggests that better education may contribute to improved health outcomes, potentially due to increased health awareness, better access to healthcare resources, or healthier lifestyle choices typically associated with higher education levels.
 
-【However, it's important to consider that Alzheimer's disease predominantly affects older individuals, and there may be a temporal discrepancy between the current education levels and those of the older population primarily impacted by this disease. This time-related difference suggests that while educational attainment appears to be a protective factor, the actual impact on Alzheimer's mortality might be influenced by historical changes in education over the decades. Therefore, when interpreting these results, we should be cautious about directly correlating current educational standards with Alzheimer's outcomes in an aging population.】
+However, it's important to consider that Alzheimer's disease predominantly affects older individuals, and there may be a temporal discrepancy between the current education levels and those of the older population primarily impacted by this disease. This time-related difference suggests that while educational attainment appears to be a protective factor, the actual impact on Alzheimer's mortality might be influenced by historical changes in education over the decades. Therefore, when interpreting these results, we should be cautious about directly correlating current educational standards with Alzheimer's outcomes in an aging population.
 
 # Appendix
 ```{r, message = FALSE, warning = FALSE}
