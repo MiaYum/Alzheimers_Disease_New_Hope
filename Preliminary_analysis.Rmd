@@ -57,9 +57,13 @@ data |>
   knitr::kable(digits = 3)
 ```
 
-* The table shows the arranged average death rate of Alzheimer’s Disease of each region from 2018 to 2021.
+* The boxplot displays the distribution of Alzheimer's Disease death rates across different regions.
 
-* South region has the highest average Alzheimer’s Disease death rate while Northeast region has the lowest.
+* While the boxplot primarily illustrates the interquartile range and median, it provides a visual representation of the spread of death rates within each region. In particular, the length of the box and the positioning of the median line indicate the central tendency, and the whiskers show the range of data.
+
+* Notably, the South region exhibits a wider spread of death rates, suggesting greater variability in Alzheimer's Disease mortality within this region compared to others.
+
+* The observation of varying spreads among regions implies potential heterogeneity in Alzheimer's Disease death rates, indicating the importance of further investigation into the factors contributing to this variability.
 
 ```{r, message = FALSE, warning = FALSE}
 data  |> 
@@ -352,13 +356,11 @@ t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "les
 
 * We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
 
-## Summary
+Summary
 
-In this part, we applied statistical analysis to studying the differences in  Alzheimer's Disease death rate caused by various factors. We first examine the distribution features and then choose appropriate tests to perform.
-We draw the following conclusions from the tests and plots result :
-* South region has the highest Alzheimer's Disease average death rate while Northeast region has the lowest.
-* 
+In this analysis, we explored the impact of various factors on Alzheimer's Disease death rates using statistical tests and visualizations. Key findings include:
 
-Regional differences in Alzheimer’s Disease death rates were observed, with significant variations among income and employment groups.
-Income and employment status were associated with Alzheimer’s Disease death rates, with lower income and employment linked to higher death rates.
-These findings suggest that regional, income, and employment factors play a role in Alzheimer’s Disease death rates, providing valuable insights for further investigation and public health interventions.（我感觉写两句话就行
+* Regional differences in Alzheimer's Disease death rates, with the South region having the highest and the Northeast region having the lowest average death rates.
+* Significant variations in Alzheimer's Disease death rates based on income and employment groups, indicating that socioeconomic factors play a role in disease outcomes.
+
+These results provide valuable insights for further investigation and underscore the importance of considering regional and socioeconomic disparities in public health interventions. It's important to note that the observed differences are statistically significant, but further research could explore the practical significance and underlying mechanisms driving these disparities.
