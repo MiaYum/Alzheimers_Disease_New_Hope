@@ -365,10 +365,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Demographic</a>
+      <a href="https://yigebian.shinyapps.io/Demographic_shiny/">Demographic</a>
     </li>
     <li>
-      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Clinical Trials</a>
+      <a href="https://yigebian.shinyapps.io/ClinicalTrials_shiny/">Clinical Trials</a>
     </li>
   </ul>
 </li>
@@ -390,7 +390,7 @@ div.tocify {
       <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Website Repository</a>
     </li>
     <li>
-      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Shiny Repository</a>
+      <a href="https://github.com/YigeBian/Alzheimers_Disease_New_Hope_Shiny">Shiny Repository</a>
     </li>
   </ul>
 </li>
@@ -420,18 +420,18 @@ div.tocify {
 <h1>Analysis</h1>
 <div id="death-rate-by-regions" class="section level2">
 <h2>1. Death rate by Regions</h2>
-<pre class="r"><code>data&lt;- read_csv(&quot;data/geo_data.csv&quot;) %&gt;%
+<pre class="r"><code>data&lt;- read_csv(&quot;data/geo_data.csv&quot;) |&gt; 
   mutate(region = case_when(
     state %in% c(&quot;Connecticut&quot;, &quot;Maine&quot;, &quot;Massachusetts&quot;, &quot;New Hampshire&quot;, &quot;New Jersey&quot;, &quot;New York&quot;, &quot;Pennsylvania&quot;, &quot;Rhode Island&quot;, &quot;Vermont&quot;) ~ &quot;Northeast&quot;,
     state %in% c(&quot;Illinois&quot;, &quot;Indiana&quot;, &quot;Iowa&quot;, &quot;Kansas&quot;, &quot;Michigan&quot;, &quot;Minnesota&quot;, &quot;Missouri&quot;, &quot;Nebraska&quot;, &quot;North Dakota&quot;, &quot;Ohio&quot;, &quot;South Dakota&quot;, &quot;Wisconsin&quot;) ~ &quot;Midwest&quot;,
     state %in% c(&quot;Alabama&quot;, &quot;Arkansas&quot;, &quot;Delaware&quot;, &quot;District of Columbia&quot;, &quot;Florida&quot;, &quot;Georgia&quot;, &quot;Kentucky&quot;, &quot;Louisiana&quot;, &quot;Maryland&quot;, &quot;Mississippi&quot;, &quot;North Carolina&quot;, &quot;Oklahoma&quot;, &quot;South Carolina&quot;, &quot;Tennessee&quot;, &quot;Texas&quot;, &quot;Virginia&quot;, &quot;West Virginia&quot;) ~ &quot;South&quot;,
     state %in% c(&quot;Alaska&quot;, &quot;Arizona&quot;, &quot;California&quot;, &quot;Colorado&quot;, &quot;Hawaii&quot;, &quot;Idaho&quot;, &quot;Montana&quot;, &quot;Nevada&quot;, &quot;New Mexico&quot;, &quot;Oregon&quot;, &quot;Utah&quot;, &quot;Washington&quot;, &quot;Wyoming&quot;) ~ &quot;West&quot;
   ))</code></pre>
-<pre class="r"><code>data %&gt;%
-  janitor::clean_names() %&gt;%
-  group_by(region) %&gt;%
-  summarise(avg_death_rate = mean(death_rate, na.rm = TRUE)) %&gt;%
-  arrange(avg_death_rate) %&gt;%
+<pre class="r"><code>data |&gt; 
+  janitor::clean_names() |&gt; 
+  group_by(region) |&gt; 
+  summarise(avg_death_rate = mean(death_rate, na.rm = TRUE)) |&gt; 
+  arrange(avg_death_rate) |&gt; 
   knitr::kable(digits = 3)</code></pre>
 <table>
 <thead>
@@ -465,9 +465,9 @@ Disease of each region from 2018 to 2021.</p></li>
 <li><p>South region has the highest average Alzheimer’s Disease death
 rate while Northeast region has the lowest.</p></li>
 </ul>
-<pre class="r"><code>data %&gt;%
-  janitor::clean_names() %&gt;%
-  group_by(region) %&gt;%
+<pre class="r"><code>data  |&gt; 
+  janitor::clean_names()  |&gt; 
+  group_by(region)  |&gt; 
   ggplot(aes(x = fct_reorder(region, death_rate), y = death_rate, fill = region)) +
   geom_boxplot() +
   labs(title = &quot;Boxplot of Death Rate by Regions&quot;, x = &quot;Region&quot;, y = &quot;Death Rate&quot;) +
@@ -487,8 +487,8 @@ test to check heteroscedasticity</p></li>
 <em>H<sub>0</sub> : Equal variance among regions vs H<sub>1</sub> :
 Unequal variance</em>
 <center>
-<pre class="r"><code>bartlett.test(death_rate ~ factor(region), data = data) %&gt;%
-  broom::tidy() %&gt;%
+<pre class="r"><code>bartlett.test(death_rate ~ factor(region), data = data) |&gt; 
+  broom::tidy() |&gt; 
   knitr::kable()</code></pre>
 <table>
 <colgroup>
@@ -535,16 +535,16 @@ regions are significantly different.</p>
 <div id="extract-death-rate-in-west-america-and-midwest-america"
 class="section level3">
 <h3>extract death rate in West America and Midwest America</h3>
-<pre class="r"><code>west_death_rate &lt;- data %&gt;% 
-  filter(region == &quot;West&quot;) %&gt;% 
+<pre class="r"><code>west_death_rate &lt;- data |&gt; 
+  filter(region == &quot;West&quot;) |&gt; 
   pull(death_rate)
 
-midwest_death_rate &lt;- data %&gt;% 
-  janitor::clean_names() %&gt;% 
-  filter(region == &quot;Midwest&quot;) %&gt;% 
+midwest_death_rate &lt;- data |&gt;  
+  janitor::clean_names() |&gt; 
+  filter(region == &quot;Midwest&quot;) |&gt; 
   pull(death_rate)</code></pre>
-<pre class="r"><code>var.test(west_death_rate,midwest_death_rate,alternative = &quot;two.sided&quot;,conf.level = 0.95) %&gt;% 
-  broom::tidy() %&gt;% 
+<pre class="r"><code>var.test(west_death_rate,midwest_death_rate,alternative = &quot;two.sided&quot;,conf.level = 0.95) |&gt;  
+  broom::tidy() |&gt; 
   knitr::kable()</code></pre>
 <table>
 <colgroup>
@@ -594,8 +594,8 @@ unequal variance.</p>
 <div id="sample-t.test-with-unknown-unequal-variances"
 class="section level3">
 <h3>2 sample t.test with unknown unequal variances</h3>
-<pre class="r"><code>t.test(west_death_rate,midwest_death_rate,alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = FALSE ) %&gt;% 
-  broom::tidy() %&gt;% 
+<pre class="r"><code>t.test(west_death_rate,midwest_death_rate,alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = FALSE ) |&gt; 
+  broom::tidy() |&gt; 
   knitr::kable()</code></pre>
 <table style="width:100%;">
 <colgroup>
@@ -639,6 +639,14 @@ class="section level3">
 </tr>
 </tbody>
 </table>
+<ul>
+<li>The p-value is greater than the conventional significance level of
+0.05, suggesting that there is not enough evidence to reject the null
+hypothesis. The results indicate that, based on the data, there is no
+significant difference in death rates between the “west” and “midwest”
+regions, or the death rate in the “west” region is not significantly
+less than the death rate in the “midwest” region.</li>
+</ul>
 </div>
 </div>
 <div
@@ -850,43 +858,6 @@ with each other.</p></li>
 have a higher Alzheimer’s Disease Death Rate.</p></li>
 </ul>
 <center>
-<em>H<sub>0</sub> : mean death_rate group 1 = mean death_rate group 2 vs
-H<sub>1</sub> : mean death_rate group 1 ≠ mean death_rate group 2</em>
-<center>
-<pre class="r"><code>aov(death_rate ~ factor(income_group), data = income_level) %&gt;%
-  broom::tidy() %&gt;%
-  knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">term</th>
-<th align="right">df</th>
-<th align="right">sumsq</th>
-<th align="right">meansq</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">factor(income_group)</td>
-<td align="right">2</td>
-<td align="right">2345.505</td>
-<td align="right">1172.75272</td>
-<td align="right">18.23325</td>
-<td align="right">1e-07</td>
-</tr>
-<tr class="even">
-<td align="left">Residuals</td>
-<td align="right">197</td>
-<td align="right">12670.934</td>
-<td align="right">64.31946</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
-<center>
 <em>H<sub>0</sub> : mean of death_rate are equal in three groups vs
 H<sub>1</sub> : at least two means are not equal</em>
 <center>
@@ -1079,7 +1050,7 @@ employ_level |&gt;
   title = &quot;Boxplot of Alzheimer&#39;s Disease Death Rate by Employment Rate&quot;,
   x=&quot;Employment Rate&quot;,
   y=&quot;Alzheimer&#39;s Disease Death Rate&quot;)</code></pre>
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
+<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-18-1.png" width="90%" /></p>
 <ul>
 <li>The pattern is clear that low employment tend to a higher
 Alzheimer’s Disease death rate.</li>
@@ -1148,6 +1119,14 @@ We first examine the distribution features and then choose appropriate
 tests to perform. We draw the following conclusions from the tests and
 plots result : * South region has the highest Alzheimer’s Disease
 average death rate while Northeast region has the lowest. *</p>
+<p>Regional differences in Alzheimer’s Disease death rates were
+observed, with significant variations among income and employment
+groups. Income and employment status were associated with Alzheimer’s
+Disease death rates, with lower income and employment linked to higher
+death rates. These findings suggest that regional, income, and
+employment factors play a role in Alzheimer’s Disease death rates,
+providing valuable insights for further investigation and public health
+interventions.（我感觉写两句话就行</p>
 </div>
 </div>
 

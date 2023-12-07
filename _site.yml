@@ -5,10 +5,10 @@ navbar:
   right:
     - text: "Introduction"
       href: Introduction.html
-    - text: "Data"
-      href: Data.html
     - text: "Analysis"
       menu:
+      - text: "Data Sources"
+        href: Data.html
       - text: "Exploratory Analysis"
         href: EDA.html
       - text: "Preliminary Analysis"
@@ -22,9 +22,9 @@ navbar:
     - text: "Shiny"
       menu:
       - text: "Demographic"
-        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+        href: https://yigebian.shinyapps.io/Demographic_shiny/
       - text: "Clinical Trials"
-        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+        href: https://yigebian.shinyapps.io/ClinicalTrials_shiny/
     - icon: fa-envelope fa-lg
       href: 
     - icon: fa-github fa-lg
@@ -32,7 +32,7 @@ navbar:
       - text: "Website Repository"
         href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
       - text: "Shiny Repository"
-        href: https://github.com/MiaYum/Alzheimers_Disease_New_Hope
+        href: https://github.com/YigeBian/Alzheimers_Disease_New_Hope_Shiny
 output:
   html_document:
     theme: cosmo
