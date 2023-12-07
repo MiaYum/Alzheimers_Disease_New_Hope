@@ -368,3 +368,6 @@ We draw the following conclusions from the tests and plots result :
 * South region has the highest Alzheimer's Disease average death rate while Northeast region has the lowest.
 * 
 
+Regional differences in Alzheimer’s Disease death rates were observed, with significant variations among income and employment groups.
+Income and employment status were associated with Alzheimer’s Disease death rates, with lower income and employment linked to higher death rates.
+These findings suggest that regional, income, and employment factors play a role in Alzheimer’s Disease death rates, providing valuable insights for further investigation and public health interventions.（我感觉写两句话就行
