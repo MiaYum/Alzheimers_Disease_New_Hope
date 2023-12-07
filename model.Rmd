@@ -88,37 +88,49 @@ After applying Backward Elimination, we have obtained a linear regression model 
 
 ## Model Performation
 
-
 ```{r, message = FALSE, warning = FALSE}
-residuals = resid(selected_model)
-
-qqnorm(residuals)
-qqline(residuals, col = "red")
-```
-
-The QQ plot suggests although the slightly deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
-
-```{r}
 pre =
   training_data |>
   add_predictions(selected_model) |>
   add_residuals(selected_model)
 
-ggplot(pre, aes(x = pred, y = resid)) +
+p1 <- ggplot(pre, aes(x = pred, y = resid)) +
   geom_point() +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  xlab("Fitted Values") +
-  ylab("Residuals") +
-  ggtitle("Residuals vs Fitted Plot") +
+  labs(
+    x = "Fitted Values",
+    y = "Residuals",
+    title = "Residuals vs Fitted Plot"
+  ) +
   theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = "grey20"),
     axis.title = element_text(color = "grey20")
   )
+
+residuals = resid(selected_model)
+p2 <- ggplot(as.data.frame(residuals), aes(sample = residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    title = "Normal Q-Q Plot",
+    x = "Theoretical Quantiles",
+    y = "Sample Quantiles"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+
+library(patchwork)
+p1 + p2
+
 ```
 
 The residuals versus fitted plot shows a random distribution of residuals around the zero line without any discernible patterns, indicating good model fit and homoscedasticity. No obvious outliers are present, suggesting that the linear regression model assumptions are likely being met.
+
+The QQ plot suggests although the slightly deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
 
 ```{r, message = FALSE, warning = FALSE}
 broom::glance(selected_model) |>
