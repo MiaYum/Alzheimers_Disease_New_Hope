@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 ```
 
 # Clinical Trials Pipeline
-In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which label all trials on the map and have regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
 
 <img src="project_image/shiny_CT1.png" style="width:85%">
 
