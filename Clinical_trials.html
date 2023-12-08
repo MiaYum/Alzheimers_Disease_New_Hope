@@ -425,61 +425,8 @@ div.tocify {
 </div>
 
 
-<div id="clinical-trials-pipeline" class="section level1">
-<h1>Clinical Trials Pipeline</h1>
-<p>In our quest to deepen the understanding of Alzheimer’s disease and
-its treatment landscape, we have developed an innovative Shiny
-application designed to visualize the clinical trials of Alzheimer’s
-drugs across the United States. This interactive tool is a significant
-stride in making complex trial data accessible, which labels all trials
-on the map and has regional statistics based on zoom size. The following
-screenshot offers a glimpse into the app’s capabilities, and the full
-dashboard can be accessed [here].</p>
-<p><img src="project_image/shiny_CT1.png" style="width:85%"></p>
-</div>
-<div id="trials-comparison" class="section level1">
-<h1>Trials comparison</h1>
-<p>We further evluate and compare the performance of two latest
-promising drugs Lecanemab and Donanemab for their participants’
-characteristics, treatment efficacy, and adverse events.</p>
-<div id="participants-demographics" class="section level2">
-<h2>Participants’ Demographics</h2>
-<pre class="r"><code>sex_df=
-  readxl::read_excel(&quot;data/newdrugdemographic.xlsx&quot;,sheet=&quot;Sex&quot;, range = &quot;A1:C5&quot;) |&gt; 
-  janitor::clean_names()
-sex_df |&gt; 
-  plot_ly(x=~drug, y=~sex_prop, type = &quot;bar&quot;, color = ~sex) |&gt; 
-  layout(barmode = &quot;stack&quot;,
-         title = &quot;Distribution of Participants&#39; Baseline Sex by drugs&quot;,
-         xaxis = list(title = &quot;Drug&quot;),
-         yaxis = list(title = &quot;Percentage (%)&quot;),
-         width=500)</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-cae19a0e67da719a599a" style="width:90%;height:345.6px;"></div>
-<script type="application/json" data-for="htmlwidget-cae19a0e67da719a599a">{"x":{"visdat":{"52e011e02a44":["function () ","plotlyVisDat"]},"cur_data":"52e011e02a44","attrs":{"52e011e02a44":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"width":500,"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"stack","title":"Distribution of Participants' Baseline Sex by drugs","xaxis":{"domain":[0,1],"automargin":true,"title":"Drug","type":"category","categoryorder":"array","categoryarray":["Donanemab","Lecanemab"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Percentage (%)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Lecanemab","Donanemab"],"y":[51.600000000000001,56.5],"type":"bar","name":"Female","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Lecanemab","Donanemab"],"y":[48.399999999999999,43.5],"type":"bar","name":"Male","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<ul>
-<li>From the plot, we can see that there are more female participants in
-Donanemab’s clinical trial that in Lecanemab’s clinical trial.</li>
-</ul>
-<pre class="r"><code>race_df=
-  readxl::read_excel(&quot;data/newdrugdemographic.xlsx&quot;,sheet=&quot;Race&quot;, range = &quot;A1:C9&quot;) |&gt; 
-  janitor::clean_names()
-race_df |&gt; 
-  mutate(race = fct_reorder(race, -race_prop)) |&gt;
-  plot_ly(x=~drug, y=~race_prop, type = &quot;bar&quot;, color = ~race) |&gt; 
-  layout(barmode = &quot;stack&quot;,
-         title = &quot;Distribution of Participants&#39; Baseline Race by drugs&quot;,
-         xaxis = list(title = &quot;Drug&quot;),
-         yaxis = list(title = &quot;Percentage (%)&quot;),
-         width=500)</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-bc491aee7d39c6e9147e" style="width:90%;height:345.6px;"></div>
-<script type="application/json" data-for="htmlwidget-bc491aee7d39c6e9147e">{"x":{"visdat":{"52e07a60407a":["function () ","plotlyVisDat"]},"cur_data":"52e07a60407a","attrs":{"52e07a60407a":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"width":500,"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"stack","title":"Distribution of Participants' Baseline Race by drugs","xaxis":{"domain":[0,1],"automargin":true,"title":"Drug","type":"category","categoryorder":"array","categoryarray":["Donanemab","Lecanemab"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Percentage (%)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Lecanemab","Donanemab"],"y":[76.299999999999997,90],"type":"bar","name":"White","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Lecanemab","Donanemab"],"y":[17.100000000000001,7.2999999999999998],"type":"bar","name":"Asian","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Lecanemab","Donanemab"],"y":[2.2999999999999998,2.5],"type":"bar","name":"Black","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Lecanemab","Donanemab"],"y":[4.2999999999999998,0.20000000000000001],"type":"bar","name":"Other or Missing","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"textfont":{"color":"rgba(231,138,195,1)"},"error_y":{"color":"rgba(231,138,195,1)"},"error_x":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<ul>
-<li>From the plot, we can see there is more diversity in Lecanemab’s
-clinical trial. Races other than white occupy a larger proportion of
-participants in Lecanemab’s clinical trial than in Donanemab’s clinical
-trial than that in Lecanemab’s clinical trial, especially Asians.</li>
-</ul>
-<pre class="r"><code>combine_mean_sd = function(df, group = &quot;&quot;){
+<pre class="r"><code># Function to tidy Donanemab results
+combine_mean_sd = function(df, group = &quot;&quot;){
   
   n = df |&gt; filter(str_detect(group, &quot;Low/medium tau&quot;)) |&gt; pull(sample_size) # number in group 1
   m =  df |&gt; filter(str_detect(group, &quot;combined&quot;)) |&gt; pull(sample_size) # number in group 2
@@ -503,6 +450,82 @@ trial than that in Lecanemab’s clinical trial, especially Asians.</li>
     ci_lower = combined_ci_lower,
     ci_upper = combined_ci_upper,
     time = 0))}</code></pre>
+<div id="clinical-trials-pipeline" class="section level1">
+<h1>Clinical Trials Pipeline</h1>
+<p>In our quest to deepen the understanding of Alzheimer’s disease and
+its treatment landscape, we have developed an innovative Shiny
+application designed to visualize the clinical trials of Alzheimer’s
+drugs across the United States. This interactive tool is a significant
+stride in making complex trial data accessible, which labels all trials
+on the map and has regional statistics based on zoom size. The following
+screenshot offers a glimpse into the app’s capabilities, and the full
+dashboard can be accessed [here].</p>
+<p><img src="project_image/shiny_CT1.png" style="width:85%"></p>
+</div>
+<div id="trials-comparison" class="section level1">
+<h1>Trials comparison</h1>
+<p>We further evaluate and compare the performance of the two latest
+promising drugs Lecanemab and Donanemab for their participants’
+characteristics, treatment efficacy, and adverse events.</p>
+<div id="participants-demographics" class="section level2">
+<h2>Participants’ Demographics []</h2>
+<pre class="r"><code>library(forcats)
+sex_df=
+  readxl::read_excel(&quot;data/newdrugdemographic.xlsx&quot;,sheet=&quot;Sex&quot;, range = &quot;A1:C5&quot;) |&gt; 
+  janitor::clean_names()
+
+race_df=
+  readxl::read_excel(&quot;data/newdrugdemographic.xlsx&quot;,sheet=&quot;Race&quot;, range = &quot;A1:C9&quot;) |&gt; 
+  janitor::clean_names()
+
+sex_colors &lt;- c(&quot;Male&quot; = &quot;#1f77b4&quot;, &quot;Female&quot; = &quot;#ff7f0e&quot;) 
+race_colors &lt;- c(&quot;Black&quot; = &quot;#17becf&quot;, &quot;Asian&quot; =&quot;#9467bd&quot;, &quot;White&quot; = &quot;#2ca02c&quot;, &quot;Other or Missing&quot; = &quot;#8c564b&quot;) 
+
+
+p1 &lt;- sex_df |&gt; 
+  plot_ly(x = ~drug, y = ~sex_prop, type = &quot;bar&quot;, color = ~sex, colors = sex_colors, legendgroup = &quot;sex&quot;) |&gt; 
+  layout(barmode = &quot;stack&quot;,
+         showlegend = TRUE) |&gt;
+    add_annotations(
+    text = &quot;Sex&quot;,
+    x = 0.5,
+    y = 1.05,
+    xref = &quot;paper&quot;,
+    yref = &quot;paper&quot;,
+    showarrow = FALSE,
+    font = list(size = 10)
+  )
+
+p2 &lt;- race_df |&gt; 
+  mutate(race = fct_reorder(race, -race_prop)) |&gt; 
+  plot_ly(x = ~drug, y = ~race_prop, type = &quot;bar&quot;, color = ~race, colors = race_colors, legendgroup = &quot;race&quot;) |&gt; 
+  layout(barmode = &quot;stack&quot;,
+         showlegend = TRUE) |&gt;
+    add_annotations(
+    text = &quot;Race&quot;,
+    x = 0.5,
+    y = 1.05,
+    xref = &quot;paper&quot;,
+    yref = &quot;paper&quot;,
+    showarrow = FALSE,
+    font = list(size = 10)
+  )
+
+subplot(p1, p2, nrows = 1, margin = 0.05) |&gt;
+  layout(title = &quot;Distribution of Baseline Participants&#39; Sex and Race by Drug&quot;,
+         yaxis = list(title = &quot;Percentage (%)&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-a23857b74f2f8d3ada33" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-a23857b74f2f8d3ada33">{"x":{"data":[{"x":["Lecanemab","Donanemab"],"y":[51.600000000000001,56.5],"legendgroup":"sex","type":"bar","name":"Female","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"textfont":{"color":"rgba(255,127,14,1)"},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Lecanemab","Donanemab"],"y":[48.399999999999999,43.5],"legendgroup":"sex","type":"bar","name":"Male","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"textfont":{"color":"rgba(31,119,180,1)"},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Lecanemab","Donanemab"],"y":[76.299999999999997,90],"legendgroup":"race","type":"bar","name":"White","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"textfont":{"color":"rgba(44,160,44,1)"},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x2","yaxis":"y2","frame":null},{"x":["Lecanemab","Donanemab"],"y":[17.100000000000001,7.2999999999999998],"legendgroup":"race","type":"bar","name":"Asian","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"textfont":{"color":"rgba(148,103,189,1)"},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"xaxis":"x2","yaxis":"y2","frame":null},{"x":["Lecanemab","Donanemab"],"y":[2.2999999999999998,2.5],"legendgroup":"race","type":"bar","name":"Black","marker":{"color":"rgba(23,190,207,1)","line":{"color":"rgba(23,190,207,1)"}},"textfont":{"color":"rgba(23,190,207,1)"},"error_y":{"color":"rgba(23,190,207,1)"},"error_x":{"color":"rgba(23,190,207,1)"},"xaxis":"x2","yaxis":"y2","frame":null},{"x":["Lecanemab","Donanemab"],"y":[4.2999999999999998,0.20000000000000001],"legendgroup":"race","type":"bar","name":"Other or Missing","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"textfont":{"color":"rgba(140,86,75,1)"},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"xaxis":"x2","yaxis":"y2","frame":null}],"layout":{"xaxis":{"domain":[0,0.45000000000000001],"automargin":true,"type":"category","categoryorder":"array","categoryarray":["Donanemab","Lecanemab"],"anchor":"y"},"xaxis2":{"domain":[0.55000000000000004,1],"automargin":true,"type":"category","categoryorder":"array","categoryarray":["Donanemab","Lecanemab"],"anchor":"y2"},"yaxis2":{"domain":[0,1],"automargin":true,"anchor":"x2"},"yaxis":{"domain":[0,1],"automargin":true,"anchor":"x","title":"Percentage (%)"},"annotations":[{"text":"Sex","x":0.22500000000000001,"y":1.05,"xref":"paper","yref":"paper","showarrow":false,"font":{"size":10}},{"text":"Race","x":0.77500000000000002,"y":1.05,"xref":"paper","yref":"paper","showarrow":false,"font":{"size":10}}],"shapes":[],"images":[],"margin":{"b":40,"l":60,"t":25,"r":10},"barmode":"stack","showlegend":true,"hovermode":"closest","title":"Distribution of Baseline Participants' Sex and Race by Drug"},"attrs":{"6a6864c366c":{"x":{},"y":{},"legendgroup":"sex","color":{},"colors":["#1f77b4","#ff7f0e"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"6a686845db4":{"x":{},"y":{},"legendgroup":"race","color":{},"colors":["#17becf","#9467bd","#2ca02c","#8c564b"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li><p>From the plot, we can see that there are more female participants
+in Donanemab’s clinical trial that in Lecanemab’s clinical
+trial.</p></li>
+<li><p>From the plot, we can also see there is more diversity in
+Lecanemab’s clinical trial. Races other than white occupy a larger
+proportion of participants in Lecanemab’s clinical trial than in
+Donanemab’s clinical trial than that in Lecanemab’s clinical trial,
+especially Asians.</p></li>
+</ul>
 <p>All trials participants took Alzheimer’s tests to evaluate their
 stages at the start of study. CDR-SB (Clinical Dementia Rating Scale Sum
 of Boxes), ADAS-Cog (Alzheimer’s Disease Assessment Scale - Cognitive
@@ -538,11 +561,11 @@ ggplot(bind_rows(lec_result, don_result) |&gt; filter (!(outcome %in% c(&quot;CD
   geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
   geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
   facet_wrap(~outcome, scales = &quot;free_y&quot;) +
-  labs(title = &quot;Mean with 95% CI over Time&quot;,
+  labs(title = &quot;Mean with 95% CI at Baseline&quot;,
        x = &quot;Time&quot;,
        y = &quot;Mean&quot;) +
   theme_minimal()</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 </div>
 <div id="treatment-evaluation" class="section level2">
 <h2>Treatment evaluation</h2>
@@ -597,7 +620,7 @@ ggplot(CDR_SB_merge, aes(x = as.factor(time), y = mean, fill = group, color = gr
        y = &quot;Mean&quot;) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
 <ul>
 <li>The trial results demonstrated that both treatments slows the
 clinical progression of Alzheimer compared to their placebo as measured
@@ -638,7 +661,7 @@ ggplot(ADAS_Cog_merge, aes(x = as.factor(time), y = mean, fill = group, color = 
        y = &quot;Mean&quot;) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
 <ul>
 <li>A more pronounced reduction in the mean change from baseline to
 endpoint in the treatment group, as compared to the placebo, was
@@ -669,8 +692,8 @@ plot_ly(Don_KM |&gt;
   layout(title = &quot;Hazard Plot for Donanemab&quot;,
              xaxis = list(title = &quot;Days from First Infusion&quot;),
              yaxis = list(title = &quot;Percentage of Participants Progression&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-55cc0f1a5d16b10a8484" style="width:90%;height:345.6px;"></div>
-<script type="application/json" data-for="htmlwidget-55cc0f1a5d16b10a8484">{"x":{"visdat":{"52e0423230e0":["function () ","plotlyVisDat"]},"cur_data":"52e0423230e0","attrs":{"52e0423230e0":{"x":{},"y":{},"line":{"shape":"hv"},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Hazard Plot for Donanemab","xaxis":{"domain":[0,1],"automargin":true,"title":"Days from First Infusion"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Percentage of Participants Progression"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.035000000000000003,0.070000000000000007,0.078,0.154,0.26300000000000001,0.26300000000000001],"line":{"color":"rgba(68,1,84,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.081000000000000003,0.14999999999999999,0.17000000000000001,0.246,0.38700000000000001,0.38700000000000001],"line":{"color":"rgba(253,231,37,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0cdc15586fbb283db96c" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-0cdc15586fbb283db96c">{"x":{"visdat":{"6a68268e2e3f":["function () ","plotlyVisDat"]},"cur_data":"6a68268e2e3f","attrs":{"6a68268e2e3f":{"x":{},"y":{},"line":{"shape":"hv"},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Hazard Plot for Donanemab","xaxis":{"domain":[0,1],"automargin":true,"title":"Days from First Infusion"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Percentage of Participants Progression"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.035000000000000003,0.070000000000000007,0.078,0.154,0.26300000000000001,0.26300000000000001],"line":{"color":"rgba(68,1,84,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0,60,120,180,240,360,480,540],"y":[0,0,0.081000000000000003,0.14999999999999999,0.17000000000000001,0.246,0.38700000000000001,0.38700000000000001],"line":{"color":"rgba(253,231,37,1)","shape":"hv"},"type":"scatter","mode":"markers+lines","name":"placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>The hazard ratio for the combined group of Donanemab was found to be
 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a
@@ -709,19 +732,19 @@ merge_safety = left_join(lec_safety, don_safety, by = &quot;events&quot;)</code>
   layout(title = &quot;Barplot for Adverse Events&quot;,
              xaxis = list(title = &quot;Adverse Event&quot;),
              yaxis = list(title = &quot;Number of participants&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-797641ab69d6ed23192f" style="width:90%;height:345.6px;"></div>
-<script type="application/json" data-for="htmlwidget-797641ab69d6ed23192f">{"x":{"visdat":{"52e09952638":["function () ","plotlyVisDat"]},"cur_data":"52e09952638","attrs":{"52e09952638":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Barplot for Adverse Events","xaxis":{"domain":[0,1],"automargin":true,"title":"Adverse Event","type":"category","categoryorder":"array","categoryarray":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of participants"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[759,148,69,16],"type":"bar","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[718,138,32,10],"type":"bar","name":"donanemab_placebo","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[798,126,62,6],"type":"bar","name":"lecanemab","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[735,101,26,7],"type":"bar","name":"lecanemab_placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-56bf465a3618f63480d8" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-56bf465a3618f63480d8">{"x":{"visdat":{"6a687de67447":["function () ","plotlyVisDat"]},"cur_data":"6a687de67447","attrs":{"6a687de67447":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Barplot for Adverse Events","xaxis":{"domain":[0,1],"automargin":true,"title":"Adverse Event","type":"category","categoryorder":"array","categoryarray":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of participants"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[759,148,69,16],"type":"bar","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[718,138,32,10],"type":"bar","name":"donanemab_placebo","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[798,126,62,6],"type":"bar","name":"lecanemab","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Participants with ≥1 AEs","Participants with ≥1 serious Aes","Study discontinuations due to AEs","Death"],"y":[735,101,26,7],"type":"bar","name":"lecanemab_placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <ul>
-<li>The Lecanemab group experienced a 0.7% death rate (6 cases) compared
-to 0.8% (7 cases) in the placebo group, with no deaths linked to
-Lecanemab or ARIA. Serious adverse events were slightly higher in the
+<li><p>The Lecanemab group experienced a 0.7% death rate (6 cases)
+compared to 0.8% (7 cases) in the placebo group, with no deaths linked
+to Lecanemab or ARIA. Serious adverse events were slightly higher in the
 Lecanemab group at 14.0% (126 cases) versus 11.3% (101 cases) in the
-placebo.</li>
-<li>For Donanemab, the death rate was 1.9% (16 cases) in the treatment
-group against 1.1% (10 cases) in the placebo, with serious adverse
-events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases) for the
-placebo. These results suggest a similar safety profile for both drugs
-compared to their respective placebo groups.</li>
+placebo.</p></li>
+<li><p>For Donanemab, the death rate was 1.9% (16 cases) in the
+treatment group against 1.1% (10 cases) in the placebo, with serious
+adverse events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases)
+for the placebo. These results suggest a similar safety profile for both
+drugs compared to their respective placebo groups.</p></li>
 </ul>
 <pre class="r"><code>safety_test = function(a, b, c, d, n1, n2){
   RD = round(a/n1 - b/n2, 4)
@@ -807,8 +830,8 @@ merge_ae = left_join(lec_ae, don_ae, by = &quot;ae&quot;)</code></pre>
   layout(title = &quot;Barplot for Adverse Events&quot;,
              xaxis = list(title = &quot;Adverse Event&quot;),
              yaxis = list(title = &quot;Number of participants&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-32824490af744f088af5" style="width:90%;height:345.6px;"></div>
-<script type="application/json" data-for="htmlwidget-32824490af744f088af5">{"x":{"visdat":{"52e0496a3b1a":["function () ","plotlyVisDat"]},"cur_data":"52e0496a3b1a","attrs":{"52e0496a3b1a":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Barplot for Adverse Events","xaxis":{"domain":[0,1],"automargin":true,"title":"Adverse Event","type":"category","categoryorder":"array","categoryarray":["Diarrhea","Urinary tract infection","Arrthralgia","Dizziness","Infusion-related reaction","Fall","Headache","ARIA-H","ARIA-E"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of participants"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[74,205,168,119,114,45,49,53,43],"type":"bar","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[4,17,65,86,110,59,42,48,50],"type":"bar","name":"donanemab_placebo","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[237,113,155,100,93,78,53,49,48],"type":"bar","name":"lecanemab","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[66,15,81,73,86,82,62,46,58],"type":"bar","name":"lecanemab_placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-d14649c365ed4b61816d" style="width:90%;height:345.6px;"></div>
+<script type="application/json" data-for="htmlwidget-d14649c365ed4b61816d">{"x":{"visdat":{"6a683d826d32":["function () ","plotlyVisDat"]},"cur_data":"6a683d826d32","attrs":{"6a683d826d32":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Barplot for Adverse Events","xaxis":{"domain":[0,1],"automargin":true,"title":"Adverse Event","type":"category","categoryorder":"array","categoryarray":["Diarrhea","Urinary tract infection","Arrthralgia","Dizziness","Infusion-related reaction","Fall","Headache","ARIA-H","ARIA-E"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of participants"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[74,205,168,119,114,45,49,53,43],"type":"bar","name":"donanemab","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[4,17,65,86,110,59,42,48,50],"type":"bar","name":"donanemab_placebo","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"textfont":{"color":"rgba(49,104,142,1)"},"error_y":{"color":"rgba(49,104,142,1)"},"error_x":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[237,113,155,100,93,78,53,49,48],"type":"bar","name":"lecanemab","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"textfont":{"color":"rgba(53,183,121,1)"},"error_y":{"color":"rgba(53,183,121,1)"},"error_x":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Infusion-related reaction","ARIA-E","ARIA-H","Headache","Fall","Urinary tract infection","Arrthralgia","Dizziness","Diarrhea"],"y":[66,15,81,73,86,82,62,46,58],"type":"bar","name":"lecanemab_placebo","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>The barplot clearly shows notable differences in specific adverse
 events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract
 infections, and Headaches) between the treatment and placebo groups. To
@@ -823,7 +846,7 @@ understanding of the significance of these adverse events.</p>
 # chisq.test(test$lecanemab, p = test$p, correct = FALSE) \
 lec_ae_result = lec_ae |&gt;
   mutate(testresult = map2(lecanemab, lecanemab_placebo, \(a, b) safety_test(a, b, 898-a, 897-b, 898, 897))) |&gt;
-  rename(AE = ae) |&gt;
+  rename(Adverse_Effect = ae) |&gt;
   unnest(testresult) |&gt;
   select(-lecanemab, -lecanemab_placebo)
 
@@ -839,7 +862,7 @@ kable(lec_ae_result)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">AE</th>
+<th align="left">Adverse_Effect</th>
 <th align="right">Risk_Diff</th>
 <th align="right">Risk_Ratio</th>
 <th align="right">Odds_Ratio</th>
@@ -941,7 +964,7 @@ patient care.</li>
 
 don_ae_result = don_ae |&gt;
   mutate(testresult = map2(donanemab, donanemab_placebo, \(a, b) safety_test(a, b, 853-a, 874-b, 853, 874))) |&gt;
-  rename(AE = ae) |&gt;
+  rename(Adverse_Effect = ae) |&gt;
   unnest(testresult) |&gt;
   select(-donanemab, -donanemab_placebo)
 
@@ -957,7 +980,7 @@ kable(don_ae_result)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">AE</th>
+<th align="left">Adverse_Effect</th>
 <th align="right">Risk_Diff</th>
 <th align="right">Risk_Ratio</th>
 <th align="right">Odds_Ratio</th>
@@ -1060,7 +1083,7 @@ com_ae =  don_ae |&gt;
 
 com_ae_test = com_ae |&gt;
   mutate(testresult = map2(lecanemab, donanemab, \(a, b) safety_test(a, b, 898-a, 853-b, 898, 853))) |&gt;
-  rename(AE = ae) |&gt;
+  rename(Adverse_Effect = ae) |&gt;
   unnest(testresult) |&gt;
   select(-donanemab, -lecanemab) |&gt;
   filter(P.value &lt; 0.05)
@@ -1077,7 +1100,7 @@ kable(com_ae_test)</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">AE</th>
+<th align="left">Adverse_Effect</th>
 <th align="right">Risk_Diff</th>
 <th align="right">Risk_Ratio</th>
 <th align="right">Odds_Ratio</th>
@@ -1131,11 +1154,11 @@ ggplot(Don_result, aes(x = as.factor(time), y = mean, fill = group, color = grou
   labs(title = &quot;Mean with 95% CI over Time&quot;,
        x = &quot;Time&quot;,
        y = &quot;Mean&quot;) +
-  theme_minimal()+
+  theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = &quot;bottom&quot;) +
   guides(color = guide_legend(nrow = 2, byrow = TRUE))</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-18-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
 </div>
 </div>
 </div>
@@ -1159,7 +1182,7 @@ ggplot(MMSE, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
        x = &quot;Time&quot;,
        y = &quot;Mean&quot;) +
   theme_minimal()</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-18-1.png" width="90%" /></p>
 <p>The MMSE scores provide information about the cognitive function of
 the participants in the study. The mean scores and standard deviations
 can be used to compare the cognitive performance of the donanemab group
@@ -1187,7 +1210,7 @@ ggplot(iADRS, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
        x = &quot;Time&quot;,
        y = &quot;Mean&quot;) +
   theme_minimal()</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-19-1.png" width="90%" /></p>
 <p>The results show that treatment with donanemab resulted in a
 statistically significant slowing of clinical progression compared to
 placebo in both the low/medium tau and combined populations.</p>
@@ -1217,7 +1240,7 @@ ggplot(ADCS_iADL, aes(x = as.factor(time), y = mean, fill = group, color = group
        x = &quot;Time&quot;,
        y = &quot;Mean&quot;) +
   theme_minimal()</code></pre>
-<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-21-1.png" width="90%" /></p>
+<p><img src="Clinical_trials_files/figure-html/unnamed-chunk-20-1.png" width="90%" /></p>
 <p>In the trial results, changes in ADCS-iADL reflected the impact of
 donanemab treatment on patients’ functioning of daily living. By
 comparing changes in ADCS-iADL scores between the donanemab group and
