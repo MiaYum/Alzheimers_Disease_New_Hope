@@ -196,7 +196,7 @@ elderly_rate = read_excel("./Data/age_over_65/age_over_65.xlsx") |>
     names_to = "year",
     values_to = "elder_rate"
   ) |>
-  mutate(year = as.numeric(str_replace(year, "x", "")))|>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
   arrange(state, year)
 
 obesity_rate = read_csv("./Data/obesity.csv") |>
@@ -206,7 +206,7 @@ obesity_rate = read_csv("./Data/obesity.csv") |>
     names_to = "year",
     values_to = "obesity_rate"
   ) |>
-  mutate(year = as.numeric(str_replace(year, "x", "")))|>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
   arrange(state, year)
 ```
 
@@ -368,7 +368,7 @@ data <- na.omit(data)
 
 ```{r, message = FALSE, warning = FALSE}
 library(corrplot)
-data_selected_social <-data %>% select(gdp, pce, rpp, employment,hc_exp,income,edu_level)
+data_selected_social <- data %>% select(gdp, pce, rpp, employment,hc_exp,income,edu_level)
 # Calculate the correlation matrix
 correlation_matrix <- cor(data_selected_social)
 
@@ -379,7 +379,7 @@ corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black",
 From the heatmap, we observed a high degree of correlation among GDP, personal consumption expenditure (PCE), regional price parity (RPP), employment, healthcare expenditure (HC_EXP), income, and education level. Consequently, we decided to remove GDP, PCE, and RPP from our analysis. Firstly, from a practical standpoint, while GDP, PCE, and RPP do provide some insights into the economic conditions of a region, their direct connection to Alzheimer's disease death rates may be relatively weak. In contrast, variables like employment status, healthcare expenditure, personal income, and education level are more likely to directly impact the survival rates of Alzheimer's disease patients. Secondly, removing highly correlated variables helps mitigate the issues related to multicollinearity, enhancing the stability and interpretability of the model. 
 
 ```{r, message = FALSE, warning = FALSE}
-data_selected_desease <-data %>% select(diabetes_rate,cardio_rate,smoke_rate,elder_rate,obesity_rate)
+data_selected_desease <- data %>% select(diabetes_rate,cardio_rate,smoke_rate,elder_rate,obesity_rate)
 # Calculate the correlation matrix
 correlation_matrix <- cor(data_selected_desease)
 
@@ -489,7 +489,7 @@ However, it's important to consider that Alzheimer's disease predominantly affec
 ### 1. Death rate by Regions
 
 ```{r, message = FALSE, warning = FALSE}
-data<- read_csv("data/geo_data.csv") |> 
+data <- read_csv("data/geo_data.csv") |> 
   mutate(region = case_when(
     state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont") ~ "Northeast",
     state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin") ~ "Midwest",
@@ -625,51 +625,51 @@ data |>
 * We use this income group division to calculate average Alzheimer's Disease death rate of each group.
 
 ```{r, message = FALSE, warning = FALSE}
-income_level_2018=
+income_level_2018 =
   data |>  
   group_by(year) |> 
-  filter(year==2018) |> 
+  filter(year == 2018) |> 
   mutate(
-    income_group=case_when(
+    income_group = case_when(
       income < 48986.21 ~"Lower Income",
       income > 1.3* 48986.21 ~"Upper Income",
       TRUE ~  "Middle income"
     )) 
 
-income_level_2019=
+income_level_2019 =
   data |>  
   group_by(year) |> 
-  filter(year==2019) |> 
+  filter(year == 2019) |> 
   mutate(
-    income_group=case_when(
+    income_group = case_when(
       income <49792.03 ~"Lower Income",
       income > 1.3* 49792.03 ~"Upper Income",
       TRUE ~  "Middle income"
     ))
 
-income_level_2020=
+income_level_2020 =
   data |>  
   group_by(year) |> 
-  filter(year==2020) |> 
+  filter(year == 2020) |> 
   mutate(
-    income_group=case_when(
+    income_group = case_when(
       income <52442.06 ~"Lower Income",
       income > 1.3* 52442.06 ~"Upper Income",
       TRUE ~  "Middle income"
     )) 
     
-income_level_2021=
+income_level_2021 =
   data |>  
   group_by(year) |> 
-  filter(year==2021) |> 
+  filter(year == 2021) |> 
   mutate(
-    income_group=case_when(
+    income_group = case_when(
       income <54057.93 ~"Lower Income",
       income > 1.3* 54057.93 ~"Upper Income",
       TRUE ~  "Middle income"
     ))
 
-income_level=
+income_level =
   bind_rows(income_level_2018,income_level_2019,income_level_2020,income_level_2021)
 
 income_level |> 
@@ -689,8 +689,8 @@ income_level |>
   geom_boxplot() +
   labs(
   title = "Boxplot of Alzheimer's Disease Death Rate by Income Groups", 
-  x="Income Groups",
-  y= "Alzheimer's Disease death rate")
+  x = "Income Groups",
+  y = "Alzheimer's Disease death rate")
 ```
 
 * The boxes of different income groups are almost not overlapping with each other.
@@ -703,8 +703,8 @@ income_level |>
 ```{r, message = FALSE, warning = FALSE}
 anova_result <- aov(death_rate ~ factor(income_group), data = income_level)
 
-TukeyHSD(anova_result) %>%
-  broom::tidy() %>%
+TukeyHSD(anova_result) |> 
+  broom::tidy() |> 
   knitr::kable()
 ```
 
@@ -734,47 +734,47 @@ In summary, there are statistically significant variations in life expectancy ac
 * We use this employment group division to calculate average Alzheimer's Disease death rate of each group.  
 
 ```{r, message = FALSE, warning = FALSE}
-employ_2018=
+employ_2018 =
   data |>  
   group_by(year) |> 
-  filter(year==2018) |> 
+  filter(year == 2018) |> 
   mutate(
-    employ_group=case_when(
+    employ_group = case_when(
       employment <= 0.617 ~"Low Employment Rate",
       employment >0.617~"High Employment Rate",
     )) 
   
-employ_2019=
+employ_2019 =
   data |>  
   group_by(year) |> 
-  filter(year==2019) |> 
+  filter(year == 2019) |> 
   mutate(
-    employ_group=case_when(
+    employ_group = case_when(
       employment <= 0.617 ~"Low Employment Rate",
       employment > 0.617~"High Employment Rate",
     )) 
 
-employ_2020=
+employ_2020 =
   data |>  
   group_by(year) |> 
-  filter(year==2020) |> 
+  filter(year == 2020) |> 
   mutate(
-    employ_group=case_when(
+    employ_group = case_when(
       employment <= 0.588 ~"Low Employment Rate",
       employment > 0.588~"High Employment Rate",
     )) 
     
-employ_2021=
+employ_2021 =
   data |>  
   group_by(year) |> 
-  filter(year==2021) |> 
+  filter(year == 2021) |> 
   mutate(
-    employ_group=case_when(
+    employ_group = case_when(
       employment <= 0.612 ~"Low Employment Rate",
       employment >0.612~"High Employment Rate",
     )) 
 
-employ_level=
+employ_level =
   bind_rows(employ_2018,employ_2019,employ_2020,employ_2021)
 
 employ_level |> 
@@ -790,8 +790,8 @@ employ_level |>
   geom_boxplot() +
   labs(
   title = "Boxplot of Alzheimer's Disease Death Rate by Employment Rate",
-  x="Employment Rate",
-  y="Alzheimer's Disease Death Rate")
+  x = "Employment Rate",
+  y = "Alzheimer's Disease Death Rate")
 ```
 
 * The pattern is clear that low employment tend to a higher Alzheimer's Disease death rate. 
@@ -799,8 +799,8 @@ employ_level |>
 <center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment* </center>
 
 ```{r, message = FALSE, warning = FALSE}
-t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) %>% 
-  broom::tidy() %>% 
+t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) |>  
+  broom::tidy() |> 
   knitr::kable()
 ```
 
@@ -811,6 +811,7 @@ t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "les
 In this analysis, we explored the impact of various factors on Alzheimer's Disease death rates using statistical tests and visualizations. Key findings include:
 
 * Regional differences in Alzheimer's Disease death rates, with the South region having the highest and the Northeast region having the lowest average death rates.
+
 * Significant variations in Alzheimer's Disease death rates based on income and employment groups, indicating that socioeconomic factors play a role in disease outcomes.
 
 # Model
@@ -870,10 +871,11 @@ backward_result = step(model, direction = 'backward', trace = 0)
 ```{r, message = FALSE, warning = FALSE}
 selected_model = lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 
-summary(selected_model)|>
+summary(selected_model) |>
   broom::tidy() |>
   knitr::kable()
 ```
+
 After applying Backward Elimination, we have obtained a linear regression model that is streamlined and comprises only the statistically significant predictors.
 
 ### Model Performance
@@ -961,7 +963,7 @@ cv_df |>
     x = "Model Linear Regression",
     y = "Prediction Errors"
   ) +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = "grey20"),
@@ -1035,14 +1037,14 @@ cv_df |>
     everything(),
     names_to = "model", 
     values_to = "rmse") %>% 
-  ggplot(aes(x= model, y = rmse)) + 
+  ggplot(aes(x = model, y = rmse)) + 
   geom_violin(fill = "blue", alpha = 0.5) +
   labs(
     title = "Prediction Errors For Our Model Under CV",
     x = "Model Random Forest",
     y = "Prediction Errors"
   ) +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = "grey20"),
@@ -1050,7 +1052,6 @@ cv_df |>
   )
 
 ```
-
 
 From the plot, the RMSE is predominantly below 7, ranging from approximately 5.5 to 9. This level of RMSE is lower compared to that of the linear models we've previously evaluated, indicating that this model performs better. Lower RMSE values signify more accurate predictions, thus suggesting that this model is a more effective predictor for our dataset.
 
@@ -1093,7 +1094,7 @@ ggplot(results_df, aes(x = R_squared)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = 'blue', alpha = 0.5) +
   geom_density(alpha = .2, fill = "red") +
   labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = "grey20"),
@@ -1115,7 +1116,7 @@ ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
   labs(title = "Linear Regression Predictions",
        x = "Actual Values",
        y = "Predicted Values") +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = "grey20"),
@@ -1153,7 +1154,7 @@ library(knitr)
 ```
 
 ## Clinical Trials Pipeline
-In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which label all trials on the map and have regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
 
 <img src="project_image/shiny_CT1.png" style="width:85%">
 
@@ -1173,6 +1174,7 @@ sex_df |>
          yaxis = list(title = "Percentage (%)"),
          width=500)
 ```
+
 * From the plot, we can see that there are more female participants in Donanemab's clinical trial than that in Lecanemab's clinical trial.
 
 ```{r, message = FALSE, warning = FALSE}
@@ -1309,6 +1311,7 @@ The results show that treatment with donanemab resulted in a statistically signi
 The Clinical Dementia Rating Scale Sum of Boxes (CDR-SB) is a widely used assessment tool for evaluating the severity of dementia. It is a composite score derived from the Clinical Dementia Rating (CDR) scale, which is used to assess the cognitive and functional abilities of individuals with dementia.
 
 The CDR-SB incorporates ratings across six domains: memory, orientation, judgment and problem solving, community affairs, home and hobbies, and personal care. Each domain is rated on a scale from 0 (no impairment) to 3 (severe impairment), and the total CDR-SB score ranges from 0 to 18, with higher scores indicating greater clinical impairment.
+
 ```{r}
 CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
 
@@ -1385,7 +1388,8 @@ The MMSE scores provide information about the cognitive function of the particip
 
 ### Survival Analysis
 
-The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
+The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following.
+
 ```{r, message = FALSE, warning = FALSE}
 Don_KM = 
   read_excel("./Data/Donanemab.xlsx", sheet = "K-M", range = "A1:D16") |>
@@ -1403,7 +1407,7 @@ plot_ly(Don_KM |>
              yaxis = list(title = "Percentage of Participants Progression"))
 ```
 
-*   The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
+*The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
 
 ### Adverse Events
 
@@ -1435,8 +1439,9 @@ plot_ly(merge_safety |>
              yaxis = list(title = "Number of participants"))
 ```
 
-*   The Lecanemab group experienced a 0.7% death rate (6 cases) compared to 0.8% (7 cases) in the placebo group, with no deaths linked to Lecanemab or ARIA. Serious adverse events were slightly higher in the Lecanemab group at 14.0% (126 cases) versus 11.3% (101 cases) in the placebo. 
-*   For Donanemab, the death rate was 1.9% (16 cases) in the treatment group against 1.1% (10 cases) in the placebo, with serious adverse events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases) for the placebo. These results suggest a similar safety profile for both drugs compared to their respective placebo groups.
+*The Lecanemab group experienced a 0.7% death rate (6 cases) compared to 0.8% (7 cases) in the placebo group, with no deaths linked to Lecanemab or ARIA. Serious adverse events were slightly higher in the Lecanemab group at 14.0% (126 cases) versus 11.3% (101 cases) in the placebo. 
+
+*For Donanemab, the death rate was 1.9% (16 cases) in the treatment group against 1.1% (10 cases) in the placebo, with serious adverse events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases) for the placebo. These results suggest a similar safety profile for both drugs compared to their respective placebo groups.
 
 ```{r}
 safety_test = function(a, b, c, d, n1, n2){
@@ -1505,7 +1510,7 @@ lec_ae_result = lec_ae |>
 kable(lec_ae_result)
 ```
 
-*   The statistical tests reveals significant differences in the incidence of infusion-related reactions, ARIA-E/ARIA-H, and headaches between the Lecanemab and placebo groups. These findings are consistent with the most common side effects listed on the Lecanemab website, validating our results. This highlights the need for careful monitoring of these specific adverse events when considering Lecanemab for Alzheimer's treatment, ensuring informed decision-making and optimized patient care.
+*The statistical tests reveals significant differences in the incidence of infusion-related reactions, ARIA-E/ARIA-H, and headaches between the Lecanemab and placebo groups. These findings are consistent with the most common side effects listed on the Lecanemab website, validating our results. This highlights the need for careful monitoring of these specific adverse events when considering Lecanemab for Alzheimer's treatment, ensuring informed decision-making and optimized patient care.
 
 #### Donanemab vs Placebo
 
@@ -1523,7 +1528,7 @@ don_ae_result = don_ae |>
 kable(don_ae_result)
 ```
 
-*   The test for comparing Donanemab and its placebo group has similarly identified significant differences in the occurrence of infusion-related reactions, ARIA-E/ARIA-H, and headaches. This parallel finding with Donanemab, mirroring the results observed with Lecanemab, underscores the importance of these specific adverse events in the context of Alzheimer's disease treatments.
+*The test for comparing Donanemab and its placebo group has similarly identified significant differences in the occurrence of infusion-related reactions, ARIA-E/ARIA-H, and headaches. This parallel finding with Donanemab, mirroring the results observed with Lecanemab, underscores the importance of these specific adverse events in the context of Alzheimer's disease treatments.
 
 #### Lecanemab vs Donanemab
 
@@ -1545,7 +1550,7 @@ com_ae_test = com_ae |>
 kable(com_ae_test)
 ```
 
-*   In our comparative analysis of Lecanemab and Donanemab, we found notable differences in specific adverse events. Lecanemab showed a higher proportion of infusion-related reactions and urinary tract infections, while Donanemab exhibited a higher incidence of ARIA-E. These results highlight the distinct safety profiles of each drug, emphasizing the need for tailored monitoring strategies based on the unique risks associated with each treatment in managing Alzheimer's disease.
+*In our comparative analysis of Lecanemab and Donanemab, we found notable differences in specific adverse events. Lecanemab showed a higher proportion of infusion-related reactions and urinary tract infections, while Donanemab exhibited a higher incidence of ARIA-E. These results highlight the distinct safety profiles of each drug, emphasizing the need for tailored monitoring strategies based on the unique risks associated with each treatment in managing Alzheimer's disease.
 
 ```{r}
 Don_result <- read_excel("data/Donanemab.xlsx", sheet = "result")
