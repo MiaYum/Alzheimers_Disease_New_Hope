@@ -330,9 +330,6 @@ div.tocify {
         <li>
   <a href="Introduction.html">Introduction</a>
 </li>
-<li>
-  <a href="Data.html">Data</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
@@ -340,6 +337,9 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data.html">Data Sources</a>
+    </li>
     <li>
       <a href="EDA.html">Exploratory Analysis</a>
     </li>
@@ -460,10 +460,20 @@ div.tocify {
 </tbody>
 </table>
 <ul>
-<li><p>The table shows the arranged average death rate of Alzheimer’s
-Disease of each region from 2018 to 2021.</p></li>
-<li><p>South region has the highest average Alzheimer’s Disease death
-rate while Northeast region has the lowest.</p></li>
+<li><p>The boxplot displays the distribution of Alzheimer’s Disease
+death rates across different regions.</p></li>
+<li><p>While the boxplot primarily illustrates the interquartile range
+and median, it provides a visual representation of the spread of death
+rates within each region. In particular, the length of the box and the
+positioning of the median line indicate the central tendency, and the
+whiskers show the range of data.</p></li>
+<li><p>Notably, the South region exhibits a wider spread of death rates,
+suggesting greater variability in Alzheimer’s Disease mortality within
+this region compared to others.</p></li>
+<li><p>The observation of varying spreads among regions implies
+potential heterogeneity in Alzheimer’s Disease death rates, indicating
+the importance of further investigation into the factors contributing to
+this variability.</p></li>
 </ul>
 <pre class="r"><code>data  |&gt; 
   janitor::clean_names()  |&gt; 
@@ -1110,23 +1120,24 @@ rate between the two groups. We conclude that the means are not equal.
 Since the method is similar to what we have used and displayed when
 studying the regional differences, we do not show the process here.</li>
 </ul>
-</div>
-<div id="summary" class="section level2">
-<h2>Summary</h2>
-<p>In this part, we applied statistical analysis to studying the
-differences in Alzheimer’s Disease death rate caused by various factors.
-We first examine the distribution features and then choose appropriate
-tests to perform. We draw the following conclusions from the tests and
-plots result : * South region has the highest Alzheimer’s Disease
-average death rate while Northeast region has the lowest. *</p>
-<p>Regional differences in Alzheimer’s Disease death rates were
-observed, with significant variations among income and employment
-groups. Income and employment status were associated with Alzheimer’s
-Disease death rates, with lower income and employment linked to higher
-death rates. These findings suggest that regional, income, and
-employment factors play a role in Alzheimer’s Disease death rates,
-providing valuable insights for further investigation and public health
-interventions.（我感觉写两句话就行</p>
+<p>Summary</p>
+<p>In this analysis, we explored the impact of various factors on
+Alzheimer’s Disease death rates using statistical tests and
+visualizations. Key findings include:</p>
+<ul>
+<li>Regional differences in Alzheimer’s Disease death rates, with the
+South region having the highest and the Northeast region having the
+lowest average death rates.</li>
+<li>Significant variations in Alzheimer’s Disease death rates based on
+income and employment groups, indicating that socioeconomic factors play
+a role in disease outcomes.</li>
+</ul>
+<p>These results provide valuable insights for further investigation and
+underscore the importance of considering regional and socioeconomic
+disparities in public health interventions. It’s important to note that
+the observed differences are statistically significant, but further
+research could explore the practical significance and underlying
+mechanisms driving these disparities.</p>
 </div>
 </div>
 
