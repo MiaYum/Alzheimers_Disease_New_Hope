@@ -362,5 +362,3 @@ In this analysis, we explored the impact of various factors on Alzheimer's Disea
 
 * Regional differences in Alzheimer's Disease death rates, with the South region having the highest and the Northeast region having the lowest average death rates.
 * Significant variations in Alzheimer's Disease death rates based on income and employment groups, indicating that socioeconomic factors play a role in disease outcomes.
-
-These results provide valuable insights for further investigation and underscore the importance of considering regional and socioeconomic disparities in public health interventions. It's important to note that the observed differences are statistically significant, but further research could explore the practical significance and underlying mechanisms driving these disparities.
