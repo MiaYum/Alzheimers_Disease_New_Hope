@@ -39,32 +39,32 @@ We further evluate and compare the performance of two latest promising drugs Lec
 ## Participants' Demographics
 
 ```{r, message = FALSE, warning = FALSE}
-sex_df=
-  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Sex", range = "A1:C5") |> 
+sex_df =
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet = "Sex", range = "A1:C5") |> 
   janitor::clean_names()
 sex_df |> 
-  plot_ly(x=~drug, y=~sex_prop, type = "bar", color = ~sex) |> 
+  plot_ly(x = ~drug, y = ~sex_prop, type = "bar", color = ~sex) |> 
   layout(barmode = "stack",
          title = "Distribution of Participants' Baseline Sex by drugs",
          xaxis = list(title = "Drug"),
          yaxis = list(title = "Percentage (%)"),
-         width=500)
+         width = 500)
 ```
 
 * From the plot, we can see that there are more female participants in Donanemab's clinical trial that in Lecanemab's clinical trial.
 
 ```{r, message = FALSE, warning = FALSE}
-race_df=
-  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
+race_df =
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet = "Race", range = "A1:C9") |> 
   janitor::clean_names()
 race_df |> 
   mutate(race = fct_reorder(race, -race_prop)) |>
-  plot_ly(x=~drug, y=~race_prop, type = "bar", color = ~race) |> 
+  plot_ly(x = ~drug, y = ~race_prop, type = "bar", color = ~race) |> 
   layout(barmode = "stack",
          title = "Distribution of Participants' Baseline Race by drugs",
          xaxis = list(title = "Drug"),
          yaxis = list(title = "Percentage (%)"),
-         width=500)
+         width = 500)
 ```
 
 * From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
@@ -80,7 +80,7 @@ combine_mean_sd = function(df, group = ""){
   y_bar = df |> filter(str_detect(group, "combined")) |> pull(mean) # mean of group 2
 
   combined_mean = (n * x_bar + m * y_bar) / (n + m)
-  combined_sd =   sqrt(((n-1)*sx^2+(m-1)*sy^2)/(n+m-1)+(n*m*(x_bar-y_bar)^2)/((n+m)*(n+m-1)))
+  combined_sd = sqrt(((n-1)*sx^2+(m-1)*sy^2)/(n+m-1)+(n*m*(x_bar-y_bar)^2)/((n+m)*(n+m-1)))
   combined_samplesize = n + m
   combined_ci_lower = combined_mean - 1.96*combined_sd
   combined_ci_upper = combined_mean + 1.96*combined_sd
@@ -97,6 +97,7 @@ combine_mean_sd = function(df, group = ""){
 ```
 
 All trials participants took Alzheimer's tests to evaluate their stages at the start of study. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale) and MMSE (Mini-mental state examination) were shown in the plot, details of theses test scores were explained in next part.
+
 ```{r}
 iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
 CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
@@ -172,7 +173,7 @@ ggplot(CDR_SB_merge, aes(x = as.factor(time), y = mean, fill = group, color = gr
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-*   The trial results demonstrated that both treatments slows the clinical progression of Alzheimer compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
+* The trial results demonstrated that both treatments slows the clinical progression of Alzheimer compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
 
 ### ADAS-Cog
 
@@ -205,9 +206,10 @@ ggplot(ADAS_Cog_merge, aes(x = as.factor(time), y = mean, fill = group, color = 
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-*   A more pronounced reduction in the mean change from baseline to endpoint in the treatment group, as compared to the placebo, was observed for both Lecanemab (4.14 adjusted mean change) and Donanemab (3.17 LSM for low/medium tau, 5.46 LSM for combined). This suggests a potential positive impact of these drugs on cognitive function in Alzheimer's patients, with varying efficacy across different stages of the disease.
+* A more pronounced reduction in the mean change from baseline to endpoint in the treatment group, as compared to the placebo, was observed for both Lecanemab (4.14 adjusted mean change) and Donanemab (3.17 LSM for low/medium tau, 5.46 LSM for combined). This suggests a potential positive impact of these drugs on cognitive function in Alzheimer's patients, with varying efficacy across different stages of the disease.
 
 ## Survival Analysis
+
 The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
 
 ```{r, message = FALSE, warning = FALSE}
@@ -227,11 +229,12 @@ plot_ly(Don_KM |>
              yaxis = list(title = "Percentage of Participants Progression"))
 ```
 
-*   The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
+* The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
 
 ## Adverse Events
 
 ### General Overview
+
 As we progress in our comprehensive exploration of Alzheimer's disease and its treatment options, we now turn our focus to a critical aspect of drug evaluation: the analysis of adverse events associated with the two promising drugs.
 
 ```{r}
@@ -258,8 +261,9 @@ plot_ly(merge_safety |>
              yaxis = list(title = "Number of participants"))
 ```
 
-*   The Lecanemab group experienced a 0.7% death rate (6 cases) compared to 0.8% (7 cases) in the placebo group, with no deaths linked to Lecanemab or ARIA. Serious adverse events were slightly higher in the Lecanemab group at 14.0% (126 cases) versus 11.3% (101 cases) in the placebo. 
-*   For Donanemab, the death rate was 1.9% (16 cases) in the treatment group against 1.1% (10 cases) in the placebo, with serious adverse events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases) for the placebo. These results suggest a similar safety profile for both drugs compared to their respective placebo groups.
+* The Lecanemab group experienced a 0.7% death rate (6 cases) compared to 0.8% (7 cases) in the placebo group, with no deaths linked to Lecanemab or ARIA. Serious adverse events were slightly higher in the Lecanemab group at 14.0% (126 cases) versus 11.3% (101 cases) in the placebo. 
+
+* For Donanemab, the death rate was 1.9% (16 cases) in the treatment group against 1.1% (10 cases) in the placebo, with serious adverse events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases) for the placebo. These results suggest a similar safety profile for both drugs compared to their respective placebo groups.
 
 ```{r}
 safety_test = function(a, b, c, d, n1, n2){
@@ -328,7 +332,7 @@ lec_ae_result = lec_ae |>
 kable(lec_ae_result)
 ```
 
-*   The statistical tests reveals significant differences in the incidence of infusion-related reactions, ARIA-E/ARIA-H, and headaches between the Lecanemab and placebo groups. These findings are consistent with the most common side effects listed on the Lecanemab website, validating our results. This highlights the need for careful monitoring of these specific adverse events when considering Lecanemab for Alzheimer's treatment, ensuring informed decision-making and optimized patient care.
+* The statistical tests reveals significant differences in the incidence of infusion-related reactions, ARIA-E/ARIA-H, and headaches between the Lecanemab and placebo groups. These findings are consistent with the most common side effects listed on the Lecanemab website, validating our results. This highlights the need for careful monitoring of these specific adverse events when considering Lecanemab for Alzheimer's treatment, ensuring informed decision-making and optimized patient care.
 
 ### Donanemab vs Placebo
 
@@ -346,7 +350,7 @@ don_ae_result = don_ae |>
 kable(don_ae_result)
 ```
 
-*   The test for comparing Donanemab and its placebo group has similarly identified significant differences in the occurrence of infusion-related reactions, ARIA-E/ARIA-H, and headaches. This parallel finding with Donanemab, mirroring the results observed with Lecanemab, underscores the importance of these specific adverse events in the context of Alzheimer's disease treatments.
+* The test for comparing Donanemab and its placebo group has similarly identified significant differences in the occurrence of infusion-related reactions, ARIA-E/ARIA-H, and headaches. This parallel finding with Donanemab, mirroring the results observed with Lecanemab, underscores the importance of these specific adverse events in the context of Alzheimer's disease treatments.
 
 ### Lecanemab vs Donanemab
 
@@ -368,7 +372,7 @@ com_ae_test = com_ae |>
 kable(com_ae_test)
 ```
 
-*   In our comparative analysis of Lecanemab and Donanemab, we found notable differences in specific adverse events. Lecanemab showed a higher proportion of infusion-related reactions and urinary tract infections, while Donanemab exhibited a higher incidence of ARIA-E. These results highlight the distinct safety profiles of each drug, emphasizing the need for tailored monitoring strategies based on the unique risks associated with each treatment in managing Alzheimer's disease.
+* In our comparative analysis of Lecanemab and Donanemab, we found notable differences in specific adverse events. Lecanemab showed a higher proportion of infusion-related reactions and urinary tract infections, while Donanemab exhibited a higher incidence of ARIA-E. These results highlight the distinct safety profiles of each drug, emphasizing the need for tailored monitoring strategies based on the unique risks associated with each treatment in managing Alzheimer's disease.
 
 ```{r}
 Don_result <- read_excel("data/Donanemab.xlsx", sheet = "result")
@@ -380,7 +384,7 @@ ggplot(Don_result, aes(x = as.factor(time), y = mean, fill = group, color = grou
   labs(title = "Mean with 95% CI over Time",
        x = "Time",
        y = "Mean") +
-  theme_minimal()+
+  theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position = "bottom") +
   guides(color = guide_legend(nrow = 2, byrow = TRUE))
@@ -446,3 +450,4 @@ ggplot(ADCS_iADL, aes(x = as.factor(time), y = mean, fill = group, color = group
 ```
 
 In the trial results, changes in ADCS-iADL reflected the impact of donanemab treatment on patients' functioning of daily living. By comparing changes in ADCS-iADL scores between the donanemab group and the placebo group, it was possible to assess the extent to which donanemab affected patients' functioning of daily living.
+
