@@ -14,6 +14,7 @@ library(tidyverse)
 library(plotly)
 library(ggplot2)
 library(knitr)
+library(rvest)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -26,13 +27,16 @@ knitr::opts_chunk$set(
 ```
 
 # Clinical Trials Pipeline
+
 In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
 
 <img src="project_image/shiny_CT1.png" style="width:85%">
 
-# Lecanemab and Donanemab
+# Trials comparison
 
-## Participants' Baseline Demographics for both drugs
+We further evluate and compare the performance of two latest promising drugs Lecanemab and Donanemab for their participants' characteristics, treatment efficacy, and adverse events.
+
+## Participants' Demographics
 
 ```{r, message = FALSE, warning = FALSE}
 sex_df=
@@ -66,25 +70,6 @@ race_df |>
 * From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
 ```{r}
-subplot(sex_df |> 
-  plot_ly(x=~drug, y=~sex_prop, type = "bar", color = ~sex) |> 
-  layout(barmode = "stack",
-         title = "Distribution of Participants' Baseline Sex by drugs",
-         xaxis = list(title = "Drug"),
-         yaxis = list(title = "Percentage (%)"),
-         width=500),
-  race_df |> 
-  mutate(race = fct_reorder(race, -race_prop)) |>
-  plot_ly(x=~drug, y=~race_prop, type = "bar", color = ~race) |> 
-  layout(barmode = "stack",
-         title = "Distribution of Participants' Baseline Race by drugs",
-         xaxis = list(title = "Drug"),
-         yaxis = list(title = "Percentage (%)"),
-         width=500))
-```
-
-
-```{r}
 combine_mean_sd = function(df, group = ""){
   
   n = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sample_size) # number in group 1
@@ -111,6 +96,7 @@ combine_mean_sd = function(df, group = ""){
     time = 0))}
 ```
 
+All trials participants took Alzheimer's tests to evaluate their stages at the start of study. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale) and MMSE (Mini-mental state examination) were shown in the plot, details of theses test scores were explained in next part.
 ```{r}
 iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
 CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
@@ -148,109 +134,78 @@ ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "
   theme_minimal()
 ```
 
+## Treatment evaluation
 
-## Donanemab
-The evaluated outcomes encompassed measures such as iADRS (Integrated Alzheimer's Disease Rating Scale), MMSE (Mini-Mental State Examination), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week trial period.
+The evaluated outcomes encompassed measures such as CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week (18 months) trial period.
 
-In the TRAILBLAZER-ALZ 2 clinical trial, the participants were divided into two populations based on their tau biomarker levels: the low/medium tau population and the high tau population. Tau is a protein that accumulates in the brain of people with Alzheimer's disease and is associated with neurodegeneration.
-
-The low/medium tau population included participants with mild cognitive impairment or early Alzheimer's disease who had low or intermediate levels of tau biomarkers in their cerebrospinal fluid (CSF). The high tau population included participants with early Alzheimer's disease who had high levels of tau biomarkers in their CSF.
-
-The combined population included all participants in the trial, regardless of their tau biomarker levels. The purpose of dividing the participants into these populations was to assess the efficacy of donanemab in different subgroups of patients with Alzheimer's disease.
-
-### iADRS
-The Integrated Alzheimer's Disease Rating Scale (iADRS) is a comprehensive assessment tool used to measure the progression of Alzheimer's disease. It combines the 13-item cognitive subscale of the Alzheimer's Disease Assessment Scale (ADAS-Cog13) with the Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL). By integrating these measures, the iADRS provides a holistic evaluation of both cognitive function and daily living activities in individuals with Alzheimer's disease.
-
-```{r}
-iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
-
-ggplot(iADRS, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal()
-```
-
-The results show that treatment with donanemab resulted in a statistically significant slowing of clinical progression compared to placebo in both the low/medium tau and combined populations. 
+In the trial of Donanemab, participants were categorized into two groups based on tau biomarker levels in their cerebrospinal fluid (CSF): those with low/medium tau (mild cognitive impairment or early Alzheimer's with lower tau levels) and those with high tau (early Alzheimer's with higher tau levels). Additionally, a combined population included all trial participants, irrespective of tau levels. This stratification aimed to evaluate the efficacy of donanemab across different Alzheimer's patient subgroups.
 
 ### CDR-SB
+
 The Clinical Dementia Rating Scale Sum of Boxes (CDR-SB) is a widely used assessment tool for evaluating the severity of dementia. It is a composite score derived from the Clinical Dementia Rating (CDR) scale, which is used to assess the cognitive and functional abilities of individuals with dementia.
 
 The CDR-SB incorporates ratings across six domains: memory, orientation, judgment and problem solving, community affairs, home and hobbies, and personal care. Each domain is rated on a scale from 0 (no impairment) to 3 (severe impairment), and the total CDR-SB score ranges from 0 to 18, with higher scores indicating greater clinical impairment.
 
 ```{r}
-CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
+Don_CDR_SB = read_excel("data/Donanemab.xlsx", sheet = "result") |>
+  filter(outcome == "CDR-SB",
+         str_detect(group, "combined"))
 
-ggplot(CDR_SB, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+Lec_CDR_SB = read_excel("data/Lecanemab.xlsx", sheet = "result") |>
+  filter(outcome == "CDR-SB")
+
+CDR_SB_merge = bind_rows(Don_CDR_SB, Lec_CDR_SB) |>
+  mutate(group = case_match(
+    group,
+    "Donanemab-combined" ~ "Donanemab-combined",
+    "Placebo-combined" ~ "Donanemab Placebo-combined",
+    "Lecanemab" ~ "Lecanemab",
+    "Placebo" ~ "Lecanemab Placebo"))
+
+ggplot(CDR_SB_merge, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
   geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
   geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
+  labs(title = "Mean with 95% CI over Time (CDR-SB)",
        x = "Time",
        y = "Mean") +
-  theme_minimal()
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
-The trial results demonstrated that treatment with donanemab resulted in a statistically significant slowing of clinical progression as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease.
+*   The trial results demonstrated that both treatments slows the clinical progression of Alzheimer compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
 
-### ADCS-iADL
-The Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL) is a measurement tool used to assess the functional abilities of individuals with Alzheimer's disease. It is designed to evaluate a person's capacity to perform various instrumental activities of daily living, such as managing finances, using the telephone, shopping, preparing meals, doing housework, and managing medications.
+### ADAS-Cog
 
-The ADCS-iADL scale provides a structured assessment of a person's functional independence and is particularly relevant for evaluating the impact of Alzheimer's disease on daily activities beyond basic self-care tasks. The scale typically ranges from 0 to 59, with lower scores indicating greater impairment in instrumental activities of daily living.
+The ADAS-Cog, a primary cognitive outcome measure mandated by the FDA for Alzheimer's drug trials in the U.S., assesses language, memory, praxis, and orientation. This test, taking 30-35 minutes, scores from 0-70, with higher scores indicating greater cognitive impairment.
 
 ```{r}
-ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
+Don_ADAS_Cog  = read_excel("data/Donanemab.xlsx", sheet = "result") |>
+  filter(outcome == "ADAS-Cog13")
 
-ggplot(ADCS_iADL, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+Lec_ADAS_Cog = read_excel("data/Lecanemab.xlsx", sheet = "result") |>
+  filter(outcome == "ADAS-Cog14")
+
+ADAS_Cog_merge = bind_rows(Don_ADAS_Cog, Lec_ADAS_Cog) |>
+  mutate(group = case_match(
+    group,
+    "Donanemab-combined" ~ "Donanemab (combined)",
+    "Placebo-combined" ~ "Donanemab Placebo (combined)",
+    "Lecanemab" ~ "Lecanemab",
+    "Placebo" ~ "Lecanemab Placebo",
+    "Donanemab-Low/medium tau" ~ "Donanemab (Low/medium tau)",
+    "Placebo-Low/medium tau" ~ "Donanemab Placebo (Low/medium tau)"))
+
+ggplot(ADAS_Cog_merge, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
   geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
   geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
+  labs(title = "Mean with 95% CI over Time (ADAS-Cog)",
        x = "Time",
        y = "Mean") +
-  theme_minimal()
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
-In the trial results, changes in ADCS-iADL reflected the impact of donanemab treatment on patients' functioning of daily living. By comparing changes in ADCS-iADL scores between the donanemab group and the placebo group, it was possible to assess the extent to which donanemab affected patients' functioning of daily living.
-
-### ADCS-CGIC
-The Alzheimer's Disease Cooperative Study—Clinical Global Impression of Change (ADCS-CGIC) is a measurement tool used to assess the overall clinical status and change over time in individuals with Alzheimer's disease. It is designed to provide a global assessment of a patient's condition, taking into account cognitive, functional, and behavioral aspects.
-
-```{r}
-ADAS_Cog13 <- read_excel("data/Donanemab_.xlsx", sheet = "4")
-
-ggplot(ADAS_Cog13, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal()
-```
-
-A greater reduction in the least squares mean change from baseline to 76 weeks in the donanemab group compared to the placebo group would indicate a potential positive effect of donanemab on cognitive function.
-
-### MMSE
-The Mini-Mental State Examination (MMSE) is a widely used screening tool for cognitive impairment and is often employed in clinical and research settings to assess cognitive function, particularly in the context of dementia. The MMSE evaluates various cognitive domains, including orientation, memory, attention, language, and visuospatial abilities.
-
-```{r}
-MMSE <- read_excel("data/Donanemab_.xlsx", sheet = "5")
-
-ggplot(MMSE, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal()
-```
-
-The MMSE scores provide information about the cognitive function of the participants in the study.  The mean scores and standard deviations can be used to compare the cognitive performance of the donanemab group and the placebo group.  A higher mean score in the donanemab group compared to the placebo group would suggest a potential positive effect of donanemab on cognitive function.
+*   A more pronounced reduction in the mean change from baseline to endpoint in the treatment group, as compared to the placebo, was observed for both Lecanemab (4.14 adjusted mean change) and Donanemab (3.17 LSM for low/medium tau, 5.46 LSM for combined). This suggests a potential positive impact of these drugs on cognitive function in Alzheimer's patients, with varying efficacy across different stages of the disease.
 
 ## Survival Analysis
 The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
@@ -366,7 +321,7 @@ The barplot clearly shows notable differences in specific adverse events (such a
 # chisq.test(test$lecanemab, p = test$p, correct = FALSE) \
 lec_ae_result = lec_ae |>
   mutate(testresult = map2(lecanemab, lecanemab_placebo, \(a, b) safety_test(a, b, 898-a, 897-b, 898, 897))) |>
-  rename(AE = ae) |>
+  rename(Adverse_Effect = ae) |>
   unnest(testresult) |>
   select(-lecanemab, -lecanemab_placebo)
 
@@ -384,7 +339,7 @@ kable(lec_ae_result)
 
 don_ae_result = don_ae |>
   mutate(testresult = map2(donanemab, donanemab_placebo, \(a, b) safety_test(a, b, 853-a, 874-b, 853, 874))) |>
-  rename(AE = ae) |>
+  rename(Adverse_Effect = ae) |>
   unnest(testresult) |>
   select(-donanemab, -donanemab_placebo)
 
@@ -405,7 +360,7 @@ com_ae =  don_ae |>
 
 com_ae_test = com_ae |>
   mutate(testresult = map2(lecanemab, donanemab, \(a, b) safety_test(a, b, 898-a, 853-b, 898, 853))) |>
-  rename(AE = ae) |>
+  rename(Adverse_Effect = ae) |>
   unnest(testresult) |>
   select(-donanemab, -lecanemab) |>
   filter(P.value < 0.05)
@@ -431,3 +386,63 @@ ggplot(Don_result, aes(x = as.factor(time), y = mean, fill = group, color = grou
   guides(color = guide_legend(nrow = 2, byrow = TRUE))
 ```
 
+# Appendix
+
+
+### MMSE
+The Mini-Mental State Examination (MMSE) is a widely used screening tool for cognitive impairment and is often employed in clinical and research settings to assess cognitive function, particularly in the context of dementia. The MMSE evaluates various cognitive domains, including orientation, memory, attention, language, and visuospatial abilities.
+
+```{r}
+MMSE <- read_excel("data/Donanemab_.xlsx", sheet = "5")
+
+ggplot(MMSE, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+The MMSE scores provide information about the cognitive function of the participants in the study.  The mean scores and standard deviations can be used to compare the cognitive performance of the donanemab group and the placebo group.  A higher mean score in the donanemab group compared to the placebo group would suggest a potential positive effect of donanemab on cognitive function.
+
+
+### iADRS
+The Integrated Alzheimer's Disease Rating Scale (iADRS) is a comprehensive assessment tool used to measure the progression of Alzheimer's disease. It combines the 13-item cognitive subscale of the Alzheimer's Disease Assessment Scale (ADAS-Cog13) with the Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL). By integrating these measures, the iADRS provides a holistic evaluation of both cognitive function and daily living activities in individuals with Alzheimer's disease.
+
+```{r}
+iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
+
+ggplot(iADRS, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+The results show that treatment with donanemab resulted in a statistically significant slowing of clinical progression compared to placebo in both the low/medium tau and combined populations. 
+
+
+### ADCS-iADL
+The Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL) is a measurement tool used to assess the functional abilities of individuals with Alzheimer's disease. It is designed to evaluate a person's capacity to perform various instrumental activities of daily living, such as managing finances, using the telephone, shopping, preparing meals, doing housework, and managing medications.
+
+The ADCS-iADL scale provides a structured assessment of a person's functional independence and is particularly relevant for evaluating the impact of Alzheimer's disease on daily activities beyond basic self-care tasks. The scale typically ranges from 0 to 59, with lower scores indicating greater impairment in instrumental activities of daily living.
+
+```{r}
+ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
+
+ggplot(ADCS_iADL, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+In the trial results, changes in ADCS-iADL reflected the impact of donanemab treatment on patients' functioning of daily living. By comparing changes in ADCS-iADL scores between the donanemab group and the placebo group, it was possible to assess the extent to which donanemab affected patients' functioning of daily living.
