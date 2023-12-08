@@ -34,40 +34,63 @@ In our quest to deepen the understanding of Alzheimer's disease and its treatmen
 
 # Trials comparison
 
-We further evluate and compare the performance of two latest promising drugs Lecanemab and Donanemab for their participants' characteristics, treatment efficacy, and adverse events.
+We further evaluate and compare the performance of the two latest promising drugs Lecanemab and Donanemab for their participants' characteristics, treatment efficacy, and adverse events.
 
 ## Participants' Demographics
 
-```{r, message = FALSE, warning = FALSE}
-sex_df =
-  readxl::read_excel("data/newdrugdemographic.xlsx",sheet = "Sex", range = "A1:C5") |> 
+```{r}
+library(forcats)
+sex_df=
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Sex", range = "A1:C5") |> 
   janitor::clean_names()
-sex_df |> 
-  plot_ly(x = ~drug, y = ~sex_prop, type = "bar", color = ~sex) |> 
+
+race_df=
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
+  janitor::clean_names()
+
+sex_colors <- c("Male" = "#1f77b4", "Female" = "#ff7f0e") 
+race_colors <- c("Black" = "#17becf", "Asian" ="#9467bd", "White" = "#2ca02c", "Other or Missing" = "#8c564b") 
+
+
+p1 <- sex_df |> 
+  plot_ly(x = ~drug, y = ~sex_prop, type = "bar", color = ~sex, colors = sex_colors, legendgroup = "sex") |> 
   layout(barmode = "stack",
-         title = "Distribution of Participants' Baseline Sex by drugs",
-         xaxis = list(title = "Drug"),
-         yaxis = list(title = "Percentage (%)"),
-         width = 500)
+         showlegend = TRUE) |>
+    add_annotations(
+    text = "Sex",
+    x = 0.5,
+    y = 1.05,
+    xref = "paper",
+    yref = "paper",
+    showarrow = FALSE,
+    font = list(size = 10)
+  )
+
+p2 <- race_df |> 
+  mutate(race = fct_reorder(race, -race_prop)) |> 
+  plot_ly(x = ~drug, y = ~race_prop, type = "bar", color = ~race, colors = race_colors, legendgroup = "race") |> 
+  layout(barmode = "stack",
+         showlegend = TRUE) |>
+    add_annotations(
+    text = "Race",
+    x = 0.5,
+    y = 1.05,
+    xref = "paper",
+    yref = "paper",
+    showarrow = FALSE,
+    font = list(size = 10)
+  )
+
+subplot(p1, p2, nrows = 1, margin = 0.05) |>
+  layout(title = "Distribution of Baseline Participants' Sex and Race by Drug",
+         yaxis = list(title = "Percentage (%)"))
+
 ```
 
 * From the plot, we can see that there are more female participants in Donanemab's clinical trial that in Lecanemab's clinical trial.
 
-```{r, message = FALSE, warning = FALSE}
-race_df =
-  readxl::read_excel("data/newdrugdemographic.xlsx",sheet = "Race", range = "A1:C9") |> 
-  janitor::clean_names()
-race_df |> 
-  mutate(race = fct_reorder(race, -race_prop)) |>
-  plot_ly(x = ~drug, y = ~race_prop, type = "bar", color = ~race) |> 
-  layout(barmode = "stack",
-         title = "Distribution of Participants' Baseline Race by drugs",
-         xaxis = list(title = "Drug"),
-         yaxis = list(title = "Percentage (%)"),
-         width = 500)
-```
 
-* From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
+* From the plot, we can also see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
 ```{r}
 combine_mean_sd = function(df, group = ""){
