@@ -81,7 +81,7 @@ data  |>
 
 * We can roughly tell from the plot that the variances of death rate among regions are not equal. Thus, we may perform a statistical test to check heteroscedasticity
 
-### test of equal variances
+### Test of equal variances
 
 <center> *H~0~ : Equal  variance  among  regions  vs  H~1~ : Unequal  variance*<center>
 
@@ -93,11 +93,11 @@ bartlett.test(death_rate ~ factor(region), data = data) |>
 
 Based on the less-than-significance level of the p-value (usually 0.05), we have enough evidence to reject the null hypothesis of variance homogeneity. Therefore, we can assume that the variance of mortality rates is not equal under different regions. This may have important implications for some statistical methods (e.g., analysis of variance ANOVA), which typically assume variance chi-square.
 
-## 2. t.test : Compare Mean Death Rate Between West America and Midwest America
+### t.test : Compare Mean Death Rate Between West America and Midwest America
 
 From the boxplot above, we find that the Alzheimer’s Disease death rate in West region and Midwest region are almost overlapping. Though the median of Midwest region is higher, the variance in West region seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
 
-### extract death rate in West America and Midwest America
+#### Extract death rate in West America and Midwest America
 
 ```{r, message = FALSE, warning = FALSE}
 west_death_rate <- data |> 
@@ -119,7 +119,7 @@ var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level
 
 The null hypothesis for the variance test is that the two variance are equal. The result shows that the p-value is much less than 0.05. Thus, we may reject the null hypothesis and conclude that the variances are not equal. Next, we should perform 2 sample t.test with unknown and unequal variance.
 
-### 2 sample t.test with unknown unequal variances
+#### Two sample t.test with unknown unequal variances
 
 ```{r, message = FALSE, warning = FALSE}
 t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) |> 
@@ -129,7 +129,7 @@ t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95
 
 * The p-value is greater than the conventional significance level of 0.05, suggesting that there is not enough evidence to reject the null hypothesis. The results indicate that, based on the data, there is no significant difference in death rates between the "west" and "midwest" regions, or the death rate in the "west" region is not significantly less than the death rate in the "midwest" region.
 
-## 3 Average Alzheimer's Disease death rate by (region, year) Combination
+## 2. Average Alzheimer's Disease death rate by (region, year) Combination
 
 ```{r, message = FALSE, warning = FALSE}
 data |>  
@@ -158,7 +158,7 @@ data |>
 
 * It is clearly shown in the plot that Northeast region has a much lower and South resgion has a much higher average Alzheimer's Disease death rate than the other regions.
 
-## 4 Average Alzheimer's Disease death rate by Income Level
+## 3. Average Alzheimer's Disease death rate by Income Level
 
 ```{r, message = FALSE, warning = FALSE}
   data |> 
@@ -248,7 +248,7 @@ income_level |>
 * The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
 
  
-<center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal*<center>
+<center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal* </center>
 
 ```{r, message = FALSE, warning = FALSE}
 anova_result <- aov(death_rate ~ factor(income_group), data = income_level)
@@ -268,7 +268,7 @@ TukeyHSD(anova_result) %>%
 
 In summary, there are statistically significant variations in life expectancy across income groups, with specific differences observed in pairwise comparisons between Middle Income vs. Lower Income and Upper Income vs. Lower Income.
 
-## 5 Average Alzheimer's Disease death rate by Employment
+## 4. Average Alzheimer's Disease death rate by Employment
 
 ```{r, message = FALSE, warning = FALSE}
   data |> 
@@ -346,7 +346,7 @@ employ_level |>
 
 * The pattern is clear that low employment tend to a higher Alzheimer's Disease death rate. 
 
-<center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment*<center>
+<center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment* </center>
 
 ```{r, message = FALSE, warning = FALSE}
 t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) %>% 
@@ -356,11 +356,9 @@ t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "les
 
 * We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
 
-Summary
+# Summary
 
 In this analysis, we explored the impact of various factors on Alzheimer's Disease death rates using statistical tests and visualizations. Key findings include:
 
 * Regional differences in Alzheimer's Disease death rates, with the South region having the highest and the Northeast region having the lowest average death rates.
 * Significant variations in Alzheimer's Disease death rates based on income and employment groups, indicating that socioeconomic factors play a role in disease outcomes.
-
-These results provide valuable insights for further investigation and underscore the importance of considering regional and socioeconomic disparities in public health interventions. It's important to note that the observed differences are statistically significant, but further research could explore the practical significance and underlying mechanisms driving these disparities.

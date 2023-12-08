@@ -1,0 +1,40 @@
+---
+title: "Conclusion"
+
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    code_folding: hide
+---
+
+# Findings and Conclusion
+
+
+In our study, we integrated and cleaned data from different data sets, discovering some missing entries. 
+
+For exploratory analysis, we categorized predictive variables into social and health factors. We also addressed multicollinearity and identified potential nonlinear relationships with the death rate. 
+
+After preliminary analysis, we discovered that the examination of Alzheimer's Disease mortality rates across different regions in the United States revealed significant disparities. The South region had the highest average death rate, while the Northeast region had the lowest. Boxplot visualizations highlighted the variation in death rates, with the South region showing greater variability compared to others. 
+
+The statistical test we performed for equal variances confirmed this observation, indicating heteroscedasticity among regions. These findings emphasize the need to consider regional differences in planning healthcare and intervention strategies for Alzheimer's Disease. We also performed a variances test for the subsequent comparison of mean death rates between the West and Midwest, revealing unequal variances between the two regions. Moreover, the subsequent two-sample t-test with unknown and unequal variances we performed provided insights into potential differences in mean death rates.
+
+Next, we tried to generate a regression model. Initially, we generated a multiple linear regression model which showed poor performance, indicating nonlinear variable relationships. This led us to adopt a random forest regression model, which significantly enhanced the model fit, raising R squared from 0.4 to 0.9.
+
+Analysis of variable importance revealed a strong correlation between education level and mortality rates in Alzheimer's patients, with healthcare expenditure as the second most influential factor. Other factors, including smoking rate, elderly population proportion, employment, income, and cardiovascular rate, were less significant. These results highlight the complex interplay of socioeconomic, lifestyle, and healthcare factors in Alzheimer's patient outcomes.
+
+We also developed a visualization tool to provide a comprehensive overview of Alzheimer's drug trials across the United States, enhancing the understanding of Alzheimer's disease treatment landscape. Building on this foundation, we conducted a focused evaluation of the treatment efficacy and safety of two latest drugs, Lecanemab and Donanemab. Our findings reveal that while both drugs show promise of efficacy, they also share key side effects, notably infusion-related reactions, ARIA, and headaches.
+
+# Challenges
+
+Regarding the data, categorical variables which can provide a more definite division of variables such as income level and employment are not included. Instead, we set our own standard to categorize these variables into different groups, which may not be objective enough. 
+
+During the preliminary analysis part, the analysis faced challenges in addressing the heterogeneity of Alzheimer's Disease data, particularly regarding death rates across regions. Variability in data sources, reporting mechanisms, and population characteristics may introduce uncertainties. Additionally, assumptions of normality in the t-test and homogeneity of variances in the ANOVA test may be influenced by outliers or non-normal distributions, posing challenges to the robustness of statistical inferences.
+
+During the EDA part , we found strong correlations among multiple variables, necessitating the removal of some for regression modeling. The selection process involved intense discussion, ultimately leading to the choice of representative variables based on facts and data characteristics. Initially, our linear model performed poorly, prompting us to shift to a black-box model, which significantly improved the fit.
+
+# Limitations, Insights, Further Improvements
+
+The analysis covers the period from 2018 to 2021, and variations over time may not be fully captured. Data from only four years may also limit the model's general applicability due to insufficient data volume. Long-term trends and their impact on Alzheimer's Disease death rates could provide a more comprehensive understanding. The observed heteroscedasticity suggests that healthcare policies and interventions should consider varying levels of variability in death rates across regions. Further research could explore the practical significance and underlying mechanisms driving these disparities. The data collected are mainly based on the total population, while data from specifically Alzheimer’s Disease patients, such as obesity rate of Alzheimer’s Disease patients in each state, may be more helpful for further analyses.Future analyses could also benefit from more data collected, standardized data collection methods and reporting standards to enhance comparability.
+

@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 ```
 
 # Clinical Trials Pipeline
-In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which label all trials on the map and have regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
 
 <img src="project_image/shiny_CT1.png" style="width:85%">
 
@@ -46,7 +46,8 @@ sex_df |>
          yaxis = list(title = "Percentage (%)"),
          width=500)
 ```
-* From the plot, we can see that there are more female participants in Donanemab's clinical trial than that in Lecanemab's clinical trial.
+
+* From the plot, we can see that there are more female participants in Donanemab's clinical trial that in Lecanemab's clinical trial.
 
 ```{r, message = FALSE, warning = FALSE}
 race_df=
@@ -61,7 +62,8 @@ race_df |>
          yaxis = list(title = "Percentage (%)"),
          width=500)
 ```
-* From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupies a larger proportion of participants in Lecanemab's clinical trial than that in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
+
+* From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
 ```{r}
 subplot(sex_df |> 
@@ -148,7 +150,7 @@ ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "
 
 
 ## Donanemab
-The outcomes listed include iADRS (Integrated Alzheimer's Disease Rating Scale), MMSE (Mini-Mental State Examination), and other clinical assessments. The table provides valuable insights into the efficacy of donanemab compared to placebo in slowing the progression of Alzheimer's disease over the 76-week period in the different populations studied.
+The evaluated outcomes encompassed measures such as iADRS (Integrated Alzheimer's Disease Rating Scale), MMSE (Mini-Mental State Examination), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week trial period.
 
 In the TRAILBLAZER-ALZ 2 clinical trial, the participants were divided into two populations based on their tau biomarker levels: the low/medium tau population and the high tau population. Tau is a protein that accumulates in the brain of people with Alzheimer's disease and is associated with neurodegeneration.
 
@@ -178,6 +180,7 @@ The results show that treatment with donanemab resulted in a statistically signi
 The Clinical Dementia Rating Scale Sum of Boxes (CDR-SB) is a widely used assessment tool for evaluating the severity of dementia. It is a composite score derived from the Clinical Dementia Rating (CDR) scale, which is used to assess the cognitive and functional abilities of individuals with dementia.
 
 The CDR-SB incorporates ratings across six domains: memory, orientation, judgment and problem solving, community affairs, home and hobbies, and personal care. Each domain is rated on a scale from 0 (no impairment) to 3 (severe impairment), and the total CDR-SB score ranges from 0 to 18, with higher scores indicating greater clinical impairment.
+
 ```{r}
 CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
 
@@ -197,6 +200,7 @@ The trial results demonstrated that treatment with donanemab resulted in a stati
 The Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL) is a measurement tool used to assess the functional abilities of individuals with Alzheimer's disease. It is designed to evaluate a person's capacity to perform various instrumental activities of daily living, such as managing finances, using the telephone, shopping, preparing meals, doing housework, and managing medications.
 
 The ADCS-iADL scale provides a structured assessment of a person's functional independence and is particularly relevant for evaluating the impact of Alzheimer's disease on daily activities beyond basic self-care tasks. The scale typically ranges from 0 to 59, with lower scores indicating greater impairment in instrumental activities of daily living.
+
 ```{r}
 ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
 
@@ -250,6 +254,7 @@ The MMSE scores provide information about the cognitive function of the particip
 
 ## Survival Analysis
 The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
+
 ```{r, message = FALSE, warning = FALSE}
 Don_KM = 
   read_excel("./Data/Donanemab.xlsx", sheet = "K-M", range = "A1:D16") |>
@@ -270,6 +275,7 @@ plot_ly(Don_KM |>
 *   The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
 
 ## Adverse Events
+
 ### General Overview
 As we progress in our comprehensive exploration of Alzheimer's disease and its treatment options, we now turn our focus to a critical aspect of drug evaluation: the analysis of adverse events associated with the two promising drugs.
 
@@ -353,6 +359,7 @@ plot_ly(merge_ae |>
 The barplot clearly shows notable differences in specific adverse events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract infections, and Headaches) between the treatment and placebo groups. To further evaluate and quantify these observed differences, we will proceed with a detailed statistical tests to provide a more definitive understanding of the significance of these adverse events.
 
 ### Lecanemab vs Placebo
+
 ```{r}
 # test = lec_ae |>
 #   mutate(p = lecanemab_placebo/sum(lecanemab_placebo))
@@ -369,6 +376,7 @@ kable(lec_ae_result)
 *   The statistical tests reveals significant differences in the incidence of infusion-related reactions, ARIA-E/ARIA-H, and headaches between the Lecanemab and placebo groups. These findings are consistent with the most common side effects listed on the Lecanemab website, validating our results. This highlights the need for careful monitoring of these specific adverse events when considering Lecanemab for Alzheimer's treatment, ensuring informed decision-making and optimized patient care.
 
 ### Donanemab vs Placebo
+
 ```{r}
 # test = don_ae |>
 #   mutate(p = donanemab_placebo/sum(donanemab_placebo))
@@ -386,6 +394,7 @@ kable(don_ae_result)
 *   The test for comparing Donanemab and its placebo group has similarly identified significant differences in the occurrence of infusion-related reactions, ARIA-E/ARIA-H, and headaches. This parallel finding with Donanemab, mirroring the results observed with Lecanemab, underscores the importance of these specific adverse events in the context of Alzheimer's disease treatments.
 
 ### Lecanemab vs Donanemab
+
 ```{r}
 # test = don_ae |>
 #   mutate(p = donanemab_placebo/sum(donanemab_placebo))
