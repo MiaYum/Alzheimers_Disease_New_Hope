@@ -359,7 +359,7 @@ The proportion of the population over 65 years old is negatively correlated with
 
 The proportion of smokers and the rate of heart disease are positively correlated with the death rate.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 test = data |>
   select(-state, -year) |>
   drop_na(cardio_rate, diabetes_rate, smoke_rate, obesity_rate)
