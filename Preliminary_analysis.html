@@ -484,7 +484,7 @@ this variability.</p></li>
   geom_boxplot() +
   labs(title = &quot;Boxplot of Death Rate by Regions&quot;, x = &quot;Region&quot;, y = &quot;Death Rate&quot;) +
   theme(axis.text.x = element_text(hjust = 1, angle = 10, size = 8))</code></pre>
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 <ul>
 <li><p>The boxplot shows the distribution of death rate in each
 region.</p></li>
@@ -724,7 +724,7 @@ Combination</h2>
   labs(
     y = &quot;Average Alzheimer&#39;s Disease death rate&quot;,
     title = &quot;Average Alzheimer&#39;s Disease death rate by Region, Year&quot;) </code></pre>
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
 <ul>
 <li><p>The table and line graph above show the descriptive statistics
 and overall trend.</p></li>
@@ -736,7 +736,7 @@ death rate than the other regions.</p></li>
 <div id="average-alzheimers-disease-death-rate-by-income-level"
 class="section level2">
 <h2>3. Average Alzheimer’s Disease death rate by Income Level</h2>
-<pre class="r"><code>  data |&gt; 
+<pre class="r"><code>data |&gt; 
   group_by(year) |&gt; 
   select(year,income) |&gt; 
   summarise(median_income_by_year = median(income,na.rm = T)) |&gt; 
@@ -862,7 +862,7 @@ income_level |&gt;
   title = &quot;Boxplot of Alzheimer&#39;s Disease Death Rate by Income Groups&quot;, 
   x=&quot;Income Groups&quot;,
   y= &quot;Alzheimer&#39;s Disease death rate&quot;)</code></pre>
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-14-1.png" width="90%" /></p>
+<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
 <ul>
 <li><p>The boxes of different income groups are almost not overlapping
 with each other.</p></li>
@@ -1062,7 +1062,7 @@ employ_level |&gt;
   title = &quot;Boxplot of Alzheimer&#39;s Disease Death Rate by Employment Rate&quot;,
   x=&quot;Employment Rate&quot;,
   y=&quot;Alzheimer&#39;s Disease Death Rate&quot;)</code></pre>
-<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-18-1.png" width="90%" /></p>
+<p><img src="Preliminary_analysis_files/figure-html/unnamed-chunk-17-1.png" width="90%" /></p>
 <ul>
 <li>The pattern is clear that low employment tend to a higher
 Alzheimer’s Disease death rate.</li>

@@ -7,12 +7,16 @@ output:
     theme: cosmo
     code_folding: hide
 ---
+
 ```{r, include = FALSE, message = FALSE, warning = FALSE}
 library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
+	message = FALSE,
   fig.width = 6,
   fig.asp = .6,
   out.width = "90%"
@@ -27,11 +31,6 @@ options(
 
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
-```
-
-```{r, include = FALSE, message = FALSE, warning = FALSE}
-library(dplyr)
-library(tidyverse)
 ```
 
 # Analysis
@@ -108,7 +107,6 @@ midwest_death_rate <- data |>
   janitor::clean_names() |> 
   filter(region == "Midwest") |> 
   pull(death_rate)
-
 ```
 
 ```{r,, message = FALSE, warning = FALSE}
@@ -161,7 +159,7 @@ data |>
 ## 3. Average Alzheimer's Disease death rate by Income Level
 
 ```{r, message = FALSE, warning = FALSE}
-  data |> 
+data |> 
   group_by(year) |> 
   select(year,income) |> 
   summarise(median_income_by_year = median(income,na.rm = T)) |> 

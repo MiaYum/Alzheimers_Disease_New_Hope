@@ -15,6 +15,7 @@ library(plotly)
 library(ggplot2)
 library(knitr)
 library(rvest)
+library(forcats)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -64,10 +65,9 @@ In our quest to deepen the understanding of Alzheimer's disease and its treatmen
 
 We further evaluate and compare the performance of the two latest promising drugs Lecanemab and Donanemab for their participants' characteristics, treatment efficacy, and adverse events.
 
-## Participants' Demographics []
+## Participants' Demographics
 
 ```{r}
-library(forcats)
 sex_df=
   readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Sex", range = "A1:C5") |> 
   janitor::clean_names()
@@ -76,8 +76,8 @@ race_df=
   readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
   janitor::clean_names()
 
-sex_colors <- c("Male" = "#1f77b4", "Female" = "#ff7f0e") 
-race_colors <- c("Black" = "#17becf", "Asian" ="#9467bd", "White" = "#2ca02c", "Other or Missing" = "#8c564b") 
+sex_colors <- c("Male" = "#a1afc9", "Female" = "#ef7182") 
+race_colors <- c("Black" = "#c2ccd0", "Asian" ="#edd1d8", "White" = "#e0eee8", "Other or Missing" = "#eedeb0") 
 
 
 p1 <- sex_df |> 
@@ -397,81 +397,3 @@ kable(com_ae_test)
 ```
 
 * In our comparative analysis of Lecanemab and Donanemab, we found notable differences in specific adverse events. Lecanemab showed a higher proportion of infusion-related reactions and urinary tract infections, while Donanemab exhibited a higher incidence of ARIA-E. These results highlight the distinct safety profiles of each drug, emphasizing the need for tailored monitoring strategies based on the unique risks associated with each treatment in managing Alzheimer's disease.
-
-```{r}
-Don_result <- read_excel("data/Donanemab.xlsx", sheet = "result")
-
-ggplot(Don_result, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.5) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  theme(legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 2, byrow = TRUE))
-```
-
-# Appendix
-
-
-### MMSE
-The Mini-Mental State Examination (MMSE) is a widely used screening tool for cognitive impairment and is often employed in clinical and research settings to assess cognitive function, particularly in the context of dementia. The MMSE evaluates various cognitive domains, including orientation, memory, attention, language, and visuospatial abilities.
-
-```{r}
-MMSE <- read_excel("data/Donanemab_.xlsx", sheet = "5")
-
-ggplot(MMSE, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal()
-```
-
-The MMSE scores provide information about the cognitive function of the participants in the study.  The mean scores and standard deviations can be used to compare the cognitive performance of the donanemab group and the placebo group.  A higher mean score in the donanemab group compared to the placebo group would suggest a potential positive effect of donanemab on cognitive function.
-
-
-### iADRS
-The Integrated Alzheimer's Disease Rating Scale (iADRS) is a comprehensive assessment tool used to measure the progression of Alzheimer's disease. It combines the 13-item cognitive subscale of the Alzheimer's Disease Assessment Scale (ADAS-Cog13) with the Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL). By integrating these measures, the iADRS provides a holistic evaluation of both cognitive function and daily living activities in individuals with Alzheimer's disease.
-
-```{r}
-iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
-
-ggplot(iADRS, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal()
-```
-
-The results show that treatment with donanemab resulted in a statistically significant slowing of clinical progression compared to placebo in both the low/medium tau and combined populations. 
-
-
-### ADCS-iADL
-The Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL) is a measurement tool used to assess the functional abilities of individuals with Alzheimer's disease. It is designed to evaluate a person's capacity to perform various instrumental activities of daily living, such as managing finances, using the telephone, shopping, preparing meals, doing housework, and managing medications.
-
-The ADCS-iADL scale provides a structured assessment of a person's functional independence and is particularly relevant for evaluating the impact of Alzheimer's disease on daily activities beyond basic self-care tasks. The scale typically ranges from 0 to 59, with lower scores indicating greater impairment in instrumental activities of daily living.
-
-```{r}
-ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
-
-ggplot(ADCS_iADL, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
-  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
-  facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
-       x = "Time",
-       y = "Mean") +
-  theme_minimal()
-```
-
-In the trial results, changes in ADCS-iADL reflected the impact of donanemab treatment on patients' functioning of daily living. By comparing changes in ADCS-iADL scores between the donanemab group and the placebo group, it was possible to assess the extent to which donanemab affected patients' functioning of daily living.
-
