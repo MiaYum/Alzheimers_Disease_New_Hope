@@ -248,7 +248,7 @@ income_level |>
 * The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
 
  
-<center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal*<center>
+<center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal* </center>
 
 ```{r, message = FALSE, warning = FALSE}
 anova_result <- aov(death_rate ~ factor(income_group), data = income_level)
@@ -346,7 +346,7 @@ employ_level |>
 
 * The pattern is clear that low employment tend to a higher Alzheimer's Disease death rate. 
 
-<center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment*<center>
+<center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment* </center>
 
 ```{r, message = FALSE, warning = FALSE}
 t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) %>% 
