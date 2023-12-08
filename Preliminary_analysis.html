@@ -330,9 +330,6 @@ div.tocify {
         <li>
   <a href="Introduction.html">Introduction</a>
 </li>
-<li>
-  <a href="Data.html">Data</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Analysis
@@ -340,6 +337,9 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data.html">Data Sources</a>
+    </li>
     <li>
       <a href="EDA.html">Exploratory Analysis</a>
     </li>
@@ -460,10 +460,20 @@ div.tocify {
 </tbody>
 </table>
 <ul>
-<li><p>The table shows the arranged average death rate of Alzheimer’s
-Disease of each region from 2018 to 2021.</p></li>
-<li><p>South region has the highest average Alzheimer’s Disease death
-rate while Northeast region has the lowest.</p></li>
+<li><p>The boxplot displays the distribution of Alzheimer’s Disease
+death rates across different regions.</p></li>
+<li><p>While the boxplot primarily illustrates the interquartile range
+and median, it provides a visual representation of the spread of death
+rates within each region. In particular, the length of the box and the
+positioning of the median line indicate the central tendency, and the
+whiskers show the range of data.</p></li>
+<li><p>Notably, the South region exhibits a wider spread of death rates,
+suggesting greater variability in Alzheimer’s Disease mortality within
+this region compared to others.</p></li>
+<li><p>The observation of varying spreads among regions implies
+potential heterogeneity in Alzheimer’s Disease death rates, indicating
+the importance of further investigation into the factors contributing to
+this variability.</p></li>
 </ul>
 <pre class="r"><code>data  |&gt; 
   janitor::clean_names()  |&gt; 
@@ -482,7 +492,7 @@ rate among regions are not equal. Thus, we may perform a statistical
 test to check heteroscedasticity</p></li>
 </ul>
 <div id="test-of-equal-variances" class="section level3">
-<h3>test of equal variances</h3>
+<h3>Test of equal variances</h3>
 <center>
 <em>H<sub>0</sub> : Equal variance among regions vs H<sub>1</sub> :
 Unequal variance</em>
@@ -521,20 +531,19 @@ rates is not equal under different regions. This may have important
 implications for some statistical methods (e.g., analysis of variance
 ANOVA), which typically assume variance chi-square.</p>
 </div>
-</div>
 <div
 id="t.test-compare-mean-death-rate-between-west-america-and-midwest-america"
-class="section level2">
-<h2>2. t.test : Compare Mean Death Rate Between West America and Midwest
-America</h2>
+class="section level3">
+<h3>t.test : Compare Mean Death Rate Between West America and Midwest
+America</h3>
 <p>From the boxplot above, we find that the Alzheimer’s Disease death
 rate in West region and Midwest region are almost overlapping. Though
 the median of Midwest region is higher, the variance in West region
 seems smaller. Thus, we want to study if the mean death rate in the two
 regions are significantly different.</p>
 <div id="extract-death-rate-in-west-america-and-midwest-america"
-class="section level3">
-<h3>extract death rate in West America and Midwest America</h3>
+class="section level4">
+<h4>Extract death rate in West America and Midwest America</h4>
 <pre class="r"><code>west_death_rate &lt;- data |&gt; 
   filter(region == &quot;West&quot;) |&gt; 
   pull(death_rate)
@@ -591,9 +600,9 @@ Thus, we may reject the null hypothesis and conclude that the variances
 are not equal. Next, we should perform 2 sample t.test with unknown and
 unequal variance.</p>
 </div>
-<div id="sample-t.test-with-unknown-unequal-variances"
-class="section level3">
-<h3>2 sample t.test with unknown unequal variances</h3>
+<div id="two-sample-t.test-with-unknown-unequal-variances"
+class="section level4">
+<h4>Two sample t.test with unknown unequal variances</h4>
 <pre class="r"><code>t.test(west_death_rate,midwest_death_rate,alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = FALSE ) |&gt; 
   broom::tidy() |&gt; 
   knitr::kable()</code></pre>
@@ -649,10 +658,11 @@ less than the death rate in the “midwest” region.</li>
 </ul>
 </div>
 </div>
+</div>
 <div
 id="average-alzheimers-disease-death-rate-by-region-year-combination"
 class="section level2">
-<h2>3 Average Alzheimer’s Disease death rate by (region, year)
+<h2>2. Average Alzheimer’s Disease death rate by (region, year)
 Combination</h2>
 <pre class="r"><code>data |&gt;  
   group_by(region,year) |&gt; 
@@ -723,7 +733,7 @@ death rate than the other regions.</p></li>
 </div>
 <div id="average-alzheimers-disease-death-rate-by-income-level"
 class="section level2">
-<h2>4 Average Alzheimer’s Disease death rate by Income Level</h2>
+<h2>3. Average Alzheimer’s Disease death rate by Income Level</h2>
 <pre class="r"><code>  data |&gt; 
   group_by(year) |&gt; 
   select(year,income) |&gt; 
@@ -860,7 +870,7 @@ have a higher Alzheimer’s Disease Death Rate.</p></li>
 <center>
 <em>H<sub>0</sub> : mean of death_rate are equal in three groups vs
 H<sub>1</sub> : at least two means are not equal</em>
-<center>
+</center>
 <pre class="r"><code>anova_result &lt;- aov(death_rate ~ factor(income_group), data = income_level)
 
 TukeyHSD(anova_result) %&gt;%
@@ -935,7 +945,7 @@ Income vs. Lower Income.</p>
 </div>
 <div id="average-alzheimers-disease-death-rate-by-employment"
 class="section level2">
-<h2>5 Average Alzheimer’s Disease death rate by Employment</h2>
+<h2>4. Average Alzheimer’s Disease death rate by Employment</h2>
 <pre class="r"><code>  data |&gt; 
   group_by(year) |&gt; 
   select(year,employment) |&gt; 
@@ -1058,7 +1068,7 @@ Alzheimer’s Disease death rate.</li>
 <center>
 <em>H<sub>0</sub> : mean high employment = mean low employment vs
 H<sub>1</sub> : mean high employment ≠ mean low employment</em>
-<center>
+</center>
 <pre class="r"><code>t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = TRUE ) %&gt;% 
   broom::tidy() %&gt;% 
   knitr::kable()</code></pre>
@@ -1111,23 +1121,20 @@ Since the method is similar to what we have used and displayed when
 studying the regional differences, we do not show the process here.</li>
 </ul>
 </div>
-<div id="summary" class="section level2">
-<h2>Summary</h2>
-<p>In this part, we applied statistical analysis to studying the
-differences in Alzheimer’s Disease death rate caused by various factors.
-We first examine the distribution features and then choose appropriate
-tests to perform. We draw the following conclusions from the tests and
-plots result : * South region has the highest Alzheimer’s Disease
-average death rate while Northeast region has the lowest. *</p>
-<p>Regional differences in Alzheimer’s Disease death rates were
-observed, with significant variations among income and employment
-groups. Income and employment status were associated with Alzheimer’s
-Disease death rates, with lower income and employment linked to higher
-death rates. These findings suggest that regional, income, and
-employment factors play a role in Alzheimer’s Disease death rates,
-providing valuable insights for further investigation and public health
-interventions.（我感觉写两句话就行</p>
 </div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this analysis, we explored the impact of various factors on
+Alzheimer’s Disease death rates using statistical tests and
+visualizations. Key findings include:</p>
+<ul>
+<li>Regional differences in Alzheimer’s Disease death rates, with the
+South region having the highest and the Northeast region having the
+lowest average death rates.</li>
+<li>Significant variations in Alzheimer’s Disease death rates based on
+income and employment groups, indicating that socioeconomic factors play
+a role in disease outcomes.</li>
+</ul>
 </div>
 
 
