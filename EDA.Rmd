@@ -57,7 +57,7 @@ data = data |>
   drop_na(death_rate)
 ```
 
-From the above, we can see that there are 4 missing values in death_rate. Diabetes_rate, cardio_rate and smoke_rate each have 2 missing values. Elder_rate and obesity_rate each have 1 missing value. The reason for missing values in death_rate is that there is no available data for the District of Columbia. Since death_rate is the predictor variable of interest, we choose to directly delete all data for this state. The remaining missing values are relatively few, and we choose to directly delete rows containing missing values. In summary, because there are not many missing values and they are not easily imputed, we simply delete rows containing missing values.
+From the above, we can see that there are 4 missing values in `death_rate`. `diabetes_rate`, `cardio_rate` and `smoke_rate` each have 2 missing values. `elder_rate` and `obesity_rate` each have 1 missing value. The reason for missing values in `death_rate` is that there is no available data for the District of Columbia. Since `death_rate` is the predictor variable of interest, we choose to directly delete all data for this state. The remaining missing values are relatively few, and we choose to directly delete rows containing missing values. In summary, because there are not many missing values and they are not easily imputed, we simply delete rows containing missing values.
 
 
 ```{r, message = FALSE, warning = FALSE}
@@ -78,7 +78,7 @@ mean(test$death_rate) - median(test$death_rate)
 
 # Part III Multi-colinearity Check
 
-Due to multicollinearity potentially leading to substantial fluctuations in coefficient estimates and reduced precision of the estimates, we grouped predictor variables with similar properties or correlations to examine multicollinearity. We divided GDP, PCE, RPP, Employment, HC_Exp, Income, and Edu_Level into one group representing economic and social factors, and Diabetes_Rate, Cardio_Rate, Smoke_Rate, Elder_Rate, and Obesity_Rate into another group representing health and disease-related factors for analysis. Correlation heatmaps can help us identify whether there is multicollinearity among the selected predictor variables.
+Due to multicollinearity potentially leading to substantial fluctuations in coefficient estimates and reduced precision of the estimates, we grouped predictor variables with similar properties or correlations to examine multicollinearity. We divided `gdp`, `pce`, `rpp`, `employment_rate`, `hc_exp`, `income`, and `edu_level` into one group representing economic and social factors, and `diabetes_rate`, `cardio_rate`, `smoke_rate`, `elder_rate`, and `obesity_rate` into another group representing health and disease-related factors for analysis. Correlation heatmaps can help us identify whether there is multicollinearity among the selected predictor variables.
 
 ```{r, message = FALSE, warning = FALSE}
 # Handling missing data, here we choose to delete rows containing missing values.
@@ -105,7 +105,7 @@ correlation_matrix <- cor(data_selected_desease)
 corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
 ```
 
-Based on the heatmap, it can be observed that the variables diabetes_rate and obesity_rate are highly correlated. Among these variables, we ultimately chose to delete diabetes_rate while retaining cardio_rate. Some studies have indicated a certain association between heart disease and Alzheimer's disease. Heart disease may affect blood supply to the brain, which is related to cognitive decline. Therefore, retaining the cardio_rate as a predictive variable may help capture this potential association.
+Based on the heatmap, it can be observed that the variables `diabetes_rate` and `obesity_rate` are highly correlated. Among these variables, we ultimately chose to delete diabetes_rate while retaining `cardio_rate`. Some studies have indicated a certain association between heart disease and Alzheimer's disease. Heart disease may affect blood supply to the brain, which is related to cognitive decline. Therefore, retaining the `cardio_rate` as a predictive variable may help capture this potential association.
 
 
 # Part IV Correlation and Scatter Plot:
