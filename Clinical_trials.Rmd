@@ -26,6 +26,34 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r}
+# Function to tidy Donanemab results
+combine_mean_sd = function(df, group = ""){
+  
+  n = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sample_size) # number in group 1
+  m =  df |> filter(str_detect(group, "combined")) |> pull(sample_size) # number in group 2
+  sx = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sd) # sd of group 1
+  sy = df |> filter(str_detect(group, "combined")) |> pull(sd) # sd of group 2
+  x_bar = df |> filter(str_detect(group, "Low/medium tau")) |> pull(mean) # mean of group 1
+  y_bar = df |> filter(str_detect(group, "combined")) |> pull(mean) # mean of group 2
+
+  combined_mean = (n * x_bar + m * y_bar) / (n + m)
+  combined_sd =   sqrt(((n-1)*sx^2+(m-1)*sy^2)/(n+m-1)+(n*m*(x_bar-y_bar)^2)/((n+m)*(n+m-1)))
+  combined_samplesize = n + m
+  combined_ci_lower = combined_mean - 1.96*combined_sd
+  combined_ci_upper = combined_mean + 1.96*combined_sd
+  
+  return (tibble(
+    outcome = df |> head(1) |> pull(outcome),
+    group = group,
+    mean = combined_mean,
+    sd = combined_sd,
+    sample_size = combined_samplesize,
+    ci_lower = combined_ci_lower,
+    ci_upper = combined_ci_upper,
+    time = 0))}
+```
+
 # Clinical Trials Pipeline
 
 In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
@@ -36,12 +64,13 @@ In our quest to deepen the understanding of Alzheimer's disease and its treatmen
 
 We further evluate and compare the performance of two latest promising drugs Lecanemab and Donanemab for their participants' characteristics, treatment efficacy, and adverse events.
 
-## Participants' Demographics
+## Participants' Demographics []
 
 ```{r, message = FALSE, warning = FALSE}
-sex_df=
+sex_df =
   readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Sex", range = "A1:C5") |> 
   janitor::clean_names()
+
 sex_df |> 
   plot_ly(x=~drug, y=~sex_prop, type = "bar", color = ~sex) |> 
   layout(barmode = "stack",
@@ -68,33 +97,6 @@ race_df |>
 ```
 
 * From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
-
-```{r}
-combine_mean_sd = function(df, group = ""){
-  
-  n = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sample_size) # number in group 1
-  m =  df |> filter(str_detect(group, "combined")) |> pull(sample_size) # number in group 2
-  sx = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sd) # sd of group 1
-  sy = df |> filter(str_detect(group, "combined")) |> pull(sd) # sd of group 2
-  x_bar = df |> filter(str_detect(group, "Low/medium tau")) |> pull(mean) # mean of group 1
-  y_bar = df |> filter(str_detect(group, "combined")) |> pull(mean) # mean of group 2
-
-  combined_mean = (n * x_bar + m * y_bar) / (n + m)
-  combined_sd =   sqrt(((n-1)*sx^2+(m-1)*sy^2)/(n+m-1)+(n*m*(x_bar-y_bar)^2)/((n+m)*(n+m-1)))
-  combined_samplesize = n + m
-  combined_ci_lower = combined_mean - 1.96*combined_sd
-  combined_ci_upper = combined_mean + 1.96*combined_sd
-  
-  return (tibble(
-    outcome = df |> head(1) |> pull(outcome),
-    group = group,
-    mean = combined_mean,
-    sd = combined_sd,
-    sample_size = combined_samplesize,
-    ci_lower = combined_ci_lower,
-    ci_upper = combined_ci_upper,
-    time = 0))}
-```
 
 All trials participants took Alzheimer's tests to evaluate their stages at the start of study. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale) and MMSE (Mini-mental state examination) were shown in the plot, details of theses test scores were explained in next part.
 ```{r}
@@ -128,7 +130,7 @@ ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "
   geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
   geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
   facet_wrap(~outcome, scales = "free_y") +
-  labs(title = "Mean with 95% CI over Time",
+  labs(title = "Mean with 95% CI at Baseline",
        x = "Time",
        y = "Mean") +
   theme_minimal()
