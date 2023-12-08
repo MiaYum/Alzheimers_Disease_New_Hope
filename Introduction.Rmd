@@ -36,7 +36,7 @@ From the available data we are interested in answering the following questions:
 
     *   How does the distribution and prevalence of Alzheimer's disease vary across the United States, and what are the key factors influencing these patterns?
 
-    *   How can our data science models predict future trends in Alzheimer's cases across different states, and how might these predictions inform targeted interventions and resource allocation to mitigate the impact of Alzheimer's disease?
+    *   How can our data science models predict future trends in mortality rates of Alzheimer’s patients across different states, and how might these predictions inform targeted interventions and resource allocation to mitigate the impact of Alzheimer's disease?
 
 *   Regarding Pipeline and Clinical Trials of New Alzheimer Drugs
 
