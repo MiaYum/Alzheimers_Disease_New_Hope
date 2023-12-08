@@ -46,7 +46,7 @@ sex_df |>
          yaxis = list(title = "Percentage (%)"),
          width=500)
 ```
-* From the plot, we can see that there are more female participants in Donanemab's clinical trial than that in Lecanemab's clinical trial.
+* From the plot, we can see that there are more female participants in Donanemab's clinical trial that in Lecanemab's clinical trial.
 
 ```{r, message = FALSE, warning = FALSE}
 race_df=
