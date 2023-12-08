@@ -25,6 +25,8 @@ navbar:
         href: https://yigebian.shinyapps.io/Demographic_shiny/
       - text: "Clinical Trials"
         href: https://yigebian.shinyapps.io/ClinicalTrials_shiny/
+    - text: "Report"
+      href: Report.html
     - icon: fa-envelope fa-lg
       href: 
     - icon: fa-github fa-lg

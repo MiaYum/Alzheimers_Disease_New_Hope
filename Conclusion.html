@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction</title>
+<title>Conclusion</title>
 
 <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -33,6 +33,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
@@ -221,6 +222,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -400,124 +404,104 @@ div.tocify {
 
 <div id="header">
 
-
-
-<h1 class="title toc-ignore">Introduction</h1>
-
-</div>
-
-
-<div id="motivation-and-background" class="section level1">
-<h1>Motivation and Background</h1>
-<p>In the quiet twilight of memory, where the essence of a person’s life
-- their joys, sorrows, and triumphs - slowly dims, lies the profound
-tragedy of Alzheimer’s disease. It’s a realm where the familiar contours
-of identity are relentlessly eroded, not by the passage of time, but by
-an insidious ailment that disassembles the core of who they are. Each
-forgotten name, each lost memory, is a star winking out in the galaxy of
-a person’s life story, leaving behind a haunting void where once there
-was a rich tapestry of experiences and connections.</p>
-<p><img src="project_image/AD-motivation-pic.jpg" style="width:85%"></p>
-<p>Alzheimer’s, an irreversible brain disorder, affects over 6 million
-Americans, progressively destroying memory and cognitive skills. Current
-treatments only address symptoms, not the disease’s root cause or the
-progression. To date, there hasn’t been a new drug approved for
-Alzheimer’s disease in 20 years.</p>
-<p>2023 marks a pivotal year in Alzheimer’s research with the
-breakthrough of two promising drugs, Leqembi (Lecanemab) and Donanemab.
-Leqembi, the first drug to show a definitive slowing of Alzheimer’s
-decline, received FDA approval in July 2023. Donanemab, with its
-impressive Phase III clinical trial results, is on the cusp of FDA
-approval. These drugs symbolize a significant leap forward in treating
-Alzheimer’s, potentially heralding the beginning of the end for this
-devastating disease.</p>
-<p>Our project is driven by the desire to deeply understand Alzheimer’s
-disease in its entirety - its distribution, associated factors, and the
-transformative potential of these new drugs. We aim to explore how these
-advancements might alter the course of Alzheimer’s.</p>
-</div>
-<div id="related-work" class="section level1">
-<h1>Related work</h1>
-<p>The <a
-href="https://www.alz.org/alzheimers-dementia/facts-figures">“Alzheimer’s
-Disease Facts and Figures 2023”</a> report from the Alzheimer’s
-Association reveals the growing prevalence of Alzheimer’s disease in the
-United States. Over 6 million Americans are currently living with
-Alzheimer’s, with projections suggesting this number could rise to about
-13 million by 2050. This disease, a leading cause of death among
-seniors, has significant health, societal, and economic impacts, with
-mortality rates exceeding those of breast and prostate cancer
-combined.</p>
-<p>Our research focuses on the complex relationship between Alzheimer’s
-Disease and its risk factors as highlighted in <a
-href="https://www.alzinfo.org/articles/non-genetic-risk-factors/">existing
-studies</a>. Key elements include: (1) Age-related brain changes like
-neuron degeneration and protein build-up; (2) Educational attainment,
-potentially offering neural protection; (3) Cardiovascular risk factors
-akin to heart health impacting Alzheimer’s risk; (4) The link between
-diabetes and cognitive decline; (5) Socioeconomic factors influencing
-lifestyle and healthcare access, thereby affecting Alzheimer’s risk.</p>
-<p>In the dynamic landscape of Alzheimer’s disease research,
-ClinicalTrials.gov stands as a comprehensive repository, detailing
-ongoing clinical trials . Furthermore, Phase III clinical trials of two
-latest promising drugs Lecanemab and Donanemab were extensively
-documented in journal articles, have garnered significant attention for
-their in-depth investigation.</p>
-</div>
-<div id="initial-question" class="section level1">
-<h1>Initial Question</h1>
-<p>From the available data we are interested in answering the following
-questions:</p>
-<ul>
-<li><p>Regarding Alzheimer Facts and Influencing Factors</p>
-<ul>
-<li><p>How does the distribution and prevalence of Alzheimer’s disease
-vary across the United States, and what are the key factors influencing
-these patterns?</p></li>
-<li><p>How can our data science models predict future trends in
-mortality rates of Alzheimer’s patients across different states, and how
-might these predictions inform targeted interventions and resource
-allocation to mitigate the impact of Alzheimer’s disease?</p></li>
-</ul></li>
-<li><p>Regarding Pipeline and Clinical Trials of New Alzheimer Drugs</p>
-<ul>
-<li><p>How can we provide a comprehensive and detailed overview of the
-current Alzheimer’s drug trials in the U.S., encompassing their stages,
-approaches, and geographical distribution?</p></li>
-<li><p>How do Lecanemab and Donanemab, the newly FDA-approved
-Alzheimer’s drugs, compare in terms of their development, efficacy, and
-potential impact?</p></li>
-</ul></li>
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
 </div>
-<div id="goals" class="section level1">
-<h1>Goals</h1>
-<ul>
-<li><p>Explore and develop an interactive visualization tool of the
-geographical distributions and trends in Alzheimer’s associated factors
-across the US.</p></li>
-<li><p>In-depth analysis of associated factors (including socioeconomic,
-healthcare-related factors etc.) that may impact the distributions of AD
-death rate. We will develop regression and random forest models. These
-models will not only aid in predicting AD death rates with greater
-accuracy but also enable us to delve deeper into the significance and
-influence of each variable.</p></li>
-<li><p>The availability and accessibility of trial information are
-crucial for researchers, clinicians, and the general public to learn
-more about Alzheimer’s Diseases. While resources like ClinicalTrials.gov
-provide extensive details on ongoing clinical trials, their complexity
-and format can be daunting, especially for those new to navigating such
-databases. Recognizing this gap, one of our primary goals is to develop
-a user-friendly visualization and interaction shiny tool to show the
-geographic distirbution of clinical trials from
-ClinicalTrials.gov.</p></li>
-<li><p>Presentation and comparison of Phase III clinical trial results
-for two latest Alzheimer’s drugs, Lecanemab and Donanemab. We focus on
-their efficacy, safety profiles, and overall impact in the treatment of
-Alzheimer’s disease, and aiming to provide a clear and easy to
-understand comparison between these two groundbreaking
-treatments.</p></li>
-</ul>
+
+
+
+<h1 class="title toc-ignore">Conclusion</h1>
+
+</div>
+
+
+<div id="findings-and-conclusion" class="section level1">
+<h1>Findings and Conclusion</h1>
+<p>In our study, we integrated and cleaned data from different data
+sets, discovering some missing entries.</p>
+<p>For exploratory analysis, we categorized predictive variables into
+social and health factors. We also addressed multicollinearity and
+identified potential nonlinear relationships with the death rate.</p>
+<p>After preliminary analysis, we discovered that the examination of
+Alzheimer’s Disease mortality rates across different regions in the
+United States revealed significant disparities. The South region had the
+highest average death rate, while the Northeast region had the lowest.
+Boxplot visualizations highlighted the variation in death rates, with
+the South region showing greater variability compared to others.</p>
+<p>The statistical test we performed for equal variances confirmed this
+observation, indicating heteroscedasticity among regions. These findings
+emphasize the need to consider regional differences in planning
+healthcare and intervention strategies for Alzheimer’s Disease. We also
+performed a variances test for the subsequent comparison of mean death
+rates between the West and Midwest, revealing unequal variances between
+the two regions. Moreover, the subsequent two-sample t-test with unknown
+and unequal variances we performed provided insights into potential
+differences in mean death rates.</p>
+<p>Next, we tried to generate a regression model. Initially, we
+generated a multiple linear regression model which showed poor
+performance, indicating nonlinear variable relationships. This led us to
+adopt a random forest regression model, which significantly enhanced the
+model fit, raising R squared from 0.4 to 0.9.</p>
+<p>Analysis of variable importance revealed a strong correlation between
+education level and mortality rates in Alzheimer’s patients, with
+healthcare expenditure as the second most influential factor. Other
+factors, including smoking rate, elderly population proportion,
+employment, income, and cardiovascular rate, were less significant.
+These results highlight the complex interplay of socioeconomic,
+lifestyle, and healthcare factors in Alzheimer’s patient outcomes.</p>
+<p>We also developed a visualization tool to provide a comprehensive
+overview of Alzheimer’s drug trials across the United States, enhancing
+the understanding of Alzheimer’s disease treatment landscape. Building
+on this foundation, we conducted a focused evaluation of the treatment
+efficacy and safety of two latest drugs, Lecanemab and Donanemab. Our
+findings reveal that while both drugs show promise of efficacy, they
+also share key side effects, notably infusion-related reactions, ARIA,
+and headaches.</p>
+</div>
+<div id="challenges" class="section level1">
+<h1>Challenges</h1>
+<p>Regarding the data, categorical variables which can provide a more
+definite division of variables such as income level and employment are
+not included. Instead, we set our own standard to categorize these
+variables into different groups, which may not be objective enough.</p>
+<p>During the preliminary analysis part, the analysis faced challenges
+in addressing the heterogeneity of Alzheimer’s Disease data,
+particularly regarding death rates across regions. Variability in data
+sources, reporting mechanisms, and population characteristics may
+introduce uncertainties. Additionally, assumptions of normality in the
+t-test and homogeneity of variances in the ANOVA test may be influenced
+by outliers or non-normal distributions, posing challenges to the
+robustness of statistical inferences.</p>
+<p>During the EDA part , we found strong correlations among multiple
+variables, necessitating the removal of some for regression modeling.
+The selection process involved intense discussion, ultimately leading to
+the choice of representative variables based on facts and data
+characteristics. Initially, our linear model performed poorly, prompting
+us to shift to a black-box model, which significantly improved the
+fit.</p>
+</div>
+<div id="limitations-insights-further-improvements"
+class="section level1">
+<h1>Limitations, Insights, Further Improvements</h1>
+<p>The analysis covers the period from 2018 to 2021, and variations over
+time may not be fully captured. Data from only four years may also limit
+the model’s general applicability due to insufficient data volume.
+Long-term trends and their impact on Alzheimer’s Disease death rates
+could provide a more comprehensive understanding. The observed
+heteroscedasticity suggests that healthcare policies and interventions
+should consider varying levels of variability in death rates across
+regions. Further research could explore the practical significance and
+underlying mechanisms driving these disparities. The data collected are
+mainly based on the total population, while data from specifically
+Alzheimer’s Disease patients, such as obesity rate of Alzheimer’s
+Disease patients in each state, may be more helpful for further
+analyses.Future analyses could also benefit from more data collected,
+standardized data collection methods and reporting standards to enhance
+comparability.</p>
 </div>
 
 
@@ -555,6 +539,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

@@ -9,77 +9,1788 @@ output:
     code_folding: hide
 ---
 
-# Alzheimer's Disease：New Hope
+# Project report - Alzheimer's Disease: New Hope
 
-**The group members:**
+**Mia Yu, Aiying Huang, Kairui Wang, Yige Bian, Eunice Wang**
 
-Mia Yu (my2838)
+# Motivation
 
-Aiying Huang (ah4167)
-
-Kairui Wang (kw3103)
-
-Yige Bian (yb2591)
-
-Eunice Wang (cw3555)
-
-# The motivation for this project
 Alzheimer’s disease is an irreversible, progressive brain disorder affecting more than 6.5 million Americans that slowly destroys memory and thinking skills and, eventually, the ability to carry out simple tasks. However, existing drugs only treat the symptoms of Alzheimer’s disease. They do not treat the root cause of the disease and do not slow down how quickly it gets worse. To date, there hasn’t been a new drug approved for Alzheimer’s disease in 20 years. This year is an important year for AD because a breakthrough occurs in AD treatment: two promising drugs, Leqembi and Donanmab, for treating Alzheimer's disease bring fresh hope. Leqembi, the first treatment that shows an unequivocal slowing of decline in Alzheimer’s disease, is fully approved by FDA in July 2023. Donanemab is widely expected to be granted full FDA approval within the next year. These two medications are both with impressive Phase III clinical trial results. They represent an important advancement in the ongoing fight to effectively treat Alzheimer’s disease and could be the beginning of the end of Alzheimer's disease. 
 
-# The intended final products
-Our project culminates in the creation of a comprehensive website serving as the central hub for all project-related information and tools. The website will feature:
+# Introduction
 
-**Homepage Overview:**  A welcoming homepage providing a succinct overview of the project. It will include essential information such as the project's objectives, motivation, the initial questions we aim to address, and a brief intro of our team members. Additionally, a screencast will offer visitors a guided tour of our project, encapsulating our journey from conception to realization.
+In the quiet twilight of memory, where the essence of a person’s life - their joys, sorrows, and triumphs - slowly dims, lies the profound tragedy of Alzheimer’s disease. It’s a realm where the familiar contours of identity are relentlessly eroded, not by the passage of time, but by an insidious ailment that disassembles the core of who they are. Each forgotten name, each lost memory, is a star winking out in the galaxy of a person’s life story, leaving behind a haunting void where once there was a rich tapestry of experiences and connections.
+
+<img src="project_image/AD-motivation-pic.jpg" style="width:85%">
+
+Alzheimer's, an irreversible brain disorder, affects over 6 million Americans, progressively destroying memory and cognitive skills. Current treatments only address symptoms, not the disease's root cause or the progression. To date, there hasn’t been a new drug approved for Alzheimer’s disease in 20 years.
+
+2023 marks a pivotal year in Alzheimer's research with the breakthrough of two promising drugs, Leqembi (Lecanemab) and Donanemab. Leqembi, the first drug to show a definitive slowing of Alzheimer's decline, received FDA approval in July 2023. Donanemab, with its impressive Phase III clinical trial results, is on the cusp of FDA approval. These drugs symbolize a significant leap forward in treating Alzheimer's, potentially heralding the beginning of the end for this devastating disease.
+
+Our project is driven by the desire to deeply understand Alzheimer's disease in its entirety - its distribution, associated factors, and the transformative potential of these new drugs. We aim to explore how these advancements might alter the course of Alzheimer's.
+
+# Related work
+
+The ["Alzheimer's Disease Facts and Figures 2023"](https://www.alz.org/alzheimers-dementia/facts-figures) report from the Alzheimer's Association reveals the growing prevalence of Alzheimer's disease in the United States. Over 6 million Americans are currently living with Alzheimer's, with projections suggesting this number could rise to about 13 million by 2050. This disease, a leading cause of death among seniors, has significant health, societal, and economic impacts, with mortality rates exceeding those of breast and prostate cancer combined.
+
+Our research focuses on the complex relationship between Alzheimer's Disease and its risk factors as highlighted in [existing studies](https://www.alzinfo.org/articles/non-genetic-risk-factors/). Key elements include: (1) Age-related brain changes like neuron degeneration and protein build-up; (2) Educational attainment, potentially offering neural protection; (3) Cardiovascular risk factors akin to heart health impacting Alzheimer's risk; (4) The link between diabetes and cognitive decline; (5) Socioeconomic factors influencing lifestyle and healthcare access, thereby affecting Alzheimer's risk.
+
+In the dynamic landscape of Alzheimer's disease research, ClinicalTrials.gov stands as a comprehensive repository, detailing ongoing clinical trials . Furthermore, Phase III clinical trials of two latest promising drugs Lecanemab and Donanemab were extensively documented in journal articles, have garnered significant attention for their in-depth investigation. 
+
+# Initial Questions
+
+From the available data we are interested in answering the following questions:
+
+*   Regarding Alzheimer Facts and Influencing Factors
+
+    *   How does the distribution and prevalence of Alzheimer's disease vary across the United States, and what are the key factors influencing these patterns?
+
+    *   How can our data science models predict future trends in mortality rates of Alzheimer’s patients across different states, and how might these predictions inform targeted interventions and resource allocation to mitigate the impact of Alzheimer's disease?
+
+*   Regarding Pipeline and Clinical Trials of New Alzheimer Drugs
+
+    *   How can we provide a comprehensive and detailed overview of the current Alzheimer's drug trials in the U.S., encompassing their stages, approaches, and geographical distribution?
+
+    *   How do Lecanemab and Donanemab, the newly FDA-approved Alzheimer's drugs, compare in terms of their development, efficacy, and potential impact?
+
+# Data
+
+```{r setup, include = FALSE}
+suppressMessages(library(tidyverse))
+suppressMessages(library(dbplyr))
+library(readr)
+library(ggplot2)
+library(caret)
+library(purrr)
+library(plotly)
+library(modelr)
+library(tidyr)
+library(readxl)
+set.seed(15)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	message = FALSE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+```
+
+## Associated Factors Datasets
+
+To study the complex interplay of factors contributing to Alzheimer's Disease, we have sourced a diverse range of datasets, including age, socioeconomic status, healthcare access, education level, etc. We collected data from authoritative and reliable sources such as government website and professional institude. The final data for analysis is obtained by merging these Alzheimer's Disease related datasets.
+The cleaning process include variable selection, converting variable to the type we need, and transforming the dataframe to tidy format. The details of importing and cleaning of all datasets are as following:
+
+*   The first dataset `death_rate` contains the mortality of Alzheimer’s Disease in each state from 2014 to 2021, which can be accessed from [CDC](https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm).
+
+*   `econdata` dataset contains the economic status of each state from 2008 to 2021, including GDP, income, price index, expenditure on healthcare etc. The data is downloaded from [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==).
+
+*   `edu_level` dataset contains the percentage of population obtained Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
+
+*   `diabetes` dataset contains the rate of diabetes by state from 2018 to 2021. The data can be accessed [here](https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
+
+*   `smoke` dataset contains the rate of smoking by state. The sources of the data are [CDC](https://www.cdc.gov/tobacco/data_statistics/fact_sheets/adult_data/cig_smoking/index.htm) and [KFF](https://www.kff.org/other/state-indicator/smoking-adults-by-sex/?currentTimeframe=2&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
+
+*   `Cardiovascular Disease` dataset contains the Cardiovascular Disease rate, and the data can be accessed [here](https://www.kff.org/other/state-indicator/percent-of-adults-with-cardiovascular-disease-by-sex/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
+
+*   `age_over_65` dataset contains the percentage of elderly people (>65 years old). This data is extracted from [Census Bureau](https://data.census.gov/table/ACSDP1Y2021.DP05?g=010XX00US$0400000&moe=false) and [PRB](https://www.prb.org/resources/which-us-states-are-the-oldest/).
+
+*   `obesity` dataset contains the percent of adults aged 18 years and older who have obesity in each state, and the data can be accessed from [CDC](https://nccd.cdc.gov/dnpao_dtm/rdPage.aspx?rdReport=DNPAO_DTM.ExploreByTopic&islClass=OWS&islTopic=&go=GO).
+
+```{r}
+death_rate = 
+  read_csv("./Data/death_rate.csv") |>
+  janitor::clean_names() |>
+  rename(death_rate = rate) |>
+  select(state, year, death_rate) |>
+  filter(year >= 2018) |>
+  arrange(state, year)
+
+econ_data = 
+  read_csv("./Data/econdata.csv") |>
+  janitor::clean_names() |>
+  select(geo_name, description, x2018:x2021) |>
+  mutate(description = 
+           case_match(
+             description,
+             "GDP"~"gdp",
+             "PCE"~"pce",
+             "Regional price parities"~"rpp",
+             "employment"~"employment",
+             "healthcare expenditure"~"hc_exp",
+             "personal income"~"income",
+             "population"~"population")) |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "value"
+  ) |>
+  pivot_wider(
+    names_from = "description",
+    values_from = "value"
+  ) |>
+  rename(state = geo_name) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")),
+         gdp = gdp/(population/1000000),
+         pce = pce/(population/1000000),
+         employment = round(employment/(population), 4),
+         hc_exp = hc_exp/(population/1000000),
+         income = income/(population/1000000),
+         ) |>
+  select(-population) |>
+  arrange(state, year)
+
+edu_level = 
+  read_excel("./Data/edu_level.xlsx") |>
+  janitor::clean_names() |>
+  select(state, x2018:x2021) |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "edu_level"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")),
+         edu_level = edu_level/100) |>
+  arrange(state, year)
+
+diabetes_rate = 
+  read_excel("./Data/diabetes.xlsx", range = "A1:C205") |>
+  janitor::clean_names() |>
+  rename(diabetes_rate = diabetes_proportion) |>
+  mutate(diabetes_rate = round(as.numeric(diabetes_rate), 3),
+         year = as.numeric(year)) |>
+  arrange(state, year)
+
+cardio_rate = 
+  read_excel("./Data/Cardiovascular Disease.xlsx", range = "A1:E52") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "cardio_rate"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", ""))) |>
+  arrange(state, year)
+
+smoke_rate =
+  read_excel("./Data/smoke.xlsx") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "smoke_rate"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")),
+         smoke_rate = smoke_rate/100) |>
+  arrange(state, year)
+
+elderly_rate = read_excel("./Data/age_over_65/age_over_65.xlsx") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "elder_rate"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")))|>
+  arrange(state, year)
+
+obesity_rate = read_csv("./Data/obesity.csv") |>
+  janitor::clean_names() |>
+  pivot_longer(
+    x2018:x2021,
+    names_to = "year",
+    values_to = "obesity_rate"
+  ) |>
+  mutate(year = as.numeric(str_replace(year, "x", "")))|>
+  arrange(state, year)
+```
+
+```{r}
+geo_data = left_join(death_rate, econ_data, by = c("state", "year")) |>
+  left_join(edu_level, by = c("state", "year")) |>
+  left_join(diabetes_rate, by = c("state", "year")) |>
+  left_join(cardio_rate, by = c("state", "year")) |>
+  left_join(smoke_rate, by = c("state", "year")) |>
+  left_join(elderly_rate, by = c("state", "year")) |>
+  left_join(obesity_rate, by = c("state", "year"))
+```
+These datasets were tidied and merged as `geo_data` for our future study. The final `geo_data` contains `r nrow(geo_data)` and `r length(geo_data)` variables, including `r variable.names(geo_data)`
+
+```{r}
+write.csv(geo_data, "./Data/geo_data.csv", row.names = FALSE)
+```
+
+## Clinical Trials data
+Clinicaltrials.gov provided complete and detailed information of all current Alzheimer's disease drugs. Clinical Trials data is directly downloaded from [clinicaltrials.gov](https://clinicaltrials.gov/search?cond=Alzheimer).
+```{r}
+CT_data = 
+  read_csv("./Data/ClinicalTrials_raw_data.csv") |>
+  janitor::clean_names() |>
+  select(-study_title, -acronym, -study_results, -conditions, -brief_summary, -primary_outcome_measures, -secondary_outcome_measures, -other_outcome_measures, -study_design, -other_i_ds, - primary_completion_date, -first_posted, -results_first_posted, -last_update_posted)
+```
+The raw data is too complicated with redundant information, so we did an initial variable selection to omit useless variables. There are a total of `r nrow(CT_data)` and `r length(CT_data)` variables. Variables and description is listed below:
+
+*   ```r colnames(CT_data)[1]```: Unique Identification of clinical trials
+
+*   ```r colnames(CT_data)[2]```: Website address for more details of the study
+
+*   ```r colnames(CT_data)[3]```: Study status
+
+*   ```r colnames(CT_data)[4]```: Intervention methods of study
+
+*   ```r colnames(CT_data)[5]```: Study sponsor
+
+*   ```r colnames(CT_data)[6]```: Study collaborator
+
+*   ```r colnames(CT_data)[7]```: Gender of study participants (include "MALE", "FEMALE", "ALL", "OBSERVATIONAL", and missing value)
+
+*   ```r colnames(CT_data)[8]```: Age of study participants (include combination of Chiled, Adult, Oler Adult, and missing value)
+
+*   ```r colnames(CT_data)[9]```: Phases of the study
+
+*   ```r colnames(CT_data)[10]```: Number of Participants enrolled in the study
+
+*   ```r colnames(CT_data)[11]```: Type of sponsor
+
+*   ```r colnames(CT_data)[12]```: Type of study ("INTERVENTIONAL", "OBSERVATIONAL", "EXPANDED_ACCESS", and missing value)
+
+*   ```r colnames(CT_data)[13]```: Start date of study
+
+*   ```r colnames(CT_data)[14]```: Completion date of study
+
+*   ```r colnames(CT_data)[15]```: Location(s) of study (Locations were divided by "|" for study conducted in more than one location)
+
+Data for further investigation on two latest drugs Lecanemab and Donanemab are from their published Phase III study results. Relevant website could be accessd from [Lecanemab](https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material) and [Donanemab](https://jamanetwork.com/journals/jama/article-abstract/2807533). Both study contians data for participants basic information, adverse events statistics, survival analysis and treatment evaluation.
+
+```{r}
+# Safety data for Lecanemab
+lec_safety =
+  readxl::read_excel("data/Lecanemab.xlsx",sheet="safety", range = "A1:C5")
+
+# Adverse Events data for Lecanemab
+lec_AE =
+  readxl::read_excel("data/Lecanemab.xlsx",sheet="AE", range = "A1:C10")
+
+# Treatment evluation data for Lecanemab
+lec_result =
+  readxl::read_excel("data/Lecanemab.xlsx",sheet="safety", range = "A1:H15")
+
+# Safety data for Donanemab
+don_safety =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="safety", range = "A1:C5")
+
+# Adverse Events data for Donanemab
+don_AE =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="AE", range = "A1:C10")
+
+# Hazard ratio analysis data for Donanemab
+don_hazard =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="K-M", range = "A1:D17")
+
+# Treatment evluation data for Donanemab
+don_result =
+  readxl::read_excel("data/Donanemab.xlsx",sheet="safety", range = "A1:H33")
+```
+
+# Analysis
+
+## Exploratory Analysis
+
+### Shiny App
+
+The prevalence and mortality rates of Alzheimer's Disease, along with other pertinent factors, exhibit significant variation across different states and over various years. To effectively visualize and have a direct overview of these geographical and temporal trends, we have developed a Shiny app. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+
+<img src="project_image/demo_shiny.jpg" style="width:75%">
+
+### Data Overview
+```{r, message = FALSE, warning = FALSE}
+data = read_csv("./Data/geo_data.csv")
+# 1. Descriptive statistics table for all variables
+skimr::skim(data)
+```
+
+The dataset contains `r nrow(data)` rows and `r ncol(data)` columns, covering a wide array of variables categorized into several key areas:
+
+Demographic and Economic Indicators: This includes data on the state, year, death rate, Gross Domestic Product (`gdp`), Personal Consumption Expenditure (`pce`), Regional Price Parity (`rpp`), employment level (`employment_rate`), healthcare expenditure (`hc_exp`), and income.
+
+Public Health Metrics: The data provides detailed insights into various health-related statistics, such as the diabetes rate, cardiovascular disease rate, smoking rate, the proportion of the elderly population, and the obesity rate.
+
+```{r, message = FALSE, warning = FALSE}
+library(plotly)
+missing_data <- data |>
+  summarise_all(funs(sum(is.na(.)))) |>
+  gather(key = "Variable", value = "MissingValues") |>
+  mutate(Variable = fct_reorder(Variable, -MissingValues))
+
+plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = "bar", marker = list(color = "rgba(55, 128, 191, 0.7)", line = list(color = "rgba(55, 128, 191, 0.7)", width = 2))) |>
+  layout(title = "Missing Data Visualization",
+         xaxis = list(title = "Variables"),
+         yaxis = list(title = "Number of Missing Values"))
+```
+
+### Missing Value Analysis
+```{r}
+data = data |>
+  drop_na(death_rate)
+```
+
+From the above, we can see that there are 4 missing values in `death_rate`. `diabetes_rate`, `cardio_rate` and `smoke_rate` each have 2 missing values. `elder_rate` and `obesity_rate` each have 1 missing value. The reason for missing values in `death_rate` is that there is no available data for the District of Columbia. Since `death_rate` is the predictor variable of interest, we choose to directly delete all data for this state. The remaining missing values are relatively few, and we choose to directly delete rows containing missing values. In summary, because there are not many missing values and they are not easily imputed, we simply delete rows containing missing values.
+
+
+```{r, message = FALSE, warning = FALSE}
+# Explore distribution of results and consider potential transformations
+# Create a histogram
+plot_ly(data, x = ~death_rate, type = "histogram", nbinsx = 30, marker = list(color = "rgba(55, 128, 191, 0.7)", line = list(color = "rgba(55, 128, 191, 0.7)", width = 2))) %>%
+  layout(title = "Histogram of Death Rate")
+```
+
+Since our goal is to create a model to predict the death rate, we separately examine the distribution of predictor variables. As shown in the above chart, the distribution of death rate is almost symmetric, thus we do not perform any transformations on it for now.
+
+```{r}
+test = data |>
+  drop_na(death_rate)
+
+mean(test$death_rate) - median(test$death_rate)
+```
+
+### Multi-colinearity Check
+
+Due to multicollinearity potentially leading to substantial fluctuations in coefficient estimates and reduced precision of the estimates, we grouped predictor variables with similar properties or correlations to examine multicollinearity. We divided `gdp`, `pce`, `rpp`, `employment_rate`, `hc_exp`, `income`, and `edu_level` into one group representing economic and social factors, and `diabetes_rate`, `cardio_rate`, `smoke_rate`, `elder_rate`, and `obesity_rate` into another group representing health and disease-related factors for analysis. Correlation heatmaps can help us identify whether there is multicollinearity among the selected predictor variables.
+
+```{r, message = FALSE, warning = FALSE}
+# Handling missing data, here we choose to delete rows containing missing values.
+data <- na.omit(data)
+```
+
+```{r, message = FALSE, warning = FALSE}
+library(corrplot)
+data_selected_social <-data %>% select(gdp, pce, rpp, employment,hc_exp,income,edu_level)
+# Calculate the correlation matrix
+correlation_matrix <- cor(data_selected_social)
+
+# Visualize the correlation matrix
+corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
+```
+
+From the heatmap, we observed a high degree of correlation among GDP, personal consumption expenditure (PCE), regional price parity (RPP), employment, healthcare expenditure (HC_EXP), income, and education level. Consequently, we decided to remove GDP, PCE, and RPP from our analysis. Firstly, from a practical standpoint, while GDP, PCE, and RPP do provide some insights into the economic conditions of a region, their direct connection to Alzheimer's disease death rates may be relatively weak. In contrast, variables like employment status, healthcare expenditure, personal income, and education level are more likely to directly impact the survival rates of Alzheimer's disease patients. Secondly, removing highly correlated variables helps mitigate the issues related to multicollinearity, enhancing the stability and interpretability of the model. 
+
+```{r, message = FALSE, warning = FALSE}
+data_selected_desease <-data %>% select(diabetes_rate,cardio_rate,smoke_rate,elder_rate,obesity_rate)
+# Calculate the correlation matrix
+correlation_matrix <- cor(data_selected_desease)
+
+# Visualize the correlation matrix
+corrplot(correlation_matrix, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
+```
+
+Based on the heatmap, it can be observed that the variables `diabetes_rate` and `obesity_rate` are highly correlated. Among these variables, we ultimately chose to delete diabetes_rate while retaining `cardio_rate`. Some studies have indicated a certain association between heart disease and Alzheimer's disease. Heart disease may affect blood supply to the brain, which is related to cognitive decline. Therefore, retaining the `cardio_rate` as a predictive variable may help capture this potential association.
+
+
+### Correlation and Scatter Plot:
+
+```{r, message = FALSE, warning = FALSE}
+data |>
+  select(year, death_rate, smoke_rate, cardio_rate, obesity_rate, elder_rate) |>
+  pivot_longer(
+    smoke_rate:elder_rate,
+    names_to = "category",
+    values_to = "Rate") |>
+  mutate(year = as.character(year),
+         category = case_match(
+           category,
+           "smoke_rate" ~ "Smoke Rate",
+           "cardio_rate" ~ "Cardiovascular Disease Rate",
+           "obesity_rate" ~ "Obesity Rate",
+           "elder_rate" ~ "Elder Rate"
+         )) |>
+  ggplot(aes(x = Rate, y = death_rate, color = year)) +
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.5, color = 'red')  +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  ) +
+  labs(
+    title = "Scatter Plot for Death Rate and Health Related Factors Across Years",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  facet_wrap(~category, scales = "free", ncol = 2)
+```
+
+There is a positive correlation between the proportion of smokers and the prevalence of obesity and cardiovascular disease, and the overall mortality rate. Conversely, the percentage of the population aged 65 and older shows a negative correlation with the mortality rate. This suggests that a higher percentage of older adults may reflect a more advanced state of medical care in that region, potentially leading to a lower rate of deaths attributed to Alzheimer's disease
+
+```{r, message = FALSE, warning = FALSE}
+data |>
+  select(year, death_rate, income, employment, hc_exp, rpp) |>
+  pivot_longer(
+    income:rpp,
+    names_to = "category",
+    values_to = "Value") |>
+  mutate(year = as.character(year),
+         category = case_match(
+           category,
+           "income" ~ "Income",
+           "employment" ~ "Empoyment Rate",
+           "hc_exp" ~ "Healthcare Expenditure",
+           "rpp" ~ "Regional price parities"
+         )) |>
+  ggplot(aes(x = Value, y = death_rate, color = year)) +
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.5, color = 'red')  +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  ) +
+  labs(
+    title = "Scatter Plot for Death Rate and Social Related Factors Across Years",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  facet_wrap(~category, scales = "free", ncol = 2)
+```
+
+There are negative association between Alzheimer's disease mortality rates and factors such as income, employment, price index, and healthcare expenditure. Higher income and employment levels, often associated with better access to healthcare, correspond with lower Alzheimer's death rates. Similarly, regions with a higher price index and greater healthcare spending show fewer deaths from this disease.
+
+However, the data points show a lack of tight clustering, which suggests that a linear model might not fully capture the nuances of these relationships. This pattern hints at the potential for a more complex, non-linear relationship between these socio-economic factors and Alzheimer's mortality.
+
+```{r, message = FALSE, warning = FALSE}
+data |>
+  ggplot(aes(x = edu_level, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Education Level Across Years",
+    x = "Educational Level",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+The graph illustrates a trend where higher levels of educational attainment are associated with lower mortality rates. This pattern suggests that better education may contribute to improved health outcomes, potentially due to increased health awareness, better access to healthcare resources, or healthier lifestyle choices typically associated with higher education levels.
+
+However, it's important to consider that Alzheimer's disease predominantly affects older individuals, and there may be a temporal discrepancy between the current education levels and those of the older population primarily impacted by this disease. This time-related difference suggests that while educational attainment appears to be a protective factor, the actual impact on Alzheimer's mortality might be influenced by historical changes in education over the decades. Therefore, when interpreting these results, we should be cautious about directly correlating current educational standards with Alzheimer's outcomes in an aging population.
+
+### Appendix
+```{r, message = FALSE, warning = FALSE}
+# edu_level
+
+data |>
+  ggplot(aes(x = edu_level, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Education Level Across Years",
+    x = "Educational Level",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  scale_x_continuous(limits = c(0.2, 0.5)) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+As shown in the graph, a higher level of education correlates with a lower death rate. However, the points are quite scattered, and a linear trend might not fit well. There may be a non-linear trend present.
+
+
+```{r, message = FALSE, warning = FALSE}
+# income
+data |>
+  ggplot(aes(x = income, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Income",
+    x = "Income",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  scale_x_continuous(limits = c(40000, 70000)) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+```{r, message = FALSE, warning = FALSE}
+#employment
+data |>
+  ggplot(aes(x = employment, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Employment", 
+    x = "Employment",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+```{r, message = FALSE, warning = FALSE}
+# hc_exp
+
+data |>
+  ggplot(aes(x = hc_exp, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate Healthcare Expenditure", 
+    x = "Healthcare Expenditure",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+Income, employment, and particularly spending on health, all show a more or less positive correlation trend, but a linear relationship seems unable to fully explain it.
+
+```{r, message = FALSE, warning = FALSE}
+# elder_rate
+
+ data |>
+  ggplot(aes(x = elder_rate, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Elderly Population Rate", 
+    x = "Elderly Population Rate",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+The proportion of the population over 65 years old is negatively correlated with the death rate. We infer that a higher proportion of the population over 65 indicates a more advanced level of medical care in that state, thus resulting in a smaller proportion of deaths from Alzheimer's disease.
+
+```{r, message = FALSE, warning = FALSE}
+# smoke_rate
+
+ data |>
+  ggplot(aes(x = smoke_rate, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Smoking Rate", 
+    x = "Smoking Rate",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+```{r, message = FALSE, warning = FALSE}
+# cardio rate
+
+ data |>
+  ggplot(aes(x = cardio_rate, y = death_rate, color = as.factor(year))) + 
+  geom_point(alpha = 0.5, size = 0.8) +
+  geom_smooth(method = 'lm', se = TRUE, size = 0.8, color = 'red') +
+  labs(
+    title = "Scatter Plot for Death Rate and Cardiovascular Disease Rate", 
+    x = "Cardiovascular Disease Rate",
+    y = "Death Rate",
+    color = "Year"
+  ) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+The proportion of smokers and the rate of heart disease are positively correlated with the death rate.
+
+```{r, message = FALSE, warning = FALSE}
+test = data |>
+  select(-state, -year) |>
+  drop_na(cardio_rate, diabetes_rate, smoke_rate, obesity_rate)
+
+for (i in variable.names(test)){
+  print(i)
+  print(cor(test$death_rate, pull(test, i)))
+}
+
+```
+
+## Preliminary Analysis
+
+```{r, include = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r, include = FALSE, message = FALSE, warning = FALSE}
+library(dplyr)
+library(tidyverse)
+```
+
+### 1. Death rate by Regions
+
+```{r, message = FALSE, warning = FALSE}
+data<- read_csv("data/geo_data.csv") |> 
+  mutate(region = case_when(
+    state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont") ~ "Northeast",
+    state %in% c("Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin") ~ "Midwest",
+    state %in% c("Alabama", "Arkansas", "Delaware", "District of Columbia", "Florida", "Georgia", "Kentucky", "Louisiana", "Maryland", "Mississippi", "North Carolina", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Virginia", "West Virginia") ~ "South",
+    state %in% c("Alaska", "Arizona", "California", "Colorado", "Hawaii", "Idaho", "Montana", "Nevada", "New Mexico", "Oregon", "Utah", "Washington", "Wyoming") ~ "West"
+  ))
+```
+
+```{r, message = FALSE, warning = FALSE}
+data |> 
+  janitor::clean_names() |> 
+  group_by(region) |> 
+  summarise(avg_death_rate = mean(death_rate, na.rm = TRUE)) |> 
+  arrange(avg_death_rate) |> 
+  knitr::kable(digits = 3)
+```
+
+* The boxplot displays the distribution of Alzheimer's Disease death rates across different regions.
+
+* While the boxplot primarily illustrates the interquartile range and median, it provides a visual representation of the spread of death rates within each region. In particular, the length of the box and the positioning of the median line indicate the central tendency, and the whiskers show the range of data.
+
+* Notably, the South region exhibits a wider spread of death rates, suggesting greater variability in Alzheimer's Disease mortality within this region compared to others.
+
+* The observation of varying spreads among regions implies potential heterogeneity in Alzheimer's Disease death rates, indicating the importance of further investigation into the factors contributing to this variability.
+
+```{r, message = FALSE, warning = FALSE}
+data  |> 
+  janitor::clean_names()  |> 
+  group_by(region)  |> 
+  ggplot(aes(x = fct_reorder(region, death_rate), y = death_rate, fill = region)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Death Rate by Regions", x = "Region", y = "Death Rate") +
+  theme(axis.text.x = element_text(hjust = 1, angle = 10, size = 8))
+```
+
+* The boxplot shows the distribution of death rate in each region.
+
+* The variance of death rate is higher in South region.
+
+* We can roughly tell from the plot that the variances of death rate among regions are not equal. Thus, we may perform a statistical test to check heteroscedasticity
+
+#### Test of equal variances
+
+<center> *H~0~ : Equal  variance  among  regions  vs  H~1~ : Unequal  variance*<center>
+
+```{r,, message = FALSE, warning = FALSE}
+bartlett.test(death_rate ~ factor(region), data = data) |> 
+  broom::tidy() |> 
+  knitr::kable()
+```
+
+Based on the less-than-significance level of the p-value (usually 0.05), we have enough evidence to reject the null hypothesis of variance homogeneity. Therefore, we can assume that the variance of mortality rates is not equal under different regions. This may have important implications for some statistical methods (e.g., analysis of variance ANOVA), which typically assume variance chi-square.
+
+#### t.test : Compare Mean Death Rate Between West America and Midwest America
+
+From the boxplot above, we find that the Alzheimer’s Disease death rate in West region and Midwest region are almost overlapping. Though the median of Midwest region is higher, the variance in West region seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
+
+##### Extract death rate in West America and Midwest America
+
+```{r, message = FALSE, warning = FALSE}
+west_death_rate <- data |> 
+  filter(region == "West") |> 
+  pull(death_rate)
+
+midwest_death_rate <- data |>  
+  janitor::clean_names() |> 
+  filter(region == "Midwest") |> 
+  pull(death_rate)
+
+```
+
+```{r,, message = FALSE, warning = FALSE}
+var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level = 0.95) |>  
+  broom::tidy() |> 
+  knitr::kable()
+```
+
+The null hypothesis for the variance test is that the two variance are equal. The result shows that the p-value is much less than 0.05. Thus, we may reject the null hypothesis and conclude that the variances are not equal. Next, we should perform 2 sample t.test with unknown and unequal variance.
+
+##### Two sample t.test with unknown unequal variances
+
+```{r, message = FALSE, warning = FALSE}
+t.test(west_death_rate,midwest_death_rate,alternative = "less",conf.level = 0.95,paired = F,var.equal = FALSE ) |> 
+  broom::tidy() |> 
+  knitr::kable()
+```
+
+* The p-value is greater than the conventional significance level of 0.05, suggesting that there is not enough evidence to reject the null hypothesis. The results indicate that, based on the data, there is no significant difference in death rates between the "west" and "midwest" regions, or the death rate in the "west" region is not significantly less than the death rate in the "midwest" region.
+
+### 2. Average Alzheimer's Disease death rate by (region, year) Combination
+
+```{r, message = FALSE, warning = FALSE}
+data |>  
+  group_by(region,year) |> 
+  summarise(avg_by_year_region = mean(death_rate,na.rm = T)) |> 
+  pivot_wider(
+    names_from = region,
+    values_from = avg_by_year_region
+  ) |>  
+  knitr::kable(digits = 3)
+```
+
+```{r, message = FALSE, warning = FALSE}
+data |>  
+  group_by(region,year) |> 
+  summarise(avg_by_year_region = mean(death_rate,na.rm = T)) %>% 
+  ggplot(aes(x = year, y = avg_by_year_region, color = region)) +
+  geom_line() + 
+  geom_point() + 
+  labs(
+    y = "Average Alzheimer's Disease death rate",
+    title = "Average Alzheimer's Disease death rate by Region, Year") 
+```
+
+* The table and line graph above show the descriptive statistics and overall trend.
+
+* It is clearly shown in the plot that Northeast region has a much lower and South resgion has a much higher average Alzheimer's Disease death rate than the other regions.
+
+### 3. Average Alzheimer's Disease death rate by Income Level
+
+```{r, message = FALSE, warning = FALSE}
+  data |> 
+  group_by(year) |> 
+  select(year,income) |> 
+  summarise(median_income_by_year = median(income,na.rm = T)) |> 
+  knitr::kable(digits = 3)
+```
+
+* The table above shows the median personal annual income of each year.
+
+* Then, we use the median personal annual income of each year to categorize different income groups (with"less than median income" as "Lower Income", "more than 1.3 times of median income" as "Upper Income", and those between these ranges as "Middle Income".
+
+* We use this income group division to calculate average Alzheimer's Disease death rate of each group.
+
+```{r, message = FALSE, warning = FALSE}
+income_level_2018=
+  data |>  
+  group_by(year) |> 
+  filter(year==2018) |> 
+  mutate(
+    income_group=case_when(
+      income < 48986.21 ~"Lower Income",
+      income > 1.3* 48986.21 ~"Upper Income",
+      TRUE ~  "Middle income"
+    )) 
+
+income_level_2019=
+  data |>  
+  group_by(year) |> 
+  filter(year==2019) |> 
+  mutate(
+    income_group=case_when(
+      income <49792.03 ~"Lower Income",
+      income > 1.3* 49792.03 ~"Upper Income",
+      TRUE ~  "Middle income"
+    ))
+
+income_level_2020=
+  data |>  
+  group_by(year) |> 
+  filter(year==2020) |> 
+  mutate(
+    income_group=case_when(
+      income <52442.06 ~"Lower Income",
+      income > 1.3* 52442.06 ~"Upper Income",
+      TRUE ~  "Middle income"
+    )) 
+    
+income_level_2021=
+  data |>  
+  group_by(year) |> 
+  filter(year==2021) |> 
+  mutate(
+    income_group=case_when(
+      income <54057.93 ~"Lower Income",
+      income > 1.3* 54057.93 ~"Upper Income",
+      TRUE ~  "Middle income"
+    ))
+
+income_level=
+  bind_rows(income_level_2018,income_level_2019,income_level_2020,income_level_2021)
+
+income_level |> 
+  filter(!is.na(income_group)) |>  
+  group_by(income_group) |> 
+  summarise(avg_by_income = mean(death_rate,na.rm = T)) |>  
+  arrange(avg_by_income) |> 
+  knitr::kable(digits = 3)
+```  
+
+```{r, message = FALSE, warning = FALSE}
+income_level |> 
+  filter(!is.na(income_group)) |>  
+  group_by(income_group) |> 
+  filter(!is.na(death_rate)) |> 
+  ggplot(aes(x = fct_reorder(income_group,death_rate), y = death_rate,fill = income_group)) +
+  geom_boxplot() +
+  labs(
+  title = "Boxplot of Alzheimer's Disease Death Rate by Income Groups", 
+  x="Income Groups",
+  y= "Alzheimer's Disease death rate")
+```
+
+* The boxes of different income groups are almost not overlapping with each other.
+
+* The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
+
  
-**Data Exploration:**  A dedicated section for our data sources and exploratory data analysis (EDA), offering insights into the foundational data that informs our research and models.
+<center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal* </center>
 
-The website will also host a suite of interactive tools, visualizations and statistical models focusing on three key topics:
+```{r, message = FALSE, warning = FALSE}
+anova_result <- aov(death_rate ~ factor(income_group), data = income_level)
 
-**Geographical Analysis Tool:**  An interactive 'Shiny' application that maps the distribution of Alzheimer's Disease (AD) patients across the United States, allowing users to identify patterns and hotspots.
+TukeyHSD(anova_result) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
 
-**Risk Factor Analysis:**   We will develop statistical models to analyze the risk factors associated with Alzheimer's Disease, providing valuable insights into prevention and early detection strategies.
+* The ANOVA results indicate a significant difference in mean life expectancy among different income groups (p < 0.05). The post hoc tests further reveal:
 
-**Clinical Trials analysis:**  Alzheimer’s drug development pipeline. A spotlight on two recently released medications will give a further comparison of efficacy, side effects, and other critical metrics, empowering stakeholders with data-driven insights.
+* A significant difference in mean life expectancy between Middle Income and Lower Income groups.
 
-# The planned data sources
+* A significant difference in mean life expectancy between Upper Income and Lower Income groups.
 
-**Part I Geographical distribution of AD patients across the US**
+* No significant difference in mean life expectancy between Upper Income and Middle Income groups.
 
-Alzheimer’s Association. https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.13016
+In summary, there are statistically significant variations in life expectancy across income groups, with specific differences observed in pairwise comparisons between Middle Income vs. Lower Income and Upper Income vs. Lower Income.
 
-**Part II**
+### 4. Average Alzheimer's Disease death rate by Employment
 
-Open access series of imaging studies. https://www.oasis-brains.org/
+```{r, message = FALSE, warning = FALSE}
+  data |> 
+  group_by(year) |> 
+  select(year,employment) |> 
+  summarise(med_employ_by_year = median(employment,na.rm = T)) |> 
+  knitr::kable(digits = 3)
+```
+* The table above shows the median personal annual income of each year.  
+  
+* Then, we use the median employment rate of each year to categorize different employment groups (with"less than or equal to median" as "Lower Employment Rate", "more than median" as "High Employment Rate".
 
-**Part III Clinical trials of Alzheimer drugs & comparative analysis of two recently released drugs**
+* We use this employment group division to calculate average Alzheimer's Disease death rate of each group.  
 
-ClinicalTrials.gov. https://clinicaltrials.gov/search?cond=Alzheimer
+```{r, message = FALSE, warning = FALSE}
+employ_2018=
+  data |>  
+  group_by(year) |> 
+  filter(year==2018) |> 
+  mutate(
+    employ_group=case_when(
+      employment <= 0.617 ~"Low Employment Rate",
+      employment >0.617~"High Employment Rate",
+    )) 
+  
+employ_2019=
+  data |>  
+  group_by(year) |> 
+  filter(year==2019) |> 
+  mutate(
+    employ_group=case_when(
+      employment <= 0.617 ~"Low Employment Rate",
+      employment > 0.617~"High Employment Rate",
+    )) 
 
-Journal articles for Phase III study of
+employ_2020=
+  data |>  
+  group_by(year) |> 
+  filter(year==2020) |> 
+  mutate(
+    employ_group=case_when(
+      employment <= 0.588 ~"Low Employment Rate",
+      employment > 0.588~"High Employment Rate",
+    )) 
+    
+employ_2021=
+  data |>  
+  group_by(year) |> 
+  filter(year==2021) |> 
+  mutate(
+    employ_group=case_when(
+      employment <= 0.612 ~"Low Employment Rate",
+      employment >0.612~"High Employment Rate",
+    )) 
 
-Leqembi (https://www.nejm.org/doi/10.1056/NEJMoa2212948)
+employ_level=
+  bind_rows(employ_2018,employ_2019,employ_2020,employ_2021)
 
-Donanemab (https://jamanetwork.com/journals/jama/article-abstract/2807533)
+employ_level |> 
+  group_by(employ_group) |> 
+  summarise(avg_by_employ = mean(death_rate,na.rm = T)) |>  
+  knitr::kable(digits = 3)
+```  
+  
+```{r, message = FALSE, warning = FALSE}
+employ_level |> 
+  group_by(employ_group) |> 
+  ggplot(aes(x = employ_group, y = death_rate,fill = employ_group)) +
+  geom_boxplot() +
+  labs(
+  title = "Boxplot of Alzheimer's Disease Death Rate by Employment Rate",
+  x="Employment Rate",
+  y="Alzheimer's Disease Death Rate")
+```
+
+* The pattern is clear that low employment tend to a higher Alzheimer's Disease death rate. 
+
+<center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment* </center>
+
+```{r, message = FALSE, warning = FALSE}
+t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "less",conf.level = 0.95,paired = F,var.equal = TRUE ) %>% 
+  broom::tidy() %>% 
+  knitr::kable()
+```
+
+* We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
+
+### Summary
+
+In this analysis, we explored the impact of various factors on Alzheimer's Disease death rates using statistical tests and visualizations. Key findings include:
+
+* Regional differences in Alzheimer's Disease death rates, with the South region having the highest and the Northeast region having the lowest average death rates.
+* Significant variations in Alzheimer's Disease death rates based on income and employment groups, indicating that socioeconomic factors play a role in disease outcomes.
+
+# Regression Model
+
+## Data Set Splitting
+
+We used data from the years 2018 to 2020 to train our models, and data from 2021 to perform prediction.
+
+All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
+
+```{r, message = FALSE, warning = FALSE}
+data = readRDS("data_for_model.rds") 
+training_data = filter(data, year >= 2018 & year <= 2020) |>
+  select(-c(state,year))
+
+testing_data = filter(data, year == 2021) |>
+  select(-c(state,year))
+```
+
+## Multiple Linear Regression
+
+### Model Selection
+
+The reason for initially choosing linear models in statistical analysis is their simplicity and ease of understanding. These models, by representing relationships in a straightforward linear manner, make it easier for us to comprehend how different variables affect the death rate we care about.
+
+Moreover, linear models are known for their robustness, offering reliable performance even with various types of data and statistical errors. Importantly, they serve as an effective benchmark in more complex modeling processes. 
+
+By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps in ensuring that the complexity of a model is justified by a significant improvement over the simpler linear model.
+
+#### Full model: Linear regression 
+
+```{r, message = FALSE, warning = FALSE}
+model = lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
+summary(model) |> 
+broom::tidy() |>
+  knitr::kable()
+
+broom::glance(model) |>
+  mutate(model = "Full Linear Regression") |>
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
+  knitr::kable()
+```
+Based on the table of full model, some of the predictors are statistically significant while others are not, so we need a further selection of the model.
+
+#### Backwards Elimination
+
+We use Backward Elimination for constructing our linear regression model to enhance its efficiency and interpretability. This method systematically removes the least significant variables, ensuring that only the most impactful predictors are retained. Consequently, it helps in reducing model complexity and avoiding overfitting, resulting in a more robust and meaningful model.
 
 
-# The planned analyses / visualizations / coding challenges
+```{r, message = FALSE, warning = FALSE}
+backward_result = step(model, direction = 'backward', trace = 0)
+  broom::tidy(backward_result) |>
+      knitr::kable()
+```
 
-In this project, we aim to comprehensively analyze the landscape of Alzheimer's disease (AD) patients in the United States. 
 
-Part 1 involves mapping the geographical distribution of AD patients across the country using R packages such as ggplot and leaflet. 
+```{r, message = FALSE, warning = FALSE}
+selected_model = lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 
-In Part 2, we will employ data manipulation and analysis tools like tidyverse, MASS, and various statistical methods including principal component analysis, cluster analysis, and regression modeling to identify key factors contributing to the disease's onset, such as age, gender, and ethnicity.
+summary(selected_model)|>
+  broom::tidy() |>
+  knitr::kable()
+```
+After applying Backward Elimination, we have obtained a linear regression model that is streamlined and comprises only the statistically significant predictors.
 
-Finally, in Part 3, we will perform a comparative analysis of two recently released drugs targeting Alzheimer's disease, utilizing visualization packages like ggplot2 and plotly to create informative charts and graphics that illustrate the effectiveness and specificity of these medications.
+### Model Performation
 
-# The planned timeline
+```{r, message = FALSE, warning = FALSE}
+pre =
+  training_data |>
+  add_predictions(selected_model) |>
+  add_residuals(selected_model)
 
-| Date | Description | 
-|------|------|
-| Nov 13-17 | Project review meeting  | 
-| Nov 18-21 | Prepare and build the intended website  |
-| Nov 27-30 | Complete Part I  |
-| Dec 1-4 | Complete Part II  |
-| Dec 5-7 | Complete Part III  |
-| Dec 8-9 | Review and check the project, complete screencast and peer assessment  |
+p1 <- ggplot(pre, aes(x = pred, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    x = "Fitted Values",
+    y = "Residuals",
+    title = "Residuals vs Fitted Plot"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+
+residuals = resid(selected_model)
+p2 <- ggplot(as.data.frame(residuals), aes(sample = residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    title = "Normal Q-Q Plot",
+    x = "Theoretical Quantiles",
+    y = "Sample Quantiles"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+
+library(patchwork)
+p1 + p2
+
+```
+
+The residuals versus fitted plot shows a random distribution of residuals around the zero line without any discernible patterns, indicating good model fit and homoscedasticity. No obvious outliers are present, suggesting that the linear regression model assumptions are likely being met.
+
+The QQ plot suggests although the slightly deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
+
+```{r, message = FALSE, warning = FALSE}
+broom::glance(selected_model) |>
+  mutate(model = "Selected Linear Regression") |>
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
+  knitr::kable()
+```
+
+#### Cross Validation for RMSE
+
+To assess the performance and reliability of a predictive model, we use the Cross-validation method to divide the training data into 100 subsets to ensure that each data point is used for both training and testing. This helps assess how well the model generalizes to new, unseen data.
+
+```{r, message = FALSE, warning = FALSE}
+
+# generate a cv dataframe 
+cv_df =
+  crossv_mc(training_data, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+# fit the model to the generated CV dataframe
+cv_df =
+  cv_df |>
+  mutate(
+    model  = map(train, ~lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+# plot the prediction error
+cv_df |>
+  select(rmse) |>
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse") %>% 
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_violin(fill = "blue", alpha = 0.5) +
+  labs(
+    title = "Prediction Errors For Our Model Under CV",
+    x = "Model Linear Regression",
+    y = "Prediction Errors"
+  ) +
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+The violin plot indicates a relatively concentrated distribution of RMSE values for the linear regression model during cross-validation, primarily within the 7 to 8 range, suggesting consistent prediction errors without extreme variability. The symmetric shape around the center suggests a median error likely within this range, implying a stable model performance.
+
+#### Bootstrap
+
+Bootstrapping, involving repeated sampling with replacement, ensures that we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
+
+```{r, message = FALSE, warning = FALSE}
+training_data |> 
+  modelr::bootstrap(n = 1000) |> 
+  mutate(
+    models = map(strap, \(df) lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = df)),
+    results = map(models, broom::glance)) |> 
+  select(results) |>
+  unnest(results) |>
+  ggplot(aes(x = r.squared)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = 'blue', alpha = 0.5) +
+  geom_density(alpha = .2, fill = "red") +
+  labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
+  theme_minimal()
+```
+
+Despite all the varibles are significant, R² value is around 0.4, which is suggests potential nonlinear relationships or multicollinearity issues in our dataset.
+
+## Random Forest Model
+
+### Model Selection
+
+The Random Forest Model is an ensemble learning method, play an important role in classification and regression tasks by building multiple decision trees and aggregating their outputs. It handles complex datasets well and is robust against overfitting. Thus, we consider switching to Random Forest when linear models has limitations. It effectively captures complex, non-linear relationships in data, offering improved accuracy and deeper insights.
+
+```{r, message = FALSE, warning = FALSE}
+
+library(randomForest)
+
+rf_model <- randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
+
+```
+
+### Model Performation
+
+We also use cross validation and boostrap to see the performance and reliability of the random forest model as we did to the linear model.
+
+#### Cross Validation for RMSE
+
+```{r, message = FALSE, warning = FALSE}
+
+# generate a cv dataframe 
+cv_df =
+  crossv_mc(training_data, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+
+# fit the model to the generated CV dataframe
+cv_df =
+  cv_df |> 
+  mutate(
+    model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+
+# plot the prediction error
+cv_df |>
+  select(rmse) |> 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse") %>% 
+  ggplot(aes(x= model, y = rmse)) + 
+  geom_violin(fill = "blue", alpha = 0.5) +
+  labs(
+    title = "Prediction Errors For Our Model Under CV",
+    x = "Model Random Forest",
+    y = "Prediction Errors"
+  ) +
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+
+```
+
+
+From the plot, the RMSE is predominantly below 7, ranging from approximately 5.5 to 9. This level of RMSE is lower compared to that of the linear models we've previously evaluated, indicating that this model performs better. Lower RMSE values signify more accurate predictions, thus suggesting that this model is a more effective predictor for our dataset.
+
+```{r, message = FALSE, warning = FALSE}
+# R²
+rf_predictions <- predict(rf_model, training_data)
+r_squared <- cor(training_data$death_rate, rf_predictions)^2
+data.frame(
+  model = "Random Forest Model",
+  r.squard = r_squared
+) |>
+  knitr::kable()
+```
+
+Calculated using the training data, the R² is `r r_squared`, which indicates a very high level of explained variance in the model. This suggests that our model is highly effective in capturing and representing the relationships within the training dataset.
+
+#### Bootstrap
+
+We perform bootstrapping to evaluate the model's stability and reliability. 
+
+```{r, message = FALSE, warning = FALSE}
+library(randomForest)
+library(boot)
+
+bootstrap_r2 <- function(data, indices) {
+  boot_data <- data[indices, ]
+  model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
+  predictions <- predict(model, boot_data)
+  r_squared <- cor(boot_data$death_rate, predictions)^2
+  return(r_squared)
+}
+
+results <- boot(data = training_data, statistic = bootstrap_r2, R = 1000)
+
+# Create a data frame from the bootstrapped R² values
+results_df <- data.frame(R_squared = results$t)
+
+# Use ggplot2 to create a histogram with a density curve
+ggplot(results_df, aes(x = R_squared)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = 'blue', alpha = 0.5) +
+  geom_density(alpha = .2, fill = "red") +
+  labs(title = "Bootstrap Distribution of R²", x = "R²", y = "Density") +
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+
+```
+
+The bootstrap results of the Random Forest model showing an R² value around 0.96 indicate a high level of accuracy and consistency. This suggests that the model is not only effective in explaining a large portion of the variance in the data but also demonstrates robust performance across different samples.
+
+### Prediction
+
+```{r, message = FALSE, warning = FALSE}
+
+testing_data$predicted_death_rate <- predict(rf_model, testing_data)
+ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
+  geom_point(color = "black") +  # Add the actual data points
+  geom_smooth(method = "lm",se = FALSE, color = "blue") +  
+  labs(title = "Linear Regression Predictions",
+       x = "Actual Values",
+       y = "Predicted Values") +
+  theme_minimal()+
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = "grey20"),
+    axis.title = element_text(color = "grey20")
+  )
+```
+
+Using the 2021 data to predict with the Random Forest model, we observed that the data points largely align with the fitted line, especially within the middle range of actual values. There are some outliers, particularly at higher actual values, but this indicates that the model's predictive accuracy is reasonable within the normal range.
+
+## Results and Discussion
+
+```{r, message = FALSE, warning = FALSE}
+importance_values <- importance(rf_model)
+
+feature_importance <- data.frame(Feature = rownames(importance_values), 
+                                 Importance = importance_values[,1]) %>%
+  arrange(Importance) %>% 
+  mutate(Feature = factor(Feature, levels = Feature)) 
+
+plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orientation = 'h') %>%
+  layout(title = "Feature Importance from Random Forest Model",
+         xaxis = list(title = "Importance"),
+         yaxis = list(title = "Feature"))
+```
+
+
+After careful consideration, we chose the random forest to be our final mofel. And according to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
+
+# Clinical Trials
+
+```{r, include = FALSE, message = FALSE, warning = FALSE}
+library(plotly)
+library(ggplot2)
+library(knitr)
+```
+
+## Clinical Trials Pipeline
+In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which label all trials on the map and have regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+
+<img src="project_image/shiny_CT1.png" style="width:85%">
+
+## Lecanemab and Donanemab
+
+### Participants' Baseline Demographics for both drugs
+
+```{r, message = FALSE, warning = FALSE}
+sex_df=
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Sex", range = "A1:C5") |> 
+  janitor::clean_names()
+sex_df |> 
+  plot_ly(x=~drug, y=~sex_prop, type = "bar", color = ~sex) |> 
+  layout(barmode = "stack",
+         title = "Distribution of Participants' Baseline Sex by drugs",
+         xaxis = list(title = "Drug"),
+         yaxis = list(title = "Percentage (%)"),
+         width=500)
+```
+* From the plot, we can see that there are more female participants in Donanemab's clinical trial than that in Lecanemab's clinical trial.
+
+```{r, message = FALSE, warning = FALSE}
+race_df=
+  readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
+  janitor::clean_names()
+race_df |> 
+  mutate(race = fct_reorder(race, -race_prop)) |>
+  plot_ly(x=~drug, y=~race_prop, type = "bar", color = ~race) |> 
+  layout(barmode = "stack",
+         title = "Distribution of Participants' Baseline Race by drugs",
+         xaxis = list(title = "Drug"),
+         yaxis = list(title = "Percentage (%)"),
+         width=500)
+```
+
+* From the plot, we can see there is more diversity in  Lecanemab's clinical trial. Races other than white occupies a larger proportion of participants in Lecanemab's clinical trial than that in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
+
+```{r}
+subplot(sex_df |> 
+  plot_ly(x=~drug, y=~sex_prop, type = "bar", color = ~sex) |> 
+  layout(barmode = "stack",
+         title = "Distribution of Participants' Baseline Sex by drugs",
+         xaxis = list(title = "Drug"),
+         yaxis = list(title = "Percentage (%)"),
+         width=500),
+  race_df |> 
+  mutate(race = fct_reorder(race, -race_prop)) |>
+  plot_ly(x=~drug, y=~race_prop, type = "bar", color = ~race) |> 
+  layout(barmode = "stack",
+         title = "Distribution of Participants' Baseline Race by drugs",
+         xaxis = list(title = "Drug"),
+         yaxis = list(title = "Percentage (%)"),
+         width=500))
+```
+
+
+```{r}
+combine_mean_sd = function(df, group = ""){
+  
+  n = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sample_size) # number in group 1
+  m =  df |> filter(str_detect(group, "combined")) |> pull(sample_size) # number in group 2
+  sx = df |> filter(str_detect(group, "Low/medium tau")) |> pull(sd) # sd of group 1
+  sy = df |> filter(str_detect(group, "combined")) |> pull(sd) # sd of group 2
+  x_bar = df |> filter(str_detect(group, "Low/medium tau")) |> pull(mean) # mean of group 1
+  y_bar = df |> filter(str_detect(group, "combined")) |> pull(mean) # mean of group 2
+
+  combined_mean = (n * x_bar + m * y_bar) / (n + m)
+  combined_sd =   sqrt(((n-1)*sx^2+(m-1)*sy^2)/(n+m-1)+(n*m*(x_bar-y_bar)^2)/((n+m)*(n+m-1)))
+  combined_samplesize = n + m
+  combined_ci_lower = combined_mean - 1.96*combined_sd
+  combined_ci_upper = combined_mean + 1.96*combined_sd
+  
+  return (tibble(
+    outcome = df |> head(1) |> pull(outcome),
+    group = group,
+    mean = combined_mean,
+    sd = combined_sd,
+    sample_size = combined_samplesize,
+    ci_lower = combined_ci_lower,
+    ci_upper = combined_ci_upper,
+    time = 0))}
+```
+
+```{r}
+iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
+CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
+ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
+ADAS_Cog13 <- read_excel("data/Donanemab_.xlsx", sheet = "4")
+MMSE <- read_excel("data/Donanemab_.xlsx", sheet = "5")
+
+lec_result <- read_excel("data/Lecanemab.xlsx", sheet = "result") |>
+  filter(time == 0,
+         outcome %in% c("CDR-SB", "ADAS-Cog14", "MMSE")) |>
+  mutate(drug = "Lecanemab",
+         ci_lower = mean - 1.96*sd,
+         ci_upper = mean + 1.96*sd) |>
+  select(drug, everything())
+
+don_result = bind_rows(
+  combine_mean_sd(CDR_SB |> filter(time == 0, str_detect(group, "Donanemab")), "Donanemab"),
+  combine_mean_sd(CDR_SB |> filter(time == 0, str_detect(group, "Placebo")), "Placebo"),
+  combine_mean_sd(ADAS_Cog13 |> filter(time == 0, str_detect(group, "Donanemab")), "Donanemab"),
+  combine_mean_sd(ADAS_Cog13 |> filter(time == 0, str_detect(group, "Placebo")), "Placebo"),
+  combine_mean_sd(MMSE |> filter(time == 0, str_detect(group, "Donanemab")), "Donanemab"),
+  combine_mean_sd(MMSE |> filter(time == 0, str_detect(group, "Placebo")), "Placebo")
+  ) |>
+  mutate(drug = "Donanemab") |>
+  select(drug, everything())
+
+
+ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "MMSE") & group == "Placebo")), aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+
+### Donanemab
+
+The outcomes listed include iADRS (Integrated Alzheimer's Disease Rating Scale), MMSE (Mini-Mental State Examination), and other clinical assessments. The table provides valuable insights into the efficacy of donanemab compared to placebo in slowing the progression of Alzheimer's disease over the 76-week period in the different populations studied.
+
+In the TRAILBLAZER-ALZ 2 clinical trial, the participants were divided into two populations based on their tau biomarker levels: the low/medium tau population and the high tau population. Tau is a protein that accumulates in the brain of people with Alzheimer's disease and is associated with neurodegeneration.
+
+The low/medium tau population included participants with mild cognitive impairment or early Alzheimer's disease who had low or intermediate levels of tau biomarkers in their cerebrospinal fluid (CSF). The high tau population included participants with early Alzheimer's disease who had high levels of tau biomarkers in their CSF.
+
+The combined population included all participants in the trial, regardless of their tau biomarker levels. The purpose of dividing the participants into these populations was to assess the efficacy of donanemab in different subgroups of patients with Alzheimer's disease.
+
+#### iADRS
+
+The Integrated Alzheimer's Disease Rating Scale (iADRS) is a comprehensive assessment tool used to measure the progression of Alzheimer's disease. It combines the 13-item cognitive subscale of the Alzheimer's Disease Assessment Scale (ADAS-Cog13) with the Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL). By integrating these measures, the iADRS provides a holistic evaluation of both cognitive function and daily living activities in individuals with Alzheimer's disease.
+
+```{r}
+iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
+
+ggplot(iADRS, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+The results show that treatment with donanemab resulted in a statistically significant slowing of clinical progression compared to placebo in both the low/medium tau and combined populations. 
+
+#### CDR-SB
+
+The Clinical Dementia Rating Scale Sum of Boxes (CDR-SB) is a widely used assessment tool for evaluating the severity of dementia. It is a composite score derived from the Clinical Dementia Rating (CDR) scale, which is used to assess the cognitive and functional abilities of individuals with dementia.
+
+The CDR-SB incorporates ratings across six domains: memory, orientation, judgment and problem solving, community affairs, home and hobbies, and personal care. Each domain is rated on a scale from 0 (no impairment) to 3 (severe impairment), and the total CDR-SB score ranges from 0 to 18, with higher scores indicating greater clinical impairment.
+```{r}
+CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
+
+ggplot(CDR_SB, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+The trial results demonstrated that treatment with donanemab resulted in a statistically significant slowing of clinical progression as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease.
+
+#### ADCS-iADL
+
+The Alzheimer's Disease Cooperative Study—Instrumental Activities of Daily Living (ADCS-iADL) is a measurement tool used to assess the functional abilities of individuals with Alzheimer's disease. It is designed to evaluate a person's capacity to perform various instrumental activities of daily living, such as managing finances, using the telephone, shopping, preparing meals, doing housework, and managing medications.
+
+The ADCS-iADL scale provides a structured assessment of a person's functional independence and is particularly relevant for evaluating the impact of Alzheimer's disease on daily activities beyond basic self-care tasks. The scale typically ranges from 0 to 59, with lower scores indicating greater impairment in instrumental activities of daily living.
+
+```{r}
+ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
+
+ggplot(ADCS_iADL, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+In the trial results, changes in ADCS-iADL reflected the impact of donanemab treatment on patients' functioning of daily living. By comparing changes in ADCS-iADL scores between the donanemab group and the placebo group, it was possible to assess the extent to which donanemab affected patients' functioning of daily living.
+
+#### ADCS-CGIC
+
+The Alzheimer's Disease Cooperative Study—Clinical Global Impression of Change (ADCS-CGIC) is a measurement tool used to assess the overall clinical status and change over time in individuals with Alzheimer's disease. It is designed to provide a global assessment of a patient's condition, taking into account cognitive, functional, and behavioral aspects.
+
+```{r}
+ADAS_Cog13 <- read_excel("data/Donanemab_.xlsx", sheet = "4")
+
+ggplot(ADAS_Cog13, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+A greater reduction in the least squares mean change from baseline to 76 weeks in the donanemab group compared to the placebo group would indicate a potential positive effect of donanemab on cognitive function.
+
+#### MMSE
+
+The Mini-Mental State Examination (MMSE) is a widely used screening tool for cognitive impairment and is often employed in clinical and research settings to assess cognitive function, particularly in the context of dementia. The MMSE evaluates various cognitive domains, including orientation, memory, attention, language, and visuospatial abilities.
+
+```{r}
+MMSE <- read_excel("data/Donanemab_.xlsx", sheet = "5")
+
+ggplot(MMSE, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.7) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()
+```
+
+The MMSE scores provide information about the cognitive function of the participants in the study.  The mean scores and standard deviations can be used to compare the cognitive performance of the donanemab group and the placebo group.  A higher mean score in the donanemab group compared to the placebo group would suggest a potential positive effect of donanemab on cognitive function.
+
+### Survival Analysis
+
+The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
+```{r, message = FALSE, warning = FALSE}
+Don_KM = 
+  read_excel("./Data/Donanemab.xlsx", sheet = "K-M", range = "A1:D16") |>
+  janitor::clean_names()
+
+plot_ly(Don_KM |>
+                 filter(test == "CDR-SB") |>
+                 pivot_longer(
+                   donanemab:placebo,
+                   names_to = "drug",
+                   values_to = "ratio"
+                 ), x = ~time, y = ~ratio, color = ~drug, line = list(shape = "hv"), colors = "viridis") |>
+  layout(title = "Hazard Plot for Donanemab",
+             xaxis = list(title = "Days from First Infusion"),
+             yaxis = list(title = "Percentage of Participants Progression"))
+```
+
+*   The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
+
+### Adverse Events
+
+#### General Overview
+
+As we progress in our comprehensive exploration of Alzheimer's disease and its treatment options, we now turn our focus to a critical aspect of drug evaluation: the analysis of adverse events associated with the two promising drugs.
+
+```{r}
+lec_safety = read_excel("./Data/Lecanemab.xlsx", sheet = "safety", range = "A1:C5") |>
+  janitor::clean_names()
+
+don_safety = read_excel("./Data/Donanemab.xlsx", sheet = "safety", range = "A1:C5") |>
+  janitor::clean_names()
+
+merge_safety = left_join(lec_safety, don_safety, by = "events")
+```
+
+```{r}
+plot_ly(merge_safety |>
+  mutate(events = fct_reorder(events, -lecanemab)) |>
+  pivot_longer(
+    lecanemab:donanemab_placebo,
+    names_to = "drug",
+    values_to = "cases"
+  ), 
+  x = ~events, y = ~cases, color = ~drug, type = 'bar', colors = "viridis")  |>
+  layout(title = "Barplot for Adverse Events",
+             xaxis = list(title = "Adverse Event"),
+             yaxis = list(title = "Number of participants"))
+```
+
+*   The Lecanemab group experienced a 0.7% death rate (6 cases) compared to 0.8% (7 cases) in the placebo group, with no deaths linked to Lecanemab or ARIA. Serious adverse events were slightly higher in the Lecanemab group at 14.0% (126 cases) versus 11.3% (101 cases) in the placebo. 
+*   For Donanemab, the death rate was 1.9% (16 cases) in the treatment group against 1.1% (10 cases) in the placebo, with serious adverse events at 17.4% (148 cases) for Donanemab and 15.8% (138 cases) for the placebo. These results suggest a similar safety profile for both drugs compared to their respective placebo groups.
+
+```{r}
+safety_test = function(a, b, c, d, n1, n2){
+  RD = round(a/n1 - b/n2, 4)
+  RR = round((a/n1)/(b/n2), 4)
+  OR = round((a*d)/(b*c), 4)
+  Chis = round(prop.test(x = c(a, b), n = c(c, d), alternative = "two.sided", correct = FALSE)$statistic, 4)
+  p_value = round(prop.test(x = c(a, b), n = c(n1, n2), alternative = "two.sided", correct = FALSE)$p.value, 6)
+  return (tibble(Risk_Diff = RD, Risk_Ratio = RR, Odds_Ratio = OR, Xsquared = Chis, P.value = p_value))
+  }
+```
+
+```{r}
+lec_safety_test = safety_test(126, 101, 772, 796, 898, 897)
+don_safety_test = safety_test(148, 138, 705, 736, 853, 874)
+comp_safety_test = safety_test(126, 148, 772, 705, 898, 853)
+safety_merge = bind_rows(lec_safety_test, don_safety_test, comp_safety_test) |>
+  mutate(Test = c("Lec vs Placebo", "Don vs Placebo", "Lec vs Don")) |>
+  select(Test, everything())
+
+kable(safety_merge)
+```
+
+In our statistical analysis of serious adverse events associated with Lecanemab, Donanemab, and their placebos, we have identified key findings. With a significance level set at 0.1, our results indicate a significant difference in serious adverse events between Lecanemab and its placebo, suggesting a higher risk associated with Lecanemab. In contrast, Donanemab did not show a significant difference in serious adverse events compared to its placebo, implying a potentially safer profile. Additionally, a significant difference was observed between Lecanemab and Donanemab, highlighting distinct safety profiles for these drugs.
+
+Then, we further investigate the differences of specific adverse events for two drugs.
+
+```{r}
+lec_ae = read_excel("./Data/Lecanemab.xlsx", sheet = "AE", range = "A1:C10") |>
+  janitor::clean_names()
+
+don_ae = read_excel("./Data/Donanemab.xlsx", sheet = "AE", range = "A1:C10") |>
+  janitor::clean_names()
+
+merge_ae = left_join(lec_ae, don_ae, by = "ae")
+```
+
+```{r}
+plot_ly(merge_ae |>
+  mutate(ae = fct_reorder(ae, donanemab)) |>
+  pivot_longer(
+    lecanemab:donanemab_placebo,
+    names_to = "drug",
+    values_to = "cases"
+  ), 
+  x = ~ae, y = ~cases, color = ~drug, type = 'bar', colors = "viridis")  |>
+  layout(title = "Barplot for Adverse Events",
+             xaxis = list(title = "Adverse Event"),
+             yaxis = list(title = "Number of participants"))
+```
+
+The barplot clearly shows notable differences in specific adverse events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract infections, and Headaches) between the treatment and placebo groups. To further evaluate and quantify these observed differences, we will proceed with a detailed statistical tests to provide a more definitive understanding of the significance of these adverse events.
+
+#### Lecanemab vs Placebo
+
+```{r}
+# test = lec_ae |>
+#   mutate(p = lecanemab_placebo/sum(lecanemab_placebo))
+# chisq.test(test$lecanemab, p = test$p, correct = FALSE) \
+lec_ae_result = lec_ae |>
+  mutate(testresult = map2(lecanemab, lecanemab_placebo, \(a, b) safety_test(a, b, 898-a, 897-b, 898, 897))) |>
+  rename(AE = ae) |>
+  unnest(testresult) |>
+  select(-lecanemab, -lecanemab_placebo)
+
+kable(lec_ae_result)
+```
+
+*   The statistical tests reveals significant differences in the incidence of infusion-related reactions, ARIA-E/ARIA-H, and headaches between the Lecanemab and placebo groups. These findings are consistent with the most common side effects listed on the Lecanemab website, validating our results. This highlights the need for careful monitoring of these specific adverse events when considering Lecanemab for Alzheimer's treatment, ensuring informed decision-making and optimized patient care.
+
+#### Donanemab vs Placebo
+
+```{r}
+# test = don_ae |>
+#   mutate(p = donanemab_placebo/sum(donanemab_placebo))
+# chisq.test(test$donanemab, p = test$p, correct = FALSE)
+
+don_ae_result = don_ae |>
+  mutate(testresult = map2(donanemab, donanemab_placebo, \(a, b) safety_test(a, b, 853-a, 874-b, 853, 874))) |>
+  rename(AE = ae) |>
+  unnest(testresult) |>
+  select(-donanemab, -donanemab_placebo)
+
+kable(don_ae_result)
+```
+
+*   The test for comparing Donanemab and its placebo group has similarly identified significant differences in the occurrence of infusion-related reactions, ARIA-E/ARIA-H, and headaches. This parallel finding with Donanemab, mirroring the results observed with Lecanemab, underscores the importance of these specific adverse events in the context of Alzheimer's disease treatments.
+
+#### Lecanemab vs Donanemab
+
+```{r}
+# test = don_ae |>
+#   mutate(p = donanemab_placebo/sum(donanemab_placebo))
+# chisq.test(lec_ae$lecanemab, p = test$p, correct = FALSE) 
+com_ae =  don_ae |>
+  mutate(lecanemab = lec_ae$lecanemab) |>
+  select(-donanemab_placebo)
+
+com_ae_test = com_ae |>
+  mutate(testresult = map2(lecanemab, donanemab, \(a, b) safety_test(a, b, 898-a, 853-b, 898, 853))) |>
+  rename(AE = ae) |>
+  unnest(testresult) |>
+  select(-donanemab, -lecanemab) |>
+  filter(P.value < 0.05)
+
+kable(com_ae_test)
+```
+
+*   In our comparative analysis of Lecanemab and Donanemab, we found notable differences in specific adverse events. Lecanemab showed a higher proportion of infusion-related reactions and urinary tract infections, while Donanemab exhibited a higher incidence of ARIA-E. These results highlight the distinct safety profiles of each drug, emphasizing the need for tailored monitoring strategies based on the unique risks associated with each treatment in managing Alzheimer's disease.
+
+```{r}
+Don_result <- read_excel("data/Donanemab.xlsx", sheet = "result")
+
+ggplot(Don_result, aes(x = as.factor(time), y = mean, fill = group, color = group)) +
+  geom_point(position = position_dodge(0.9), size = 3, alpha = 0.5) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), position = position_dodge(0.9), width = 0.25) +
+  facet_wrap(~outcome, scales = "free_y") +
+  labs(title = "Mean with 95% CI over Time",
+       x = "Time",
+       y = "Mean") +
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(nrow = 2, byrow = TRUE))
+```
+
+# Discussion
+
+## Findings and Conclusion
+
+
+In our study, we integrated and cleaned data from different data sets, discovering some missing entries. 
+
+For exploratory analysis, we categorized predictive variables into social and health factors. We also addressed multicollinearity and identified potential nonlinear relationships with the death rate. 
+
+After preliminary analysis, we discovered that the examination of Alzheimer's Disease mortality rates across different regions in the United States revealed significant disparities. The South region had the highest average death rate, while the Northeast region had the lowest. Boxplot visualizations highlighted the variation in death rates, with the South region showing greater variability compared to others. 
+
+The statistical test we performed for equal variances confirmed this observation, indicating heteroscedasticity among regions. These findings emphasize the need to consider regional differences in planning healthcare and intervention strategies for Alzheimer's Disease. We also performed a variances test for the subsequent comparison of mean death rates between the West and Midwest, revealing unequal variances between the two regions. Moreover, the subsequent two-sample t-test with unknown and unequal variances we performed provided insights into potential differences in mean death rates.
+
+Next, we tried to generate a regression model. Initially, we generated a multiple linear regression model which showed poor performance, indicating nonlinear variable relationships. This led us to adopt a random forest regression model, which significantly enhanced the model fit, raising R squared from 0.4 to 0.9.
+
+Analysis of variable importance revealed a strong correlation between education level and mortality rates in Alzheimer's patients, with healthcare expenditure as the second most influential factor. Other factors, including smoking rate, elderly population proportion, employment, income, and cardiovascular rate, were less significant. These results highlight the complex interplay of socioeconomic, lifestyle, and healthcare factors in Alzheimer's patient outcomes.
+
+We also developed a visualization tool to provide a comprehensive overview of Alzheimer's drug trials across the United States, enhancing the understanding of Alzheimer's disease treatment landscape. Building on this foundation, we conducted a focused evaluation of the treatment efficacy and safety of two latest drugs, Lecanemab and Donanemab. Our findings reveal that while both drugs show promise of efficacy, they also share key side effects, notably infusion-related reactions, ARIA, and headaches.
+
+## Challenges
+
+Regarding the data, categorical variables which can provide a more definite division of variables such as income level and employment are not included. Instead, we set our own standard to categorize these variables into different groups, which may not be objective enough. 
+
+During the preliminary analysis part, the analysis faced challenges in addressing the heterogeneity of Alzheimer's Disease data, particularly regarding death rates across regions. Variability in data sources, reporting mechanisms, and population characteristics may introduce uncertainties. Additionally, assumptions of normality in the t-test and homogeneity of variances in the ANOVA test may be influenced by outliers or non-normal distributions, posing challenges to the robustness of statistical inferences.
+
+During the EDA part , we found strong correlations among multiple variables, necessitating the removal of some for regression modeling. The selection process involved intense discussion, ultimately leading to the choice of representative variables based on facts and data characteristics. Initially, our linear model performed poorly, prompting us to shift to a black-box model, which significantly improved the fit.
+
+## Limitations, Insights, Further Improvements
+
+The analysis covers the period from 2018 to 2021, and variations over time may not be fully captured. Data from only four years may also limit the model's general applicability due to insufficient data volume. Long-term trends and their impact on Alzheimer's Disease death rates could provide a more comprehensive understanding. The observed heteroscedasticity suggests that healthcare policies and interventions should consider varying levels of variability in death rates across regions. Further research could explore the practical significance and underlying mechanisms driving these disparities. The data collected are mainly based on the total population, while data from specifically Alzheimer’s Disease patients, such as obesity rate of Alzheimer’s Disease patients in each state, may be more helpful for further analyses.Future analyses could also benefit from more data collected, standardized data collection methods and reporting standards to enhance comparability.
+
+
+
+
+
+
+
 
