@@ -2,6 +2,9 @@ name: "Yay internet!"
 output_dir: "."
 navbar:
   title: "Home"
+  left:
+  - text: "Report"
+    href: Report.html
   right:
     - text: "Introduction"
       href: Introduction.html
@@ -25,10 +28,8 @@ navbar:
         href: https://yigebian.shinyapps.io/Demographic_shiny/
       - text: "Clinical Trials"
         href: https://yigebian.shinyapps.io/ClinicalTrials_shiny/
-    - text: "Report"
-      href: Report.html
     - icon: fa-envelope fa-lg
-      href: 
+      href: mailto:<yb2591@cumc.columbia.edu>
     - icon: fa-github fa-lg
       menu:
       - text: "Website Repository"
