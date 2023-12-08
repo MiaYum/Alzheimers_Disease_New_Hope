@@ -148,7 +148,7 @@ ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "
 
 
 ## Donanemab
-The outcomes listed include iADRS (Integrated Alzheimer's Disease Rating Scale), MMSE (Mini-Mental State Examination), and other clinical assessments. The table provides valuable insights into the efficacy of donanemab compared to placebo in slowing the progression of Alzheimer's disease over the 76-week period in the different populations studied.
+The evaluated outcomes encompassed measures such as iADRS (Integrated Alzheimer's Disease Rating Scale), MMSE (Mini-Mental State Examination), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week trial period.
 
 In the TRAILBLAZER-ALZ 2 clinical trial, the participants were divided into two populations based on their tau biomarker levels: the low/medium tau population and the high tau population. Tau is a protein that accumulates in the brain of people with Alzheimer's disease and is associated with neurodegeneration.
 
