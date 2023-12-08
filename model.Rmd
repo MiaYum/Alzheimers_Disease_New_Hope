@@ -86,7 +86,7 @@ summary(selected_model)|>
 ```
 After applying Backward Elimination, we have obtained a linear regression model that is streamlined and comprises only the statistically significant predictors.
 
-## Model Performation
+## Model Performance
 
 ```{r, message = FALSE, warning = FALSE}
 pre =
@@ -216,7 +216,7 @@ rf_model <- randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio
 
 ```
 
-## Model Performation
+## Model Performance
 
 We also use cross validation and boostrap to see the performance and reliability of the random forest model as we did to the linear model.
 
