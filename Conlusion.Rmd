@@ -1,79 +1,40 @@
 ---
-title: "Proposal"
-output: github_document
+title: "Conclusion"
+
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    code_folding: hide
 ---
 
-# Alzheimer's Disease：New Hope
-
-**The group members:**
-
-Mia Yu (my2838)
-
-Aiying Huang (ah4167)
-
-Kairui Wang (kw3103)
-
-Yige Bian (yb2591)
-
-Eunice Wang (cw3555)
-
-# The motivation for this project
-Alzheimer’s disease is an irreversible, progressive brain disorder affecting more than 6.5 million Americans that slowly destroys memory and thinking skills and, eventually, the ability to carry out simple tasks. However, existing drugs only treat the symptoms of Alzheimer’s disease. They do not treat the root cause of the disease and do not slow down how quickly it gets worse. To date, there hasn’t been a new drug approved for Alzheimer’s disease in 20 years. This year is an important year for AD because a breakthrough occurs in AD treatment: two promising drugs, Leqembi and Donanmab, for treating Alzheimer's disease bring fresh hope. Leqembi, the first treatment that shows an unequivocal slowing of decline in Alzheimer’s disease, is fully approved by FDA in July 2023. Donanemab is widely expected to be granted full FDA approval within the next year. These two medications are both with impressive Phase III clinical trial results. They represent an important advancement in the ongoing fight to effectively treat Alzheimer’s disease and could be the beginning of the end of Alzheimer's disease. 
-
-# The intended final products
-Our project culminates in the creation of a comprehensive website serving as the central hub for all project-related information and tools. The website will feature:
-
-**Homepage Overview:**  A welcoming homepage providing a succinct overview of the project. It will include essential information such as the project's objectives, motivation, the initial questions we aim to address, and a brief intro of our team members. Additionally, a screencast will offer visitors a guided tour of our project, encapsulating our journey from conception to realization.
- 
-**Data Exploration:**  A dedicated section for our data sources and exploratory data analysis (EDA), offering insights into the foundational data that informs our research and models.
-
-The website will also host a suite of interactive tools, visualizations and statistical models focusing on three key topics:
-
-**Geographical Analysis Tool:**  An interactive 'Shiny' application that maps the distribution of Alzheimer's Disease (AD) patients across the United States, allowing users to identify patterns and hotspots.
-
-**Risk Factor Analysis:**   We will develop statistical models to analyze the risk factors associated with Alzheimer's Disease, providing valuable insights into prevention and early detection strategies.
-
-**Clinical Trials analysis:**  Alzheimer’s drug development pipeline. A spotlight on two recently released medications will give a further comparison of efficacy, side effects, and other critical metrics, empowering stakeholders with data-driven insights.
-
-# The planned data sources
-
-**Part I Geographical distribution of AD patients across the US**
-
-Alzheimer’s Association. https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.13016
-
-**Part II**
-
-Open access series of imaging studies. https://www.oasis-brains.org/
-
-**Part III Clinical trials of Alzheimer drugs & comparative analysis of two recently released drugs**
-
-ClinicalTrials.gov. https://clinicaltrials.gov/search?cond=Alzheimer
-
-Journal articles for Phase III study of
-
-Leqembi (https://www.nejm.org/doi/10.1056/NEJMoa2212948)
-
-Donanemab (https://jamanetwork.com/journals/jama/article-abstract/2807533)
+# Findings and Conclusion
 
 
-# The planned analyses / visualizations / coding challenges
+In our study, we integrated and cleaned data from different data sets, discovering some missing entries. 
 
-In this project, we aim to comprehensively analyze the landscape of Alzheimer's disease (AD) patients in the United States. 
+For exploratory analysis, we categorized predictive variables into social and health factors. We also addressed multicollinearity and identified potential nonlinear relationships with the death rate. 
 
-Part 1 involves mapping the geographical distribution of AD patients across the country using R packages such as ggplot and leaflet. 
+After preliminary analysis, we discovered that the examination of Alzheimer's Disease mortality rates across different regions in the United States revealed significant disparities. The South region had the highest average death rate, while the Northeast region had the lowest. Boxplot visualizations highlighted the variation in death rates, with the South region showing greater variability compared to others. 
 
-In Part 2, we will employ data manipulation and analysis tools like tidyverse, MASS, and various statistical methods including principal component analysis, cluster analysis, and regression modeling to identify key factors contributing to the disease's onset, such as age, gender, and ethnicity.
+The statistical test we performed for equal variances confirmed this observation, indicating heteroscedasticity among regions. These findings emphasize the need to consider regional differences in planning healthcare and intervention strategies for Alzheimer's Disease. We also performed a variances test for the subsequent comparison of mean death rates between the West and Midwest, revealing unequal variances between the two regions. Moreover, the subsequent two-sample t-test with unknown and unequal variances we performed provided insights into potential differences in mean death rates.
 
-Finally, in Part 3, we will perform a comparative analysis of two recently released drugs targeting Alzheimer's disease, utilizing visualization packages like ggplot2 and plotly to create informative charts and graphics that illustrate the effectiveness and specificity of these medications.
+Next, we tried to generate a regression model. Initially, we generated a multiple linear regression model which showed poor performance, indicating nonlinear variable relationships. This led us to adopt a random forest regression model, which significantly enhanced the model fit, raising R squared from 0.4 to 0.9.
 
-# The planned timeline
+Analysis of variable importance revealed a strong correlation between education level and mortality rates in Alzheimer's patients, with healthcare expenditure as the second most influential factor. Other factors, including smoking rate, elderly population proportion, employment, income, and cardiovascular rate, were less significant. These results highlight the complex interplay of socioeconomic, lifestyle, and healthcare factors in Alzheimer's patient outcomes.
 
-| Date | Description | 
-|------|------|
-| Nov 13-17 | Project review meeting  | 
-| Nov 18-21 | Prepare and build the intended website  |
-| Nov 27-30 | Complete Part I  |
-| Dec 1-4 | Complete Part II  |
-| Dec 5-7 | Complete Part III  |
-| Dec 8-9 | Review and check the project, complete screencast and peer assessment  |
+We also developed a visualization tool to provide a comprehensive overview of Alzheimer's drug trials across the United States, enhancing the understanding of Alzheimer's disease treatment landscape. Building on this foundation, we conducted a focused evaluation of the treatment efficacy and safety of two latest drugs, Lecanemab and Donanemab. Our findings reveal that while both drugs show promise of efficacy, they also share key side effects, notably infusion-related reactions, ARIA, and headaches.
+
+# Challenges
+
+Regarding the data, categorical variables which can provide a more definite division of variables such as income level and employment are not included. Instead, we set our own standard to categorize these variables into different groups, which may not be objective enough. 
+
+During the preliminary analysis part, the analysis faced challenges in addressing the heterogeneity of Alzheimer's Disease data, particularly regarding death rates across regions. Variability in data sources, reporting mechanisms, and population characteristics may introduce uncertainties. Additionally, assumptions of normality in the t-test and homogeneity of variances in the ANOVA test may be influenced by outliers or non-normal distributions, posing challenges to the robustness of statistical inferences.
+
+During the EDA part , we found strong correlations among multiple variables, necessitating the removal of some for regression modeling. The selection process involved intense discussion, ultimately leading to the choice of representative variables based on facts and data characteristics. Initially, our linear model performed poorly, prompting us to shift to a black-box model, which significantly improved the fit.
+
+# Limitations, Insights, Further Improvements
+
+The analysis covers the period from 2018 to 2021, and variations over time may not be fully captured. Data from only four years may also limit the model's general applicability due to insufficient data volume. Long-term trends and their impact on Alzheimer's Disease death rates could provide a more comprehensive understanding. The observed heteroscedasticity suggests that healthcare policies and interventions should consider varying levels of variability in death rates across regions. Further research could explore the practical significance and underlying mechanisms driving these disparities. The data collected are mainly based on the total population, while data from specifically Alzheimer’s Disease patients, such as obesity rate of Alzheimer’s Disease patients in each state, may be more helpful for further analyses.Future analyses could also benefit from more data collected, standardized data collection methods and reporting standards to enhance comparability.
 
