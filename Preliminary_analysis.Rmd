@@ -105,7 +105,7 @@ data |>
 
 From the boxplot above, we find that the Alzheimer’s Disease death rate in West region and Midwest region are almost overlapping. Though the median of Midwest region is higher, the variance in West region seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
 
-Firstly, we check if two sets of data have equal variance
+Firstly, we check if two sets of data have equal variance.
 
 <center> *H~0~ : Equal  variance betweenWest and Midwest vs  H~1~ : Unequal  variance*</center>
 

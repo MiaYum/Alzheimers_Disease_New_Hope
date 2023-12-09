@@ -424,11 +424,11 @@ div.tocify {
 Disease, we have sourced a diverse range of datasets, including age,
 socioeconomic status, healthcare access, education level, etc. We
 collected data from authoritative and reliable sources such as
-government website and professional institude. The final data for
+government websites and professional institute. The final data for
 analysis is obtained by merging these Alzheimer’s Disease related
-datasets. The cleaning process include variable selection, converting
-variable to the type we need, and transforming the dataframe to tidy
-format. The details of importing and cleaning of all datasets are as
+datasets. The cleaning process includes variable selection, converting
+variable to the type we need, and transforming the dataframe to a tidy
+format. The details of importing and cleaning all datasets are as
 following:</p>
 <ul>
 <li><p>The first dataset <code>death_rate</code> contains the mortality
@@ -440,9 +440,9 @@ each state from 2008 to 2021, including GDP, income, price index,
 expenditure on healthcare etc. The data is downloaded from <a
 href="https://apps.bea.gov/iTable/?reqid=70&amp;step=1&amp;acrdn=2&amp;_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==">Bureau
 of Economic Analysis</a>.</p></li>
-<li><p><code>edu_level</code> dataset contains the percentage of
-population obtained Bachelor’s Degree or Higher in each state from 2018
-to 2021. The data is extracted from <a
+<li><p><code>edu_level</code> dataset contains the percentage of the
+population who obtained a Bachelor’s Degree or Higher in each state from
+2018 to 2021. The data is extracted from <a
 href="https://fred.stlouisfed.org/release/tables?rid=330&amp;eid=391444&amp;od=2018-01-01#">Federal
 Reserve Economic Data</a>.</p></li>
 <li><p><code>diabetes</code> dataset contains the rate of diabetes by
@@ -597,7 +597,7 @@ href="https://clinicaltrials.gov/search?cond=Alzheimer">clinicaltrials.gov</a>.<
   select(-study_title, -acronym, -study_results, -conditions, -brief_summary, -primary_outcome_measures, -secondary_outcome_measures, -other_outcome_measures, -study_design, -other_i_ds, - primary_completion_date, -first_posted, -results_first_posted, -last_update_posted)</code></pre>
 <p>The raw data is too complicated with redundant information, so we did
 an initial variable selection to omit useless variables. There are a
-total of 3026 and 15 variables. Variables and description is listed
+total of 3026 and 15 variables. Variables and description are listed
 below:</p>
 <ul>
 <li><p><code>nct_number</code>: Unique Identification of clinical
@@ -611,8 +611,8 @@ study</p></li>
 <li><p><code>collaborators</code>: Study collaborator</p></li>
 <li><p><code>sex</code>: Gender of study participants (include “MALE”,
 “FEMALE”, “ALL”, “OBSERVATIONAL”, and missing value)</p></li>
-<li><p><code>age</code>: Age of study participants (include combination
-of Chiled, Adult, Oler Adult, and missing value)</p></li>
+<li><p><code>age</code>: Age of study participants (include a
+combination of Chiled, Adult, Oler Adult, and missing value)</p></li>
 <li><p><code>phases</code>: Phases of the study</p></li>
 <li><p><code>enrollment</code>: Number of Participants enrolled in the
 study</p></li>
@@ -626,12 +626,12 @@ divided by “|” for study conducted in more than one location)</p></li>
 </ul>
 <p>Data for further investigation on two latest drugs Lecanemab and
 Donanemab are from their published Phase III study results. Relevant
-website could be accessd from <a
+website could be accessed from <a
 href="https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material">Lecanemab</a>
 and <a
 href="https://jamanetwork.com/journals/jama/article-abstract/2807533">Donanemab</a>.
-Both study contians data for participants basic information, adverse
-events statistics, survival analysis and treatment evaluation.</p>
+Both studies contian data for participants’ basic information, adverse
+events statistics, survival analysis, and treatment evaluation.</p>
 <pre class="r"><code># Safety data for Lecanemab
 lec_safety =
   readxl::read_excel(&quot;data/Lecanemab.xlsx&quot;,sheet=&quot;safety&quot;, range = &quot;A1:C5&quot;)

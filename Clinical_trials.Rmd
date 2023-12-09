@@ -118,7 +118,6 @@ subplot(p1, p2, nrows = 1, margin = 0.05) |>
 
 * From the plot, we can see that there are more female participants in Donanemab's clinical trial than in Lecanemab's clinical trial.
 
-
 * From the plot, we can also see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
 All trial participants took Alzheimer's tests to evaluate their stages at the start of studies. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and MMSE (Mini-mental state examination) were shown in the plot, details of these test scores were explained in the next part.

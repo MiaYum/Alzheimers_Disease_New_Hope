@@ -88,19 +88,19 @@ From the available data we are interested in answering the following questions:
     *   How can we provide a comprehensive and detailed overview of the current Alzheimer's drug trials in the U.S., encompassing their stages, approaches, and geographical distribution?
 
     *   How do Lecanemab and Donanemab, the newly FDA-approved Alzheimer's drugs, compare in terms of their development, efficacy, and potential impact?
-
+    
 # Analysis
 ## Data Sources
 ### Associated Factors Datasets
 
-To study the complex interplay of factors contributing to Alzheimer's Disease, we have sourced a diverse range of datasets, including age, socioeconomic status, healthcare access, education level, etc. We collected data from authoritative and reliable sources such as government website and professional institude. The final data for analysis is obtained by merging these Alzheimer's Disease related datasets.
-The cleaning process include variable selection, converting variable to the type we need, and transforming the dataframe to tidy format. The details of importing and cleaning of all datasets are as following:
+To study the complex interplay of factors contributing to Alzheimer's Disease, we have sourced a diverse range of datasets, including age, socioeconomic status, healthcare access, education level, etc. We collected data from authoritative and reliable sources such as government websites and professional institute. The final data for analysis is obtained by merging these Alzheimer's Disease related datasets.
+The cleaning process includes variable selection, converting variable to the type we need, and transforming the dataframe to a tidy format. The details of importing and cleaning all datasets are as following:
 
 *   The first dataset `death_rate` contains the mortality of Alzheimer’s Disease in each state from 2014 to 2021, which can be accessed from [CDC](https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm).
 
 *   `econdata` dataset contains the economic status of each state from 2008 to 2021, including GDP, income, price index, expenditure on healthcare etc. The data is downloaded from [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==).
 
-*   `edu_level` dataset contains the percentage of population obtained Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
+*   `edu_level` dataset contains the percentage of the population who obtained a Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
 
 *   `diabetes` dataset contains the rate of diabetes by state from 2018 to 2021. The data can be accessed [here](https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
 
@@ -238,14 +238,13 @@ write.csv(geo_data, "./Data/geo_data.csv", row.names = FALSE)
 ### Clinical Trials data
 
 Clinicaltrials.gov provided complete and detailed information of all current Alzheimer's disease drugs. Clinical Trials data is directly downloaded from [clinicaltrials.gov](https://clinicaltrials.gov/search?cond=Alzheimer).
-
 ```{r}
 CT_data = 
   read_csv("./Data/ClinicalTrials_raw_data.csv") |>
   janitor::clean_names() |>
   select(-study_title, -acronym, -study_results, -conditions, -brief_summary, -primary_outcome_measures, -secondary_outcome_measures, -other_outcome_measures, -study_design, -other_i_ds, - primary_completion_date, -first_posted, -results_first_posted, -last_update_posted)
 ```
-The raw data is too complicated with redundant information, so we did an initial variable selection to omit useless variables. There are a total of `r nrow(CT_data)` and `r length(CT_data)` variables. Variables and description is listed below:
+The raw data is too complicated with redundant information, so we did an initial variable selection to omit useless variables. There are a total of `r nrow(CT_data)` and `r length(CT_data)` variables. Variables and description are listed below:
 
 *   ```r colnames(CT_data)[1]```: Unique Identification of clinical trials
 
@@ -261,7 +260,7 @@ The raw data is too complicated with redundant information, so we did an initial
 
 *   ```r colnames(CT_data)[7]```: Gender of study participants (include "MALE", "FEMALE", "ALL", "OBSERVATIONAL", and missing value)
 
-*   ```r colnames(CT_data)[8]```: Age of study participants (include combination of Chiled, Adult, Oler Adult, and missing value)
+*   ```r colnames(CT_data)[8]```: Age of study participants (include a combination of Chiled, Adult, Oler Adult, and missing value)
 
 *   ```r colnames(CT_data)[9]```: Phases of the study
 
@@ -277,7 +276,7 @@ The raw data is too complicated with redundant information, so we did an initial
 
 *   ```r colnames(CT_data)[15]```: Location(s) of study (Locations were divided by "|" for study conducted in more than one location)
 
-Data for further investigation on two latest drugs Lecanemab and Donanemab are from their published Phase III study results. Relevant website could be accessd from [Lecanemab](https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material) and [Donanemab](https://jamanetwork.com/journals/jama/article-abstract/2807533). Both study contians data for participants basic information, adverse events statistics, survival analysis and treatment evaluation.
+Data for further investigation on two latest drugs Lecanemab and Donanemab are from their published Phase III study results. Relevant website could be accessed from [Lecanemab](https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material) and [Donanemab](https://jamanetwork.com/journals/jama/article-abstract/2807533). Both studies contian data for participants' basic information, adverse events statistics, survival analysis, and treatment evaluation.
 
 ```{r}
 # Safety data for Lecanemab
@@ -557,11 +556,11 @@ data |>
 
 * The table and line graph above show the descriptive statistics and overall trend. It is clear that the Northeast region has a much lower and South region has a much higher average Alzheimer's Disease death rate than the other regions across the time period.
 
-#### Death Rate Comparison by Regions
+## Death Rate Comparison by Regions
 
 From the boxplot above, we find that the Alzheimer’s Disease death rate in West region and Midwest region are almost overlapping. Though the median of Midwest region is higher, the variance in West region seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
 
-Firstly, we check if two sets of data have equal variance
+Firstly, we check if two sets of data have equal variance.
 
 <center> *H~0~ : Equal  variance betweenWest and Midwest vs  H~1~ : Unequal  variance*</center>
 
@@ -783,7 +782,7 @@ t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "les
 
 * We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
 
-### Summary
+# Summary
 
 In this analysis, we explored the impact of various factors on Alzheimer's Disease death rates using statistical tests and visualizations. Key findings include:
 
@@ -815,7 +814,7 @@ The reason for initially choosing linear models in statistical analysis is their
 
 Moreover, linear models are known for their robustness, offering reliable performance even with various types of data and statistical errors. Importantly, they serve as an effective benchmark in more complex modeling processes. 
 
-By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps in ensuring that the complexity of a model is justified by a significant improvement over the simpler linear model.
+By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps ensure that the complexity of a model is justified by a significant improvement over the simpler linear model.
 
 #### Full model: Linear regression 
 
@@ -894,7 +893,7 @@ p1 + p2
 
 The residuals versus fitted plot shows a random distribution of residuals around the zero line without any discernible patterns, indicating good model fit and homoscedasticity. No obvious outliers are present, suggesting that the linear regression model assumptions are likely being met.
 
-The QQ plot suggests although the slightly deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
+The QQ plot suggests although the slight deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
 
 ```{r}
 broom::glance(selected_model) |>
@@ -944,7 +943,7 @@ cv_df |>
 
 The violin plot indicates a relatively concentrated distribution of RMSE values for the linear regression model during cross-validation, primarily within the 7 to 8 range, suggesting consistent prediction errors without extreme variability. The symmetric shape around the center suggests a median error likely within this range, implying a stable model performance.
 
-#### Bootstrap
+### Bootstrap
 
 Bootstrapping, involving repeated sampling with replacement, ensures that we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
 
@@ -963,13 +962,13 @@ training_data |>
   theme_minimal()
 ```
 
-Despite all the varibles are significant, R² value is around 0.4, which is suggests potential nonlinear relationships or multicollinearity issues in our dataset.
+Despite all the variables are significant, R² value is around 0.4, which suggests potential nonlinear relationships or multicollinearity issues in our dataset.
 
-## Random Forest Model
+# Random Forest Model
 
-### Model Selection
+## Model Selection
 
-The Random Forest Model is an ensemble learning method, play an important role in classification and regression tasks by building multiple decision trees and aggregating their outputs. It handles complex datasets well and is robust against overfitting. Thus, we consider switching to Random Forest when linear models has limitations. It effectively captures complex, non-linear relationships in data, offering improved accuracy and deeper insights.
+The Random Forest Model is an ensemble learning method, plays an important role in classification and regression tasks by building multiple decision trees and aggregating their outputs. It handles complex datasets well and is robust against overfitting. Thus, we consider switching to Random Forest when linear models have limitations. It effectively captures complex, non-linear relationships in data, offering improved accuracy and deeper insights.
 
 ```{r}
 rf_model = randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
@@ -1104,7 +1103,7 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
 ```
 
 
-After careful consideration, we chose the random forest to be our final mofel. And according to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
+After careful consideration, we chose the random forest to be our final model. According to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
 
 # Clinical Trials
 
@@ -1196,12 +1195,12 @@ subplot(p1, p2, nrows = 1, margin = 0.05) |>
 
 ```
 
-* From the plot, we can see that there are more female participants in Donanemab's clinical trial that in Lecanemab's clinical trial.
-
+* From the plot, we can see that there are more female participants in Donanemab's clinical trial than in Lecanemab's clinical trial.
 
 * From the plot, we can also see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
-All trials participants took Alzheimer's tests to evaluate their stages at the start of study. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale) and MMSE (Mini-mental state examination) were shown in the plot, details of theses test scores were explained in next part.
+All trial participants took Alzheimer's tests to evaluate their stages at the start of studies. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and MMSE (Mini-mental state examination) were shown in the plot, details of these test scores were explained in the next part.
+
 
 ```{r}
 iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
@@ -1242,7 +1241,7 @@ ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "
 
 ### Treatment evaluation
 
-The evaluated outcomes encompassed measures such as CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week (18 months) trial period.
+The evaluated outcomes encompassed measures such as CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week (18-month) trial period.
 
 In the trial of Donanemab, participants were categorized into two groups based on tau biomarker levels in their cerebrospinal fluid (CSF): those with low/medium tau (mild cognitive impairment or early Alzheimer's with lower tau levels) and those with high tau (early Alzheimer's with higher tau levels). Additionally, a combined population included all trial participants, irrespective of tau levels. This stratification aimed to evaluate the efficacy of donanemab across different Alzheimer's patient subgroups.
 
@@ -1278,7 +1277,7 @@ ggplot(CDR_SB_merge, aes(x = as.factor(time), y = mean, fill = group, color = gr
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-* The trial results demonstrated that both treatments slows the clinical progression of Alzheimer compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
+* The trial results demonstrated that both treatments slow the clinical progression of Alzheimer's compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
 
 #### ADAS-Cog
 
@@ -1315,7 +1314,7 @@ ggplot(ADAS_Cog_merge, aes(x = as.factor(time), y = mean, fill = group, color = 
 
 ### Survival Analysis
 
-The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
+The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as follows.
 
 ```{r, message = FALSE, warning = FALSE}
 Don_KM = 
@@ -1394,7 +1393,7 @@ kable(safety_merge)
 
 In our statistical analysis of serious adverse events associated with Lecanemab, Donanemab, and their placebos, we have identified key findings. With a significance level set at 0.1, our results indicate a significant difference in serious adverse events between Lecanemab and its placebo, suggesting a higher risk associated with Lecanemab. In contrast, Donanemab did not show a significant difference in serious adverse events compared to its placebo, implying a potentially safer profile. Additionally, a significant difference was observed between Lecanemab and Donanemab, highlighting distinct safety profiles for these drugs.
 
-Then, we further investigate the differences of specific adverse events for two drugs.
+Then, we further investigate the differences in specific adverse events for the two drugs.
 
 ```{r}
 lec_ae = read_excel("./Data/Lecanemab.xlsx", sheet = "AE", range = "A1:C10") |>
@@ -1420,7 +1419,7 @@ plot_ly(merge_ae |>
              yaxis = list(title = "Number of participants"))
 ```
 
-The barplot clearly shows notable differences in specific adverse events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract infections, and Headaches) between the treatment and placebo groups. To further evaluate and quantify these observed differences, we will proceed with a detailed statistical tests to provide a more definitive understanding of the significance of these adverse events.
+The barplot clearly shows notable differences in specific adverse events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract infections, and Headaches) between the treatment and placebo groups. To further evaluate and quantify these observed differences, we will proceed with detailed statistical tests to provide a more definitive understanding of the significance of these adverse events.
 
 #### Lecanemab vs Placebo
 
@@ -1489,7 +1488,7 @@ For exploratory analysis, we categorized predictive variables into social and he
 
 After preliminary analysis, we discovered that the examination of Alzheimer's Disease mortality rates across different regions in the United States revealed significant disparities, with the South region having the highest and the Northeast region having the lowest average death rates. There are also significant variations in Alzheimer's Disease death rates based on income and employment groups, indicating that socioeconomic factors play a role in disease outcomes.
 
-Next, we tried to generate a regression model. Initially, we generated a multiple linear regression model and the performance is not good enough but further indicate nonlinear variable relationships. This led us to employ a random forest regression model, which significantly enhanced the model fit, raising R squared from 0.4 to 0.9.
+Next, we tried to generate a regression model. Initially, we generated a multiple linear regression model and the performance was not good enough but further indicates nonlinear variable relationships. This led us to employ a random forest regression model, which significantly enhanced the model fit, raising R squared from 0.4 to 0.9.
 
 Analysis of variable importance revealed a strong correlation between education level and mortality rates in Alzheimer's patients, with healthcare expenditure as the second most influential factor. Other factors, including smoking rate, elderly population proportion, employment, income, and cardiovascular rate, were less significant. These results highlight the complex interplay of socioeconomic, lifestyle, and healthcare factors in Alzheimer's patient outcomes.
 
@@ -1497,16 +1496,16 @@ We also developed a visualization tool to provide a comprehensive overview of Al
 
 ## Challenges
 
-We encountered several challenges throughout the study. One of the primary issues pertained to the data itself, particularly the difficulty of accessing some crucial data and absence of categorical variables like income level and employment status, which could have provided a clearer division of variables. To address this, we established our own criteria for categorizing these variables into different groups.
+We encountered several challenges throughout the study. One of the primary issues pertained to the data itself, particularly the difficulty of accessing some crucial data and absence of categorical variables like income level and employment status, which could have provided a clearer division of variables. To address this, we established our criteria for categorizing these variables into different groups.
 
 During the preliminary analysis part, the analysis faced challenges in addressing the heterogeneity of Alzheimer's Disease data, particularly regarding death rates across regions. Variability in data sources, reporting mechanisms, and population characteristics may introduce uncertainties. Additionally, assumptions of normality in the t-test and homogeneity of variances in the ANOVA test may be influenced by outliers or non-normal distributions, posing challenges to the robustness of statistical inferences.
 
-During the EDA part , we found strong correlations among multiple variables, necessitating the removal of some for regression modeling. The selection process involved intense discussion, ultimately leading to the choice of representative variables based on facts and data characteristics. Initially, our linear model performed poorly, prompting us to shift to a black-box model, which significantly improved the fit.
+During the EDA part, we found strong correlations among multiple variables, necessitating the removal of some for regression modeling. The selection process involved intense discussion, ultimately leading to the choice of representative variables based on facts and data characteristics. Initially, our linear model performed poorly, prompting us to shift to a black-box model, which significantly improved the fit.
 
 ## Limitations and Further Improvements
 
 Our analysis, spanning from 2018 to 2021, provides a snapshot of Alzheimer's Disease death rates over this period. However, it's important to note that this four-year timeframe may not fully capture the variations and trends over a longer period. The limited data volume from this duration could potentially restrict the generalizability of our model's findings and a more extended analysis, encompassing long-term trends, would likely offer a deeper and more comprehensive understanding of the factors influencing Alzheimer's Disease mortality rates.
 
-The heteroscedasticity observed in our analysis indicates that there is a varying degree of variability in Alzheimer's Disease death rates across different regions and characteristics. This finding suggests that healthcare policies and interventions need to be tailored to account for these regional disparities in death rates. Future research should aim to further investigae the practical significance of these variations and uncover the underlying mechanisms driving them.
+The heteroscedasticity observed in our analysis indicates that there is a varying degree of variability in Alzheimer's Disease death rates across different regions and characteristics. This finding suggests that healthcare policies and interventions need to be tailored to account for these regional disparities in death rates. Future research should aim to further investigate the practical significance of these variations and uncover the underlying mechanisms driving them.
 
 In the future, there's potential for research at an individual level, rather than state level, which could yield more granular insights while such an approach would pose significant challenges in data collection and privacy considerations.
