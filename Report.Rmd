@@ -943,7 +943,7 @@ cv_df |>
 
 The violin plot indicates a relatively concentrated distribution of RMSE values for the linear regression model during cross-validation, primarily within the 7 to 8 range, suggesting consistent prediction errors without extreme variability. The symmetric shape around the center suggests a median error likely within this range, implying a stable model performance.
 
-### Bootstrap
+#### Bootstrap
 
 Bootstrapping, involving repeated sampling with replacement, ensures that we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
 
@@ -964,9 +964,9 @@ training_data |>
 
 Despite all the variables are significant, R² value is around 0.4, which suggests potential nonlinear relationships or multicollinearity issues in our dataset.
 
-# Random Forest Model
+## Random Forest Model
 
-## Model Selection
+### Model Selection
 
 The Random Forest Model is an ensemble learning method, plays an important role in classification and regression tasks by building multiple decision trees and aggregating their outputs. It handles complex datasets well and is robust against overfitting. Thus, we consider switching to Random Forest when linear models have limitations. It effectively captures complex, non-linear relationships in data, offering improved accuracy and deeper insights.
 
@@ -1104,6 +1104,7 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
 
 
 After careful consideration, we chose the random forest to be our final model. According to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
+
 
 # Clinical Trials
 
