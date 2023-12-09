@@ -312,7 +312,7 @@ don_result =
 ## Exploratory Analysis
 ### Shiny App
 
-The prevalence and mortality rates of Alzheimer's Disease, along with other pertinent factors, exhibit significant variation across different states and over various years. To effectively visualize and have a direct overview of these geographical and temporal trends, we have developed a Shiny app. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+The prevalence and mortality rates of Alzheimer's Disease, along with other pertinent factors, exhibit significant variation across different states and over various years. To effectively visualize and have a direct overview of these geographical and temporal trends, we have developed a Shiny app. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here](https://yigebian.shinyapps.io/Demographic_shiny/).
 
 <img src="project_image/demo_shiny.jpg" style="width:75%">
 
@@ -799,7 +799,7 @@ We used data from the years 2018 to 2020 to train our models, and data from 2021
 All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
 
 ```{r}
-data = readRDS("data_for_model.rds") 
+data = readRDS("./Data/data_for_model.rds") 
 training_data = filter(data, year >= 2018 & year <= 2020) |>
   select(-c(state,year))
 
@@ -1138,7 +1138,7 @@ combine_mean_sd = function(df, group = ""){
 
 ## Clinical Trials Pipeline
 
-In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here].
+In our quest to deepen the understanding of Alzheimer's disease and its treatment landscape, we have developed an innovative Shiny application designed to visualize the clinical trials of Alzheimer's drugs across the United States. This interactive tool is a significant stride in making complex trial data accessible, which labels all trials on the map and has regional statistics based on zoom size. The following screenshot offers a glimpse into the app's capabilities, and the full dashboard can be accessed [here](https://yigebian.shinyapps.io/ClinicalTrials_shiny/).
 
 <img src="project_image/shiny_CT1.png" style="width:85%">
 

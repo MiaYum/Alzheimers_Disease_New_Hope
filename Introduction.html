@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introduction</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Report.html">Report</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="Introduction.html">Introduction</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data.html">Data Sources</a>
+    </li>
+    <li>
+      <a href="EDA.html">Exploratory Analysis</a>
+    </li>
+    <li>
+      <a href="Preliminary_analysis.html">Preliminary Analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Statistical_model.html">Model</a>
+</li>
+<li>
+  <a href="Clinical_trials.html">Clinical Trials</a>
+</li>
+<li>
+  <a href="Conclusion.html">Conclusion</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Shiny
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://yigebian.shinyapps.io/Demographic_shiny/">Demographic</a>
+    </li>
+    <li>
+      <a href="https://yigebian.shinyapps.io/ClinicalTrials_shiny/">Clinical Trials</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="mailto:&lt;yb2591@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-github fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Website Repository</a>
+    </li>
+    <li>
+      <a href="https://github.com/YigeBian/Alzheimers_Disease_New_Hope_Shiny">Shiny Repository</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction</h1>
+
+</div>
+
+
+<p>In the quiet twilight of memory, where the essence of a person’s life
+- their joys, sorrows, and triumphs - slowly dims, lies the profound
+tragedy of Alzheimer’s disease. It’s a realm where the familiar contours
+of identity are relentlessly eroded, not by the passage of time, but by
+an insidious ailment that disassembles the core of who they are. Each
+forgotten name, each lost memory, is a star winking out in the galaxy of
+a person’s life story, leaving behind a haunting void where once there
+was a rich tapestry of experiences and connections.</p>
+<p><img src="project_image/AD-motivation-pic.jpg" style="width:85%"></p>
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p>Alzheimer’s disease is an irreversible, progressive brain disorder
+affecting more than 6 million Americans that slowly destroys memory and
+thinking skills and, eventually, the ability to carry out simple tasks.
+However, existing drugs only treat the symptoms of Alzheimer’s disease.
+They do not treat the root cause of the disease and do not slow down how
+quickly it gets worse. To date, there hasn’t been a new drug approved
+for Alzheimer’s disease in 20 years.</p>
+<p>2023 is an important year for AD because a breakthrough occurs in AD
+treatment: two promising drugs, Leqembi and Donanemab, for treating
+Alzheimer’s disease bring fresh hope. Leqembi, the first treatment that
+shows an unequivocal slowing of decline in Alzheimer’s disease, was
+fully approved by the FDA in July 2023. Donanemab is widely expected to
+be granted full FDA approval within the next year. These two medications
+are both with impressive Phase III clinical trial results. They
+represent an important advancement in the ongoing fight to effectively
+treat Alzheimer’s disease and could be the beginning of the end of
+Alzheimer’s disease.</p>
+<p>Our project is driven by the desire to deeply understand Alzheimer’s
+disease in its entirety - its distribution, associated factors, and the
+transformative potential of these new drugs. We aim to explore how these
+advancements might alter the course of Alzheimer’s disease.</p>
+</div>
+<div id="related-work" class="section level1">
+<h1>Related work</h1>
+<p>The <a
+href="https://www.alz.org/alzheimers-dementia/facts-figures">“Alzheimer’s
+Disease Facts and Figures 2023”</a> report from the Alzheimer’s
+Association reveals the growing prevalence of Alzheimer’s disease in the
+United States. Over 6 million Americans are currently living with
+Alzheimer’s, with projections suggesting this number could rise to about
+13 million by 2050. This disease, a leading cause of death among
+seniors, has significant health, societal, and economic impacts, with
+mortality rates exceeding those of breast and prostate cancer
+combined.</p>
+<p>Our research focuses on the complex relationship between Alzheimer’s
+Disease and its risk factors as highlighted in <a
+href="https://www.alzinfo.org/articles/non-genetic-risk-factors/">existing
+studies</a> of Alzheimer. Key elements include: (1) Age-related brain
+changes like neuron degeneration and protein build-up; (2) Educational
+attainment, potentially offering neural protection; (3) Cardiovascular
+risk factors akin to heart health impacting Alzheimer’s risk; (4) The
+link between diabetes and cognitive decline; (5) Socioeconomic factors
+influencing lifestyle and healthcare access, thereby affecting
+Alzheimer’s risk.</p>
+<p>In the dynamic landscape of Alzheimer’s disease research,
+ClinicalTrials.gov stands as a comprehensive repository, detailing
+ongoing clinical trials. Furthermore, Phase III clinical trials of the
+two latest promising drugs Lecanemab and Donanemab were extensively
+documented in journal articles, and have garnered significant attention
+for their in-depth investigation.</p>
+</div>
+<div id="initial-question" class="section level1">
+<h1>Initial Question</h1>
+<p>From the available data we are interested in answering the following
+questions:</p>
+<ul>
+<li><p>Regarding Alzheimer Facts and Influencing Factors</p>
+<ul>
+<li><p>How does the distribution and prevalence of Alzheimer’s disease
+vary across the United States, and what are the key factors influencing
+these patterns?</p></li>
+<li><p>How can our data science models predict future trends in
+mortality rates of Alzheimer’s patients across different states, and how
+might these predictions inform targeted interventions and resource
+allocation to mitigate the impact of Alzheimer’s disease?</p></li>
+</ul></li>
+<li><p>Regarding Pipeline and Clinical Trials of New Alzheimer Drugs</p>
+<ul>
+<li><p>How can we provide a comprehensive and detailed overview of the
+current Alzheimer’s drug trials in the U.S., encompassing their stages,
+approaches, and geographical distribution?</p></li>
+<li><p>How do Lecanemab and Donanemab, the newly FDA-approved
+Alzheimer’s drugs, compare in terms of their development, efficacy, and
+potential impact?</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="goals" class="section level1">
+<h1>Goals</h1>
+<ul>
+<li><p>Explore and develop an interactive visualization tool of the
+geographical distributions and trends in Alzheimer’s associated factors
+across the US.</p></li>
+<li><p>In-depth analysis of associated factors (including socioeconomic,
+healthcare-related factors, etc.) that may impact the distribution of AD
+death rate. We will develop regression and random forest models. These
+models will not only aid in predicting AD death rates with greater
+accuracy but also enable us to delve deeper into the significance and
+influence of each variable.</p></li>
+<li><p>The availability and accessibility of trial information are
+crucial for researchers, clinicians, and the general public to learn
+more about Alzheimer’s Disease. While resources like ClinicalTrials.gov
+provide extensive details on ongoing clinical trials, their complexity
+and format can be daunting, especially for those new to navigating such
+databases. Recognizing this gap, one of our primary goals is to develop
+a user-friendly visualization and interaction shiny tool to show the
+geographic distirbution of clinical trials from
+ClinicalTrials.gov.</p></li>
+<li><p>Presentation and comparison of Phase III clinical trial results
+for two latest Alzheimer’s drugs, Lecanemab and Donanemab. We focus on
+their efficacy, safety profiles, and overall impact on the treatment of
+Alzheimer’s disease, and aim to provide a clear and easy to understand
+comparison between these two groundbreaking treatments.</p></li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

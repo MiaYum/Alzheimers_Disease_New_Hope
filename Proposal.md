@@ -24,13 +24,13 @@ tasks. However, existing drugs only treat the symptoms of Alzheimer’s
 disease. They do not treat the root cause of the disease and do not slow
 down how quickly it gets worse. To date, there hasn’t been a new drug
 approved for Alzheimer’s disease in 20 years. This year is an important
-year for AD because a breakthrough occurs in AD treatment: two promising
-drugs, Leqembi and Donanmab, for treating Alzheimer’s disease bring
-fresh hope. Leqembi, the first treatment that shows an unequivocal
-slowing of decline in Alzheimer’s disease, is fully approved by FDA in
-July 2023. Donanemab is widely expected to be granted full FDA approval
-within the next year. These two medications are both with impressive
-Phase III clinical trial results. They represent an important
+year for AD because a breakthrough occurred in AD treatment: two
+promising drugs, Leqembi and Donanmab, for treating Alzheimer’s disease
+bring fresh hope. Leqembi, the first treatment that shows an unequivocal
+slowing of decline in Alzheimer’s disease, was fully approved by the FDA
+in July 2023. Donanemab is widely expected to be granted full FDA
+approval within the next year. These two medications are both with
+impressive Phase III clinical trial results. They represent an important
 advancement in the ongoing fight to effectively treat Alzheimer’s
 disease and could be the beginning of the end of Alzheimer’s disease.
 
