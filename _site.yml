@@ -17,13 +17,11 @@ navbar:
       - text: "Preliminary Analysis"
         href: Preliminary_analysis.html
     - text: "Model"
-      href: Model.html
+      href: Statistical_model.html
     - text: "Clinical Trials"
       href: Clinical_trials.html
     - text: "Conclusion"
       href: Conclusion.html
-    - text: "Test site"
-      href: Testsite.html
     - text: "Shiny"
       menu:
       - text: "Demographic"
