@@ -27,7 +27,7 @@ set.seed(15)
 
 # Data Set Splitting
 
-We used data from the years 2018 to 2020 to train our models, and data from 2021 to perform prediction.
+We used data from 2018 to 2020 to train our models, and data from 2021 to perform prediction.
 
 All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
 

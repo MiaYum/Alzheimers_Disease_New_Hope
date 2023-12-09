@@ -427,8 +427,8 @@ div.tocify {
 
 <div id="data-set-splitting" class="section level1">
 <h1>Data Set Splitting</h1>
-<p>We used data from the years 2018 to 2020 to train our models, and
-data from 2021 to perform prediction.</p>
+<p>We used data from 2018 to 2020 to train our models, and data from
+2021 to perform prediction.</p>
 <p>All these datasets have been filtered to remove any missing values
 and do not contain any outliers, ensuring that the data quality is high.
 This preprocessing step lays a strong foundation for building accurate
@@ -726,7 +726,7 @@ p2 &lt;- ggplot(as.data.frame(residuals), aes(sample = residuals)) +
 
 library(patchwork)
 p1 + p2</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Model_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>The residuals versus fitted plot shows a random distribution of
 residuals around the zero line without any discernible patterns,
 indicating good model fit and homoscedasticity. No obvious outliers are
@@ -808,7 +808,7 @@ cv_df |&gt;
     axis.text = element_text(color = &quot;grey20&quot;),
     axis.title = element_text(color = &quot;grey20&quot;)
   )</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="Model_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>The violin plot indicates a relatively concentrated distribution of
 RMSE values for the linear regression model during cross-validation,
 primarily within the 7 to 8 range, suggesting consistent prediction
@@ -834,7 +834,7 @@ perform consistently across different, unseen datasets.</p>
   geom_density(alpha = .2, fill = &quot;red&quot;) +
   labs(title = &quot;Bootstrap Distribution of R Squared&quot;, x = &quot;R  Squared&quot;, y = &quot;Density&quot;) +
   theme_minimal()</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Model_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Despite all the varibles are significant, <span
 class="math inline">\(R^2\)</span> value is around 0.4, which is
 suggests potential nonlinear relationships or multicollinearity issues
@@ -898,7 +898,7 @@ cv_df |&gt;
     axis.text = element_text(color = &quot;grey20&quot;),
     axis.title = element_text(color = &quot;grey20&quot;)
   )</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Model_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>From the plot, the RMSE is predominantly below 7, ranging from
 approximately 5.5 to 9. This level of RMSE is lower compared to that of
 the linear models we’ve previously evaluated, indicating that this model
@@ -960,7 +960,7 @@ ggplot(results_df, aes(x = R_squared)) +
     axis.text = element_text(color = &quot;grey20&quot;),
     axis.title = element_text(color = &quot;grey20&quot;)
   )</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Model_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>The bootstrap results of the Random Forest model showing an <span
 class="math inline">\(R^2\)</span> value around 0.96 indicate a high
 level of accuracy and consistency. This suggests that the model is not
@@ -983,7 +983,7 @@ ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
     axis.text = element_text(color = &quot;grey20&quot;),
     axis.title = element_text(color = &quot;grey20&quot;)
   )</code></pre>
-<p><img src="model_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="Model_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Using the 2021 data to predict with the Random Forest model, we
 observed that the data points largely align with the fitted line,
 especially within the middle range of actual values. There are some
@@ -1006,7 +1006,7 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-0fd3173ab6e1ea37f969" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"7ac4681e3ed4":["function () ","plotlyVisDat"]},"cur_data":"7ac4681e3ed4","attrs":{"7ac4681e3ed4":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"1b28562226b":["function () ","plotlyVisDat"]},"cur_data":"1b28562226b","attrs":{"1b28562226b":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>After careful consideration, we chose the random forest to be our
 final model. According to the model, <code>edu_level</code> emerges as
 the most important feature, which suggests a strong correlation between
