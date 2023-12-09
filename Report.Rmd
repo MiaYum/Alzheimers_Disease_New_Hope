@@ -1156,11 +1156,11 @@ race_df=
   readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
   janitor::clean_names()
 
-sex_colors <- c("Male" = "#a1afc9", "Female" = "#edd1d8") 
-race_colors <- c("Black" = "#c2ccd0", "Asian" ="#fcefe8", "White" = "#e0eee8", "Other or Missing" = "#eedeb0") 
+sex_colors = c("Male" = "#a1afc9", "Female" = "#edd1d8") 
+race_colors = c("Black" = "#c2ccd0", "Asian" ="#fcefe8", "White" = "#e0eee8", "Other or Missing" = "#eedeb0") 
 
 
-p1 <- sex_df |> 
+p1 = sex_df |> 
   plot_ly(x = ~drug, y = ~sex_prop, type = "bar", color = ~sex, colors = sex_colors, legendgroup = "sex") |> 
   layout(barmode = "stack",
          showlegend = TRUE) |>
@@ -1174,7 +1174,7 @@ p1 <- sex_df |>
     font = list(size = 10)
   )
 
-p2 <- race_df |> 
+p2 = race_df |> 
   mutate(race = fct_reorder(race, -race_prop)) |> 
   plot_ly(x = ~drug, y = ~race_prop, type = "bar", color = ~race, colors = race_colors, legendgroup = "race") |> 
   layout(barmode = "stack",
@@ -1192,7 +1192,6 @@ p2 <- race_df |>
 subplot(p1, p2, nrows = 1, margin = 0.05) |>
   layout(title = "Distribution of Baseline Participants' Sex and Race by Drug",
          yaxis = list(title = "Percentage (%)"))
-
 ```
 
 * From the plot, we can see that there are more female participants in Donanemab's clinical trial than in Lecanemab's clinical trial.
@@ -1203,13 +1202,7 @@ All trial participants took Alzheimer's tests to evaluate their stages at the st
 
 
 ```{r}
-iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
-CDR_SB <- read_excel("data/Donanemab_.xlsx", sheet = "2")
-ADCS_iADL <- read_excel("data/Donanemab_.xlsx", sheet = "3")
-ADAS_Cog13 <- read_excel("data/Donanemab_.xlsx", sheet = "4")
-MMSE <- read_excel("data/Donanemab_.xlsx", sheet = "5")
-
-lec_result <- read_excel("data/Lecanemab.xlsx", sheet = "result") |>
+lec_result = read_excel("data/Lecanemab.xlsx", sheet = "result") |>
   filter(time == 0,
          outcome %in% c("CDR-SB", "ADAS-Cog14", "MMSE")) |>
   mutate(drug = "Lecanemab",
@@ -1247,9 +1240,7 @@ In the trial of Donanemab, participants were categorized into two groups based o
 
 #### CDR-SB
 
-The Clinical Dementia Rating Scale Sum of Boxes (CDR-SB) is a widely used assessment tool for evaluating the severity of dementia. It is a composite score derived from the Clinical Dementia Rating (CDR) scale, which is used to assess the cognitive and functional abilities of individuals with dementia.
-
-The CDR-SB incorporates ratings across six domains: memory, orientation, judgment and problem solving, community affairs, home and hobbies, and personal care. Each domain is rated on a scale from 0 (no impairment) to 3 (severe impairment), and the total CDR-SB score ranges from 0 to 18, with higher scores indicating greater clinical impairment.
+The Clinical Dementia Rating Scale Sum of Boxes (CDR-SB) is a widely used assessment tool for evaluating the severity of dementia. The CDR-SB incorporates ratings across six domains: memory, orientation, judgment and problem solving, community affairs, home and hobbies, and personal care. Each domain is rated on a scale from 0 (no impairment) to 3 (severe impairment), and the total CDR-SB score ranges from 0 to 18, with higher scores indicating greater clinical impairment.
 
 ```{r}
 Don_CDR_SB = read_excel("data/Donanemab.xlsx", sheet = "result") |>
@@ -1333,7 +1324,7 @@ plot_ly(Don_KM |>
              yaxis = list(title = "Percentage of Participants Progression"))
 ```
 
-* The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer's disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk, albeit to a slightly lesser extent than Donanemab. These results indicate that both drugs are effective in slowing the progression of Alzheimer's disease, with Donanemab showing a marginally higher efficacy in this regard.
+* The hazard ratio for the combined group of Donanemab was found to be 0.623 with a 95% confidence interval of 0.519 to 0.748, indicating a significant reduction in the risk associated with the progression of Alzheimer’s disease as measured by the CDR-SB score. In comparison, Lecanemab demonstrated a hazard ratio of 0.69, also suggesting a reduced risk. These results indicate that both drugs are effective in slowing the progression of Alzheimer’s disease.
 
 ### Adverse Events
 
