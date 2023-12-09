@@ -1,5 +1,5 @@
 ---
-title: "Regression model"
+title: "Model"
 
 output: 
   html_document:

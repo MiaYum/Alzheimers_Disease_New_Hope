@@ -491,7 +491,7 @@ region.</p></li>
 <li><p>The variance of death rate is higher in South region.</p></li>
 <li><p>We can roughly tell from the plot that the variances of death
 rate among regions are not equal. Thus, we may perform a statistical
-test to check heteroscedasticity</p></li>
+test to check heteroscedasticity.</p></li>
 </ul>
 <div id="test-of-equal-variances" class="section level3">
 <h3>Test of equal variances</h3>
@@ -875,8 +875,8 @@ H<sub>1</sub> : at least two means are not equal</em>
 </center>
 <pre class="r"><code>anova_result &lt;- aov(death_rate ~ factor(income_group), data = income_level)
 
-TukeyHSD(anova_result) %&gt;%
-  broom::tidy() %&gt;%
+TukeyHSD(anova_result) |&gt;
+  broom::tidy() |&gt;
   knitr::kable()</code></pre>
 <table style="width:100%;">
 <colgroup>
@@ -1071,8 +1071,8 @@ Alzheimer’s Disease death rate.</li>
 <em>H<sub>0</sub> : mean high employment = mean low employment vs
 H<sub>1</sub> : mean high employment ≠ mean low employment</em>
 </center>
-<pre class="r"><code>t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = TRUE ) %&gt;% 
-  broom::tidy() %&gt;% 
+<pre class="r"><code>t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = &quot;less&quot;,conf.level = 0.95,paired = F,var.equal = TRUE ) |&gt; 
+  broom::tidy() |&gt;
   knitr::kable()</code></pre>
 <table>
 <colgroup>
