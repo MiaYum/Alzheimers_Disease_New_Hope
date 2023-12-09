@@ -116,12 +116,12 @@ subplot(p1, p2, nrows = 1, margin = 0.05) |>
 
 ```
 
-* From the plot, we can see that there are more female participants in Donanemab's clinical trial that in Lecanemab's clinical trial.
+* From the plot, we can see that there are more female participants in Donanemab's clinical trial than in Lecanemab's clinical trial.
 
 
 * From the plot, we can also see there is more diversity in  Lecanemab's clinical trial. Races other than white occupy a larger proportion of participants in Lecanemab's clinical trial than in Donanemab's clinical trial than that in Lecanemab's clinical trial, especially Asians.
 
-All trials participants took Alzheimer's tests to evaluate their stages at the start of study. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale) and MMSE (Mini-mental state examination) were shown in the plot, details of theses test scores were explained in next part.
+All trial participants took Alzheimer's tests to evaluate their stages at the start of studies. CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and MMSE (Mini-mental state examination) were shown in the plot, details of these test scores were explained in the next part.
 
 ```{r}
 iADRS <- read_excel("data/Donanemab_.xlsx", sheet = "1")
@@ -162,7 +162,7 @@ ggplot(bind_rows(lec_result, don_result) |> filter (!(outcome %in% c("CDR-SB", "
 
 ## Treatment evaluation
 
-The evaluated outcomes encompassed measures such as CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week (18 months) trial period.
+The evaluated outcomes encompassed measures such as CDR-SB (Clinical Dementia Rating Scale Sum of Boxes), ADAS-Cog (Alzheimer's Disease Assessment Scale - Cognitive Subscale), and various other clinical assessments. These metrics collectively offer valuable insights into the effectiveness of donanemab in comparison to the placebo, shedding light on its impact on slowing the progression of Alzheimer's disease over the 76-week (18-month) trial period.
 
 In the trial of Donanemab, participants were categorized into two groups based on tau biomarker levels in their cerebrospinal fluid (CSF): those with low/medium tau (mild cognitive impairment or early Alzheimer's with lower tau levels) and those with high tau (early Alzheimer's with higher tau levels). Additionally, a combined population included all trial participants, irrespective of tau levels. This stratification aimed to evaluate the efficacy of donanemab across different Alzheimer's patient subgroups.
 
@@ -198,7 +198,7 @@ ggplot(CDR_SB_merge, aes(x = as.factor(time), y = mean, fill = group, color = gr
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-* The trial results demonstrated that both treatments slows the clinical progression of Alzheimer compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
+* The trial results demonstrated that both treatments slow the clinical progression of Alzheimer's compared to their placebo as measured by the CDR-SB, indicating its potential efficacy in addressing the symptoms and functional decline associated with early symptomatic Alzheimer's disease. Lecanemab shows adjusted mean change of 1.21 from baseline to endpoint, while Donanemab shows 1.16 (95%CI: 0.97-1.35) least square mean change.
 
 ### ADAS-Cog
 
@@ -235,7 +235,7 @@ ggplot(ADAS_Cog_merge, aes(x = as.factor(time), y = mean, fill = group, color = 
 
 ## Survival Analysis
 
-The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as following
+The Phase III trials of Lecanemab and Donanemab both use cumulative hazard ratio to indicate the risk of progression assessed using CDR-SB score. The hazard plot for Donanemab is as follows.
 
 ```{r, message = FALSE, warning = FALSE}
 Don_KM = 
@@ -314,7 +314,7 @@ kable(safety_merge)
 
 In our statistical analysis of serious adverse events associated with Lecanemab, Donanemab, and their placebos, we have identified key findings. With a significance level set at 0.1, our results indicate a significant difference in serious adverse events between Lecanemab and its placebo, suggesting a higher risk associated with Lecanemab. In contrast, Donanemab did not show a significant difference in serious adverse events compared to its placebo, implying a potentially safer profile. Additionally, a significant difference was observed between Lecanemab and Donanemab, highlighting distinct safety profiles for these drugs.
 
-Then, we further investigate the differences of specific adverse events for two drugs.
+Then, we further investigate the differences in specific adverse events for the two drugs.
 
 ```{r}
 lec_ae = read_excel("./Data/Lecanemab.xlsx", sheet = "AE", range = "A1:C10") |>
@@ -340,7 +340,7 @@ plot_ly(merge_ae |>
              yaxis = list(title = "Number of participants"))
 ```
 
-The barplot clearly shows notable differences in specific adverse events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract infections, and Headaches) between the treatment and placebo groups. To further evaluate and quantify these observed differences, we will proceed with a detailed statistical tests to provide a more definitive understanding of the significance of these adverse events.
+The barplot clearly shows notable differences in specific adverse events (such as Infusion-related reactions, ARIA-E/ARIA-H, Urinary tract infections, and Headaches) between the treatment and placebo groups. To further evaluate and quantify these observed differences, we will proceed with detailed statistical tests to provide a more definitive understanding of the significance of these adverse events.
 
 ### Lecanemab vs Placebo
 
