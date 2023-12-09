@@ -71,7 +71,7 @@ The ["Alzheimer's Disease Facts and Figures 2023"](https://www.alz.org/alzheimer
 
 Our research focuses on the complex relationship between Alzheimer's Disease and its risk factors as highlighted in [existing studies](https://www.alzinfo.org/articles/non-genetic-risk-factors/) of Alzheimer. Key elements include: (1) Age-related brain changes like neuron degeneration and protein build-up; (2) Educational attainment, potentially offering neural protection; (3) Cardiovascular risk factors akin to heart health impacting Alzheimer's risk; (4) The link between diabetes and cognitive decline; (5) Socioeconomic factors influencing lifestyle and healthcare access, thereby affecting Alzheimer's risk.
 
-In the dynamic landscape of Alzheimer's disease research, ClinicalTrials.gov stands as a comprehensive repository, detailing ongoing clinical trials. Furthermore, Phase III clinical trials of the two latest promising drugs Lecanemab and Donanemab were extensively documented in journal articles, and have garnered significant attention for their in-depth investigation. 
+In the dynamic landscape of Alzheimer's disease research, [ClinicalTrials.gov](https://clinicaltrials.gov/search?cond=Alzheimer) stands as a comprehensive repository, detailing ongoing clinical trials. Furthermore, Phase III clinical trials of the two latest promising drugs Lecanemab and Donanemab were extensively documented in journal articles, and have garnered significant attention for their in-depth investigation. 
 
 ## Initial Question
 

@@ -307,7 +307,7 @@ safety_merge = bind_rows(lec_safety_test, don_safety_test, comp_safety_test) |>
 kable(safety_merge)
 ```
 
-In our statistical test of serious adverse events associated with Lecanemab, Donanemab, and their placebos, With a significance level of 0.05, our results indicate that there is no significant difference in safety among Lecanemab, Donanemab and their Placebo, suggesting the safety of drugs using. Moreover, the p value of the test for Lecanemab and Donanemab is very close to 0.05 which lead us to further explore the safety of these two drugs. 
+In our statistical test of serious adverse events associated with Lecanemab, Donanemab, and their placebos, With a significance level of 0.05, our results indicate that there is no significant difference in safety among Lecanemab, Donanemab and their Placebo, suggesting the safety of drugs using. Moreover, the p value of the test for Lecanemab and Donanemab is very close to 0.05 which lead us to further explore the safety of these two drugs.
 
 Then, we further investigate the differences in specific adverse events for the two drugs.
 
