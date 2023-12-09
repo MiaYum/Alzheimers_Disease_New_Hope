@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Model</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Report.html">Report</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="Introduction.html">Introduction</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data.html">Data Sources</a>
+    </li>
+    <li>
+      <a href="EDA.html">Exploratory Analysis</a>
+    </li>
+    <li>
+      <a href="Preliminary_analysis.html">Preliminary Analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Model.html">Model</a>
+</li>
+<li>
+  <a href="Clinical_trials.html">Clinical Trials</a>
+</li>
+<li>
+  <a href="Conclusion.html">Conclusion</a>
+</li>
+<li>
+  <a href="Testsite.html">Test site</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Shiny
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://yigebian.shinyapps.io/Demographic_shiny/">Demographic</a>
+    </li>
+    <li>
+      <a href="https://yigebian.shinyapps.io/ClinicalTrials_shiny/">Clinical Trials</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="mailto:&lt;yb2591@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-github fa-lg"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/MiaYum/Alzheimers_Disease_New_Hope">Website Repository</a>
+    </li>
+    <li>
+      <a href="https://github.com/YigeBian/Alzheimers_Disease_New_Hope_Shiny">Shiny Repository</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Model</h1>
+
+</div>
+
+
+<div id="model" class="section level1">
+<h1>Model</h1>
+<div id="data-set-splitting" class="section level2">
+<h2>Data Set Splitting</h2>
+<p>We used data from the years 2018 to 2020 to train our models, and
+data from 2021 to perform prediction.</p>
+<p>All these datasets have been filtered to remove any missing values
+and do not contain any outliers, ensuring that the data quality is high.
+This preprocessing step lays a strong foundation for building accurate
+and reliable models.</p>
+<pre class="r"><code>data = readRDS(&quot;data_for_model.rds&quot;) 
+training_data = filter(data, year &gt;= 2018 &amp; year &lt;= 2020) |&gt;
+  select(-c(state,year))
+
+testing_data = filter(data, year == 2021) |&gt;
+  select(-c(state,year))</code></pre>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple Linear Regression</h2>
+<div id="model-selection" class="section level3">
+<h3>Model Selection</h3>
+<p>The reason for initially choosing linear models in statistical
+analysis is their simplicity and ease of understanding. These models, by
+representing relationships in a straightforward linear manner, make it
+easier for us to comprehend how different variables affect the death
+rate we care about.</p>
+<p>Moreover, linear models are known for their robustness, offering
+reliable performance even with various types of data and statistical
+errors. Importantly, they serve as an effective benchmark in more
+complex modeling processes.</p>
+<p>By starting with a linear model, we can establish a baseline
+performance level, against which the effectiveness of more sophisticated
+models can be measured. This stepwise approach helps in ensuring that
+the complexity of a model is justified by a significant improvement over
+the simpler linear model.</p>
+<div id="full-model-linear-regression" class="section level4">
+<h4>Full model: Linear regression</h4>
+<pre class="r"><code>model = lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
+summary(model) |&gt; 
+broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">68.3037142</td>
+<td align="right">13.4233735</td>
+<td align="right">5.0884164</td>
+<td align="right">0.0000012</td>
+</tr>
+<tr class="even">
+<td align="left">employment</td>
+<td align="right">24.9223618</td>
+<td align="right">16.5331015</td>
+<td align="right">1.5074221</td>
+<td align="right">0.1340921</td>
+</tr>
+<tr class="odd">
+<td align="left">hc_exp</td>
+<td align="right">-0.0012826</td>
+<td align="right">0.0007332</td>
+<td align="right">-1.7492692</td>
+<td align="right">0.0825687</td>
+</tr>
+<tr class="even">
+<td align="left">income</td>
+<td align="right">-0.0002319</td>
+<td align="right">0.0001776</td>
+<td align="right">-1.3061814</td>
+<td align="right">0.1937624</td>
+</tr>
+<tr class="odd">
+<td align="left">edu_level</td>
+<td align="right">-45.7011712</td>
+<td align="right">21.4826355</td>
+<td align="right">-2.1273540</td>
+<td align="right">0.0352503</td>
+</tr>
+<tr class="even">
+<td align="left">cardio_rate</td>
+<td align="right">180.2845378</td>
+<td align="right">51.4160324</td>
+<td align="right">3.5063876</td>
+<td align="right">0.0006212</td>
+</tr>
+<tr class="odd">
+<td align="left">smoke_rate</td>
+<td align="right">-11.4113239</td>
+<td align="right">31.4644509</td>
+<td align="right">-0.3626735</td>
+<td align="right">0.7174288</td>
+</tr>
+<tr class="even">
+<td align="left">elder_rate</td>
+<td align="right">-152.9455140</td>
+<td align="right">35.4789569</td>
+<td align="right">-4.3108797</td>
+<td align="right">0.0000316</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>broom::glance(model) |&gt;
+  mutate(model = &quot;Full Linear Regression&quot;) |&gt;
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="31%" />
+<col width="13%" />
+<col width="19%" />
+<col width="10%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">p.value</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Full Linear Regression</td>
+<td align="right">0.3990315</td>
+<td align="right">0.367162</td>
+<td align="right">0</td>
+<td align="right">956.2865</td>
+<td align="right">982.7613</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the table of full model, some of the predictors are
+statistically significant while others are not, so we need a further
+selection of the model.</p>
+</div>
+<div id="backwards-elimination" class="section level4">
+<h4>Backwards Elimination</h4>
+<p>We use Backward Elimination for constructing our linear regression
+model to enhance its efficiency and interpretability. This method
+systematically removes the least significant variables, ensuring that
+only the most impactful predictors are retained. Consequently, it helps
+in reducing model complexity and avoiding overfitting, resulting in a
+more robust and meaningful model.</p>
+<pre class="r"><code>backward_result = step(model, direction = &#39;backward&#39;, trace = 0)
+  broom::tidy(backward_result) |&gt;
+      knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">74.2170216</td>
+<td align="right">7.6615066</td>
+<td align="right">9.687001</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">hc_exp</td>
+<td align="right">-0.0014021</td>
+<td align="right">0.0005712</td>
+<td align="right">-2.454649</td>
+<td align="right">0.0153748</td>
+</tr>
+<tr class="odd">
+<td align="left">edu_level</td>
+<td align="right">-47.8686408</td>
+<td align="right">12.8765984</td>
+<td align="right">-3.717491</td>
+<td align="right">0.0002939</td>
+</tr>
+<tr class="even">
+<td align="left">cardio_rate</td>
+<td align="right">146.1913832</td>
+<td align="right">46.7572070</td>
+<td align="right">3.126606</td>
+<td align="right">0.0021660</td>
+</tr>
+<tr class="odd">
+<td align="left">elder_rate</td>
+<td align="right">-155.1015760</td>
+<td align="right">33.8923959</td>
+<td align="right">-4.576294</td>
+<td align="right">0.0000106</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>selected_model = lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
+
+summary(selected_model) |&gt;
+  broom::tidy() |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">74.2170216</td>
+<td align="right">7.6615066</td>
+<td align="right">9.687001</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">hc_exp</td>
+<td align="right">-0.0014021</td>
+<td align="right">0.0005712</td>
+<td align="right">-2.454649</td>
+<td align="right">0.0153748</td>
+</tr>
+<tr class="odd">
+<td align="left">edu_level</td>
+<td align="right">-47.8686408</td>
+<td align="right">12.8765984</td>
+<td align="right">-3.717491</td>
+<td align="right">0.0002939</td>
+</tr>
+<tr class="even">
+<td align="left">cardio_rate</td>
+<td align="right">146.1913832</td>
+<td align="right">46.7572070</td>
+<td align="right">3.126606</td>
+<td align="right">0.0021660</td>
+</tr>
+<tr class="odd">
+<td align="left">elder_rate</td>
+<td align="right">-155.1015760</td>
+<td align="right">33.8923959</td>
+<td align="right">-4.576294</td>
+<td align="right">0.0000106</td>
+</tr>
+</tbody>
+</table>
+<p>After applying Backward Elimination, we have obtained a linear
+regression model that is streamlined and comprises only the
+statistically significant predictors.</p>
+</div>
+</div>
+<div id="model-performance" class="section level3">
+<h3>Model Performance</h3>
+<pre class="r"><code>pre =
+  training_data |&gt;
+  add_predictions(selected_model) |&gt;
+  add_residuals(selected_model)
+
+p1 &lt;- ggplot(pre, aes(x = pred, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  labs(
+    x = &quot;Fitted Values&quot;,
+    y = &quot;Residuals&quot;,
+    title = &quot;Residuals vs Fitted Plot&quot;
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = &quot;grey20&quot;),
+    axis.title = element_text(color = &quot;grey20&quot;)
+  )
+
+residuals = resid(selected_model)
+p2 &lt;- ggplot(as.data.frame(residuals), aes(sample = residuals)) +
+  stat_qq() +
+  stat_qq_line(color = &quot;red&quot;) +
+  labs(
+    title = &quot;Normal Q-Q Plot&quot;,
+    x = &quot;Theoretical Quantiles&quot;,
+    y = &quot;Sample Quantiles&quot;
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+
+library(patchwork)
+p1 + p2</code></pre>
+<p><img src="Testsite_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The residuals versus fitted plot shows a random distribution of
+residuals around the zero line without any discernible patterns,
+indicating good model fit and homoscedasticity. No obvious outliers are
+present, suggesting that the linear regression model assumptions are
+likely being met.</p>
+<p>The QQ plot suggests although the slightly deviations at the tails
+indicate potential non-normality, the residuals from a statistical model
+are approximately normally distributed around the center.</p>
+<pre class="r"><code>broom::glance(selected_model) |&gt;
+  mutate(model = &quot;Selected Linear Regression&quot;) |&gt;
+  select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |&gt;
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="12%" />
+<col width="18%" />
+<col width="10%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">p.value</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Selected Linear Regression</td>
+<td align="right">0.3854173</td>
+<td align="right">0.3672074</td>
+<td align="right">0</td>
+<td align="right">953.4226</td>
+<td align="right">971.0725</td>
+</tr>
+</tbody>
+</table>
+<div id="cross-validation-for-rmse" class="section level4">
+<h4>Cross Validation for RMSE</h4>
+<p>To assess the performance and reliability of a predictive model, we
+use the Cross-validation method to divide the training data into 100
+subsets to ensure that each data point is used for both training and
+testing. This helps assess how well the model generalizes to new, unseen
+data.</p>
+<pre class="r"><code># generate a cv dataframe 
+cv_df =
+  crossv_mc(training_data, 100) %&gt;% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+# fit the model to the generated CV dataframe
+cv_df =
+  cv_df |&gt;
+  mutate(
+    model  = map(train, ~lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+# plot the prediction error
+cv_df |&gt;
+  select(rmse) |&gt;
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;rmse&quot;) %&gt;% 
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_violin(fill = &quot;blue&quot;, alpha = 0.5) +
+  labs(
+    title = &quot;Prediction Errors For Our Model Under CV&quot;,
+    x = &quot;Model Linear Regression&quot;,
+    y = &quot;Prediction Errors&quot;
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = &quot;grey20&quot;),
+    axis.title = element_text(color = &quot;grey20&quot;)
+  )</code></pre>
+<p><img src="Testsite_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The violin plot indicates a relatively concentrated distribution of
+RMSE values for the linear regression model during cross-validation,
+primarily within the 7 to 8 range, suggesting consistent prediction
+errors without extreme variability. The symmetric shape around the
+center suggests a median error likely within this range, implying a
+stable model performance.</p>
+</div>
+<div id="bootstrap" class="section level4">
+<h4>Bootstrap</h4>
+<p>Bootstrapping, involving repeated sampling with replacement, ensures
+that we are not just creating a model that works well for our current
+dataset (as indicated by a high R²) but also one that is likely to
+perform consistently across different, unseen datasets.</p>
+<pre class="r"><code>training_data |&gt; 
+  modelr::bootstrap(n = 1000) |&gt; 
+  mutate(
+    models = map(strap, \(df) lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = df)),
+    results = map(models, broom::glance)) |&gt; 
+  select(results) |&gt;
+  unnest(results) |&gt;
+  ggplot(aes(x = r.squared)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = &#39;blue&#39;, alpha = 0.5) +
+  geom_density(alpha = .2, fill = &quot;red&quot;) +
+  labs(title = &quot;Bootstrap Distribution of R²&quot;, x = &quot;R²&quot;, y = &quot;Density&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="Testsite_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Despite all the varibles are significant, R² value is around 0.4,
+which is suggests potential nonlinear relationships or multicollinearity
+issues in our dataset.</p>
+</div>
+</div>
+</div>
+<div id="random-forest-model" class="section level2">
+<h2>Random Forest Model</h2>
+<div id="model-selection-1" class="section level3">
+<h3>Model Selection</h3>
+<p>The Random Forest Model is an ensemble learning method, play an
+important role in classification and regression tasks by building
+multiple decision trees and aggregating their outputs. It handles
+complex datasets well and is robust against overfitting. Thus, we
+consider switching to Random Forest when linear models has limitations.
+It effectively captures complex, non-linear relationships in data,
+offering improved accuracy and deeper insights.</p>
+<pre class="r"><code>library(randomForest)
+
+rf_model &lt;- randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)</code></pre>
+</div>
+<div id="model-performance-1" class="section level3">
+<h3>Model Performance</h3>
+<p>We also use cross validation and boostrap to see the performance and
+reliability of the random forest model as we did to the linear
+model.</p>
+<div id="cross-validation-for-rmse-1" class="section level4">
+<h4>Cross Validation for RMSE</h4>
+<pre class="r"><code># generate a cv dataframe 
+cv_df =
+  crossv_mc(training_data, 100) %&gt;% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+
+# fit the model to the generated CV dataframe
+cv_df =
+  cv_df |&gt; 
+  mutate(
+    model  = map(train, ~randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = .x)),
+    rmse = map2_dbl(model, test, ~rmse(model = .x, data = .y)))
+
+# plot the prediction error
+cv_df |&gt;
+  select(rmse) |&gt; 
+  pivot_longer(
+    everything(),
+    names_to = &quot;model&quot;, 
+    values_to = &quot;rmse&quot;) %&gt;% 
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_violin(fill = &quot;blue&quot;, alpha = 0.5) +
+  labs(
+    title = &quot;Prediction Errors For Our Model Under CV&quot;,
+    x = &quot;Model Random Forest&quot;,
+    y = &quot;Prediction Errors&quot;
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = &quot;grey20&quot;),
+    axis.title = element_text(color = &quot;grey20&quot;)
+  )</code></pre>
+<p><img src="Testsite_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>From the plot, the RMSE is predominantly below 7, ranging from
+approximately 5.5 to 9. This level of RMSE is lower compared to that of
+the linear models we’ve previously evaluated, indicating that this model
+performs better. Lower RMSE values signify more accurate predictions,
+thus suggesting that this model is a more effective predictor for our
+dataset.</p>
+<pre class="r"><code># R²
+rf_predictions &lt;- predict(rf_model, training_data)
+r_squared &lt;- cor(training_data$death_rate, rf_predictions)^2
+data.frame(
+  model = &quot;Random Forest Model&quot;,
+  r.squard = r_squared
+) |&gt;
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">r.squard</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Random Forest Model</td>
+<td align="right">0.9325145</td>
+</tr>
+</tbody>
+</table>
+<p>Calculated using the training data, the R² is 0.9325145, which
+indicates a very high level of explained variance in the model. This
+suggests that our model is highly effective in capturing and
+representing the relationships within the training dataset.</p>
+</div>
+<div id="bootstrap-1" class="section level4">
+<h4>Bootstrap</h4>
+<p>We perform bootstrapping to evaluate the model’s stability and
+reliability.</p>
+<pre class="r"><code>library(randomForest)
+library(boot)
+
+bootstrap_r2 &lt;- function(data, indices) {
+  boot_data &lt;- data[indices, ]
+  model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
+  predictions &lt;- predict(model, boot_data)
+  r_squared &lt;- cor(boot_data$death_rate, predictions)^2
+  return(r_squared)
+}
+
+results &lt;- boot(data = training_data, statistic = bootstrap_r2, R = 1000)
+
+# Create a data frame from the bootstrapped R² values
+results_df &lt;- data.frame(R_squared = results$t)
+
+# Use ggplot2 to create a histogram with a density curve
+ggplot(results_df, aes(x = R_squared)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = &#39;blue&#39;, alpha = 0.5) +
+  geom_density(alpha = .2, fill = &quot;red&quot;) +
+  labs(title = &quot;Bootstrap Distribution of R²&quot;, x = &quot;R²&quot;, y = &quot;Density&quot;) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = &quot;grey20&quot;),
+    axis.title = element_text(color = &quot;grey20&quot;)
+  )</code></pre>
+<p><img src="Testsite_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>The bootstrap results of the Random Forest model showing an R² value
+around 0.96 indicate a high level of accuracy and consistency. This
+suggests that the model is not only effective in explaining a large
+portion of the variance in the data but also demonstrates robust
+performance across different samples.</p>
+</div>
+</div>
+<div id="prediction" class="section level3">
+<h3>Prediction</h3>
+<pre class="r"><code>testing_data$predicted_death_rate &lt;- predict(rf_model, testing_data)
+ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
+  geom_point(color = &quot;black&quot;) +  # Add the actual data points
+  geom_smooth(method = &quot;lm&quot;,se = FALSE, color = &quot;blue&quot;) +  
+  labs(title = &quot;Linear Regression Predictions&quot;,
+       x = &quot;Actual Values&quot;,
+       y = &quot;Predicted Values&quot;) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(color = &quot;grey20&quot;),
+    axis.title = element_text(color = &quot;grey20&quot;)
+  )</code></pre>
+<p><img src="Testsite_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Using the 2021 data to predict with the Random Forest model, we
+observed that the data points largely align with the fitted line,
+especially within the middle range of actual values. There are some
+outliers, particularly at higher actual values, but this indicates that
+the model’s predictive accuracy is reasonable within the normal
+range.</p>
+</div>
+</div>
+<div id="results-and-discussion" class="section level2">
+<h2>Results and Discussion</h2>
+<pre class="r"><code>importance_values &lt;- importance(rf_model)
+
+feature_importance &lt;- data.frame(Feature = rownames(importance_values), 
+                                 Importance = importance_values[,1]) %&gt;%
+  arrange(Importance) %&gt;% 
+  mutate(Feature = factor(Feature, levels = Feature)) 
+
+plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;, orientation = &#39;h&#39;) %&gt;%
+  layout(title = &quot;Feature Importance from Random Forest Model&quot;,
+         xaxis = list(title = &quot;Importance&quot;),
+         yaxis = list(title = &quot;Feature&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-c2c81ce0685f65756a0c" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-c2c81ce0685f65756a0c">{"x":{"visdat":{"3e70225b78f2":["function () ","plotlyVisDat"]},"cur_data":"3e70225b78f2","attrs":{"3e70225b78f2":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>After careful consideration, we chose the random forest to be our
+final mofel. And according to the model, <code>edu_level</code> emerges
+as the most important feature, which suggests a strong correlation
+between educational attainment and mortality rates in Alzheimer’s
+patients. Following it,<code>hc_exp</code> stands as the second most
+crucial factor, indicating the importance of healthcare resources in
+managing Alzheimer’s disease. Other features like
+<code>smoke_rate</code>, <code>elder_rate</code>,
+<code>employment</code>, <code>income</code>, and
+<code>cardio_rate</code> are ranked in descending order of importance,
+indicating a gradual decrease in their significance within the model.
+These findings highlight the multifaceted nature of factors affecting
+Alzheimer’s patient outcomes and underscore the importance of
+socioeconomic and lifestyle factors in addition to healthcare
+provision.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
