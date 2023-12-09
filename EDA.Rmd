@@ -36,6 +36,7 @@ The prevalence and mortality rates of Alzheimer's Disease, along with other pert
 <img src="project_image/demo_shiny.jpg" style="width:75%">
 
 # Part I Data Overview
+
 ```{r}
 data = read_csv("./Data/geo_data.csv")
 # 1. Descriptive statistics table for all variables
@@ -62,6 +63,7 @@ plot_ly(missing_data, x = ~Variable, y = ~MissingValues, type = "bar", marker = 
 ```
 
 # Part II Missing Value Analysis
+
 ```{r}
 # Drop na
 data = data |>
