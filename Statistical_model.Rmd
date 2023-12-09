@@ -347,9 +347,4 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orienta
          yaxis = list(title = "Feature"))
 ```
 
-
 After careful consideration, we chose the random forest to be our final model. According to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
-
-
-
-
