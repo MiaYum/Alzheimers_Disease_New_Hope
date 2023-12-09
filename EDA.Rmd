@@ -184,7 +184,7 @@ data |>
   facet_wrap(~category, scales = "free", ncol = 2)
 ```
 
-There are negative association between Alzheimer's disease mortality rates and factors such as income, employment, price index, and healthcare expenditure. Higher income and employment levels, often associated with better access to healthcare, correspond with lower Alzheimer's death rates. Similarly, regions with a higher price index and greater healthcare spending show fewer deaths from this disease.
+There are negative associations between Alzheimer's disease mortality rates and factors such as income, employment, price index, and healthcare expenditure. Higher income and employment levels, often associated with better access to healthcare, correspond with lower Alzheimer's death rates. Similarly, regions with a higher price index and greater healthcare spending show fewer deaths from this disease.
 
 However, the data points show a lack of tight clustering, which suggests that a linear model might not fully capture the nuances of these relationships. This pattern hints at the potential for a more complex, non-linear relationship between these socio-economic factors and Alzheimer's mortality.
 
@@ -208,6 +208,6 @@ data |>
   )
 ```
 
-The graph illustrates a trend where higher levels of educational attainment are associated with lower mortality rates. This pattern suggests that better education may contribute to improved health outcomes, potentially due to increased health awareness, better access to healthcare resources, or healthier lifestyle choices typically associated with higher education levels.
+The graph illustrates a trend where higher levels of educational attainment are associated with lower mortality rates. This pattern suggests that better education may contribute to improved health outcomes, potentially due to increased health awareness, better access to healthcare resources or healthier lifestyle choices typically associated with higher education levels.
 
 However, it's important to consider that Alzheimer's disease predominantly affects older individuals, and there may be a temporal discrepancy between the current education levels and those of the older population primarily impacted by this disease. This time-related difference suggests that while educational attainment appears to be a protective factor, the actual impact on Alzheimer's mortality might be influenced by historical changes in education over the decades. Therefore, when interpreting these results, we should be cautious about directly correlating current educational standards with Alzheimer's outcomes in an aging population.
