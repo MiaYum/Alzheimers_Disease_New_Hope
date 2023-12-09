@@ -455,9 +455,9 @@ errors. Importantly, they serve as an effective benchmark in more
 complex modeling processes.</p>
 <p>By starting with a linear model, we can establish a baseline
 performance level, against which the effectiveness of more sophisticated
-models can be measured. This stepwise approach helps in ensuring that
-the complexity of a model is justified by a significant improvement over
-the simpler linear model.</p>
+models can be measured. This stepwise approach helps ensure that the
+complexity of a model is justified by a significant improvement over the
+simpler linear model.</p>
 <div id="full-model-linear-regression" class="section level3">
 <h3>Full model: Linear regression</h3>
 <pre class="r"><code>model = lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
@@ -567,7 +567,7 @@ broom::tidy() |&gt;
 </tr>
 </tbody>
 </table>
-<p>Based on the table of full model, some of the predictors are
+<p>Based on the table of the full model, some of the predictors are
 statistically significant while others are not, so we need a further
 selection of the model.</p>
 </div>
@@ -732,7 +732,7 @@ residuals around the zero line without any discernible patterns,
 indicating good model fit and homoscedasticity. No obvious outliers are
 present, suggesting that the linear regression model assumptions are
 likely being met.</p>
-<p>The QQ plot suggests although the slightly deviations at the tails
+<p>The QQ plot suggests although the slight deviations at the tails
 indicate potential non-normality, the residuals from a statistical model
 are approximately normally distributed around the center.</p>
 <pre class="r"><code>broom::glance(selected_model) |&gt;
@@ -846,11 +846,11 @@ in our dataset.</p>
 <h1>Random Forest Model</h1>
 <div id="model-selection-1" class="section level2">
 <h2>Model Selection</h2>
-<p>The Random Forest Model is an ensemble learning method, play an
+<p>The Random Forest Model is an ensemble learning method, that plays an
 important role in classification and regression tasks by building
 multiple decision trees and aggregating their outputs. It handles
 complex datasets well and is robust against overfitting. Thus, we
-consider switching to Random Forest when linear models has limitations.
+consider switching to Random Forest when linear models have limitations.
 It effectively captures complex, non-linear relationships in data,
 offering improved accuracy and deeper insights.</p>
 <pre class="r"><code>library(randomForest)
@@ -859,7 +859,7 @@ rf_model &lt;- randomForest(death_rate ~  employment+hc_exp+income+edu_level+car
 </div>
 <div id="model-performance-1" class="section level2">
 <h2>Model Performance</h2>
-<p>We also use cross validation and boostrap to see the performance and
+<p>We also use cross-validation and bootstrap to see the performance and
 reliability of the random forest model as we did to the linear
 model.</p>
 <div id="cross-validation-for-rmse-1" class="section level3">
@@ -1006,20 +1006,19 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-0fd3173ab6e1ea37f969" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"94c471d314bb":["function () ","plotlyVisDat"]},"cur_data":"94c471d314bb","attrs":{"94c471d314bb":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"7ac4681e3ed4":["function () ","plotlyVisDat"]},"cur_data":"7ac4681e3ed4","attrs":{"7ac4681e3ed4":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>After careful consideration, we chose the random forest to be our
-final mofel. And according to the model, <code>edu_level</code> emerges
-as the most important feature, which suggests a strong correlation
-between educational attainment and mortality rates in Alzheimer’s
-patients. Following it,<code>hc_exp</code> stands as the second most
-crucial factor, indicating the importance of healthcare resources in
-managing Alzheimer’s disease. Other features like
-<code>smoke_rate</code>, <code>elder_rate</code>,
-<code>employment</code>, <code>income</code>, and
-<code>cardio_rate</code> are ranked in descending order of importance,
-indicating a gradual decrease in their significance within the model.
-These findings highlight the multifaceted nature of factors affecting
-Alzheimer’s patient outcomes and underscore the importance of
+final model. According to the model, <code>edu_level</code> emerges as
+the most important feature, which suggests a strong correlation between
+educational attainment and mortality rates in Alzheimer’s patients.
+Following it,<code>hc_exp</code> stands as the second most crucial
+factor, indicating the importance of healthcare resources in managing
+Alzheimer’s disease. Other features like <code>smoke_rate</code>,
+<code>elder_rate</code>, <code>employment</code>, <code>income</code>,
+and <code>cardio_rate</code> are ranked in descending order of
+importance, indicating a gradual decrease in their significance within
+the model. These findings highlight the multifaceted nature of factors
+affecting Alzheimer’s patient outcomes and underscore the importance of
 socioeconomic and lifestyle factors in addition to healthcare
 provision.</p>
 </div>
