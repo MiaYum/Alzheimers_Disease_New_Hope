@@ -26,14 +26,14 @@ knitr::opts_chunk$set(
 
 # Associated Factors Datasets
 
-To study the complex interplay of factors contributing to Alzheimer's Disease, we have sourced a diverse range of datasets, including age, socioeconomic status, healthcare access, education level, etc. We collected data from authoritative and reliable sources such as government website and professional institude. The final data for analysis is obtained by merging these Alzheimer's Disease related datasets.
-The cleaning process include variable selection, converting variable to the type we need, and transforming the dataframe to tidy format. The details of importing and cleaning of all datasets are as following:
+To study the complex interplay of factors contributing to Alzheimer's Disease, we have sourced a diverse range of datasets, including age, socioeconomic status, healthcare access, education level, etc. We collected data from authoritative and reliable sources such as government websites and professional institute. The final data for analysis is obtained by merging these Alzheimer's Disease related datasets.
+The cleaning process includes variable selection, converting variable to the type we need, and transforming the dataframe to a tidy format. The details of importing and cleaning all datasets are as following:
 
 *   The first dataset `death_rate` contains the mortality of Alzheimer’s Disease in each state from 2014 to 2021, which can be accessed from [CDC](https://www.cdc.gov/nchs/pressroom/sosmap/alzheimers_mortality/alzheimers_disease.htm).
 
 *   `econdata` dataset contains the economic status of each state from 2008 to 2021, including GDP, income, price index, expenditure on healthcare etc. The data is downloaded from [Bureau of Economic Analysis](https://apps.bea.gov/iTable/?reqid=70&step=1&acrdn=2&_gl=1*14uawee*_ga*MzQ4ODY3MjA1LjE3MDEzMTIzMDc.*_ga_J4698JNNFT*MTcwMTMxMjMwNi4xLjEuMTcwMTMxMjM4OS4wLjAuMA..#eyJhcHBpZCI6NzAsInN0ZXBzIjpbMSwyOSwyNSwzMSwyNiwyNywzMF0sImRhdGEiOltbIlRhYmxlSWQiLCI2MDAiXSxbIk1ham9yX0FyZWEiLCIwIl0sWyJTdGF0ZSIsWyIwIl1dLFsiQXJlYSIsWyJYWCJdXSxbIlN0YXRpc3RpYyIsWyItMSJdXSxbIlVuaXRfb2ZfbWVhc3VyZSIsIkxldmVscyJdLFsiWWVhciIsWyItMSJdXSxbIlllYXJCZWdpbiIsIi0xIl0sWyJZZWFyX0VuZCIsIi0xIl1dfQ==).
 
-*   `edu_level` dataset contains the percentage of population obtained Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
+*   `edu_level` dataset contains the percentage of the population who obtained a Bachelor's Degree or Higher in each state from 2018 to 2021. The data is extracted from [Federal Reserve Economic Data](https://fred.stlouisfed.org/release/tables?rid=330&eid=391444&od=2018-01-01#).
 
 *   `diabetes` dataset contains the rate of diabetes by state from 2018 to 2021. The data can be accessed [here](https://www.kff.org/other/state-indicator/adults-with-diabetes/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D).
 
@@ -176,7 +176,7 @@ CT_data =
   janitor::clean_names() |>
   select(-study_title, -acronym, -study_results, -conditions, -brief_summary, -primary_outcome_measures, -secondary_outcome_measures, -other_outcome_measures, -study_design, -other_i_ds, - primary_completion_date, -first_posted, -results_first_posted, -last_update_posted)
 ```
-The raw data is too complicated with redundant information, so we did an initial variable selection to omit useless variables. There are a total of `r nrow(CT_data)` and `r length(CT_data)` variables. Variables and description is listed below:
+The raw data is too complicated with redundant information, so we did an initial variable selection to omit useless variables. There are a total of `r nrow(CT_data)` and `r length(CT_data)` variables. Variables and description are listed below:
 
 *   ```r colnames(CT_data)[1]```: Unique Identification of clinical trials
 
@@ -192,7 +192,7 @@ The raw data is too complicated with redundant information, so we did an initial
 
 *   ```r colnames(CT_data)[7]```: Gender of study participants (include "MALE", "FEMALE", "ALL", "OBSERVATIONAL", and missing value)
 
-*   ```r colnames(CT_data)[8]```: Age of study participants (include combination of Chiled, Adult, Oler Adult, and missing value)
+*   ```r colnames(CT_data)[8]```: Age of study participants (include a combination of Chiled, Adult, Oler Adult, and missing value)
 
 *   ```r colnames(CT_data)[9]```: Phases of the study
 
@@ -208,7 +208,7 @@ The raw data is too complicated with redundant information, so we did an initial
 
 *   ```r colnames(CT_data)[15]```: Location(s) of study (Locations were divided by "|" for study conducted in more than one location)
 
-Data for further investigation on two latest drugs Lecanemab and Donanemab are from their published Phase III study results. Relevant website could be accessd from [Lecanemab](https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material) and [Donanemab](https://jamanetwork.com/journals/jama/article-abstract/2807533). Both study contians data for participants basic information, adverse events statistics, survival analysis and treatment evaluation.
+Data for further investigation on two latest drugs Lecanemab and Donanemab are from their published Phase III study results. Relevant website could be accessed from [Lecanemab](https://www.nejm.org/doi/full/10.1056/NEJMoa2212948?downloadfile=downloadFigures#article_supplementary_material) and [Donanemab](https://jamanetwork.com/journals/jama/article-abstract/2807533). Both studies contian data for participants' basic information, adverse events statistics, survival analysis, and treatment evaluation.
 
 ```{r}
 # Safety data for Lecanemab
