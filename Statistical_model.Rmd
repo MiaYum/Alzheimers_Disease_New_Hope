@@ -21,20 +21,28 @@ library(modelr)
 library(tidyr)
 library(randomForest)
 library(boot)
+library(patchwork)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	message = FALSE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
 
 set.seed(15)
 ```
 
-# Model
-
-## Data Set Splitting
+# Data Set Splitting
 
 We used data from the years 2018 to 2020 to train our models, and data from 2021 to perform prediction.
 
 All these datasets have been filtered to remove any missing values and do not contain any outliers, ensuring that the data quality is high. This preprocessing step lays a strong foundation for building accurate and reliable models.
 
-```{r, message = FALSE, warning = FALSE}
-data = readRDS("data_for_model.rds") 
+```{r}
+data = readRDS("./Data/data_for_model.rds") 
 training_data = filter(data, year >= 2018 & year <= 2020) |>
   select(-c(state,year))
 
@@ -42,9 +50,9 @@ testing_data = filter(data, year == 2021) |>
   select(-c(state,year))
 ```
 
-## Multiple Linear Regression
+# Multiple Linear Regression
 
-### Model Selection
+## Model Selection
 
 The reason for initially choosing linear models in statistical analysis is their simplicity and ease of understanding. These models, by representing relationships in a straightforward linear manner, make it easier for us to comprehend how different variables affect the death rate we care about.
 
@@ -52,9 +60,9 @@ Moreover, linear models are known for their robustness, offering reliable perfor
 
 By starting with a linear model, we can establish a baseline performance level, against which the effectiveness of more sophisticated models can be measured. This stepwise approach helps ensure that the complexity of a model is justified by a significant improvement over the simpler linear model.
 
-#### Full model: Linear regression 
+### Full model: Linear regression 
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 model = lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
 summary(model) |> 
 broom::tidy() |>
@@ -67,19 +75,17 @@ broom::glance(model) |>
 ```
 Based on the table of the full model, some of the predictors are statistically significant while others are not, so we need a further selection of the model.
 
-#### Backwards Elimination
+### Backwards Elimination
 
 We use Backward Elimination for constructing our linear regression model to enhance its efficiency and interpretability. This method systematically removes the least significant variables, ensuring that only the most impactful predictors are retained. Consequently, it helps in reducing model complexity and avoiding overfitting, resulting in a more robust and meaningful model.
 
-
-```{r, message = FALSE, warning = FALSE}
+```{r}
 backward_result = step(model, direction = 'backward', trace = 0)
   broom::tidy(backward_result) |>
       knitr::kable()
 ```
 
-
-```{r, message = FALSE, warning = FALSE}
+```{r}
 selected_model = lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 
 summary(selected_model) |>
@@ -89,9 +95,9 @@ summary(selected_model) |>
 
 After applying Backward Elimination, we have obtained a linear regression model that is streamlined and comprises only the statistically significant predictors.
 
-### Model Performance
+## Model Performance
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 pre =
   training_data |>
   add_predictions(selected_model) |>
@@ -126,28 +132,25 @@ p2 <- ggplot(as.data.frame(residuals), aes(sample = residuals)) +
     plot.title = element_text(hjust = 0.5)
   )
 
-library(patchwork)
 p1 + p2
-
 ```
 
 The residuals versus fitted plot shows a random distribution of residuals around the zero line without any discernible patterns, indicating good model fit and homoscedasticity. No obvious outliers are present, suggesting that the linear regression model assumptions are likely being met.
 
 The QQ plot suggests although the slight deviations at the tails indicate potential non-normality, the residuals from a statistical model are approximately normally distributed around the center.
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 broom::glance(selected_model) |>
   mutate(model = "Selected Linear Regression") |>
   select(model, r.squared, adj.r.squared, p.value, AIC, BIC) |>
   knitr::kable()
 ```
 
-#### Cross Validation for RMSE
+### Cross Validation for RMSE
 
 To assess the performance and reliability of a predictive model, we use the Cross-validation method to divide the training data into 100 subsets to ensure that each data point is used for both training and testing. This helps assess how well the model generalizes to new, unseen data.
 
-```{r, message = FALSE, warning = FALSE}
-
+```{r}
 # generate a cv dataframe 
 cv_df =
   crossv_mc(training_data, 100) %>% 
@@ -184,11 +187,11 @@ cv_df |>
 
 The violin plot indicates a relatively concentrated distribution of RMSE values for the linear regression model during cross-validation, primarily within the 7 to 8 range, suggesting consistent prediction errors without extreme variability. The symmetric shape around the center suggests a median error likely within this range, implying a stable model performance.
 
-#### Bootstrap
+### Bootstrap
 
 Bootstrapping, involving repeated sampling with replacement, ensures that we are not just creating a model that works well for our current dataset (as indicated by a high R²) but also one that is likely to perform consistently across different, unseen datasets.
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 training_data |> 
   modelr::bootstrap(n = 1000) |> 
   mutate(
@@ -205,28 +208,23 @@ training_data |>
 
 Despite all the variables are significant, R² value is around 0.4, which suggests potential nonlinear relationships or multicollinearity issues in our dataset.
 
-## Random Forest Model
+# Random Forest Model
 
-### Model Selection
+## Model Selection
 
 The Random Forest Model is an ensemble learning method, plays an important role in classification and regression tasks by building multiple decision trees and aggregating their outputs. It handles complex datasets well and is robust against overfitting. Thus, we consider switching to Random Forest when linear models have limitations. It effectively captures complex, non-linear relationships in data, offering improved accuracy and deeper insights.
 
-```{r, message = FALSE, warning = FALSE}
-
-library(randomForest)
-
+```{r}
 rf_model <- randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)
-
 ```
 
-### Model Performance
+## Model Performance
 
 We also use cross-validation and boostrap to see the performance and reliability of the random forest model as we did to the linear model.
 
-#### Cross Validation for RMSE
+### Cross Validation for RMSE
 
-```{r, message = FALSE, warning = FALSE}
-
+```{r}
 # generate a cv dataframe 
 cv_df =
   crossv_mc(training_data, 100) %>% 
@@ -266,7 +264,7 @@ cv_df |>
 
 From the plot, the RMSE is predominantly below 7, ranging from approximately 5.5 to 9. This level of RMSE is lower compared to that of the linear models we've previously evaluated, indicating that this model performs better. Lower RMSE values signify more accurate predictions, thus suggesting that this model is a more effective predictor for our dataset.
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 # R²
 rf_predictions <- predict(rf_model, training_data)
 r_squared <- cor(training_data$death_rate, rf_predictions)^2
@@ -279,14 +277,11 @@ data.frame(
 
 Calculated using the training data, the R² is `r r_squared`, which indicates a very high level of explained variance in the model. This suggests that our model is highly effective in capturing and representing the relationships within the training dataset.
 
-#### Bootstrap
+### Bootstrap
 
 We perform bootstrapping to evaluate the model's stability and reliability. 
 
-```{r, message = FALSE, warning = FALSE}
-library(randomForest)
-library(boot)
-
+```{r}
 bootstrap_r2 <- function(data, indices) {
   boot_data <- data[indices, ]
   model <- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
@@ -311,15 +306,13 @@ ggplot(results_df, aes(x = R_squared)) +
     axis.text = element_text(color = "grey20"),
     axis.title = element_text(color = "grey20")
   )
-
 ```
 
 The bootstrap results of the Random Forest model showing an R² value around 0.96 indicate a high level of accuracy and consistency. This suggests that the model is not only effective in explaining a large portion of the variance in the data but also demonstrates robust performance across different samples.
 
-### Prediction
+## Prediction
 
-```{r, message = FALSE, warning = FALSE}
-
+```{r}
 testing_data$predicted_death_rate <- predict(rf_model, testing_data)
 ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
   geom_point(color = "black") +  # Add the actual data points
@@ -337,9 +330,9 @@ ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
 
 Using the 2021 data to predict with the Random Forest model, we observed that the data points largely align with the fitted line, especially within the middle range of actual values. There are some outliers, particularly at higher actual values, but this indicates that the model's predictive accuracy is reasonable within the normal range.
 
-## Results and Discussion
+# Results and Discussion
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 importance_values <- importance(rf_model)
 
 feature_importance <- data.frame(Feature = rownames(importance_values), 
@@ -347,11 +340,10 @@ feature_importance <- data.frame(Feature = rownames(importance_values),
   arrange(Importance) %>% 
   mutate(Feature = factor(Feature, levels = Feature)) 
 
-plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orientation = 'h') %>%
+plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = 'bar', orientation = 'h', marker = list(color = "rgba(55, 128, 191, 0.7)", line = list(color = "rgba(55, 128, 191, 0.7)", width = 2))) %>%
   layout(title = "Feature Importance from Random Forest Model",
          xaxis = list(title = "Importance"),
          yaxis = list(title = "Feature"))
 ```
-
 
 After careful consideration, we chose the random forest to be our final model. According to the model, `edu_level` emerges as the most important feature, which suggests a strong correlation between educational attainment and mortality rates in Alzheimer's patients. Following it,`hc_exp` stands as the second most crucial factor, indicating the importance of healthcare resources in managing Alzheimer's disease. Other features like `smoke_rate`, `elder_rate`, `employment`, `income`, and `cardio_rate` are ranked in descending order of importance, indicating a gradual decrease in their significance within the model. These findings highlight the multifaceted nature of factors affecting Alzheimer's patient outcomes and underscore the importance of socioeconomic and lifestyle factors in addition to healthcare provision.
