@@ -425,10 +425,12 @@ div.tocify {
 </div>
 
 
-<div id="data-set-splitting" class="section level1">
-<h1>Data Set Splitting</h1>
-<p>We used data from 2018 to 2020 to train our models, and data from
-2021 to perform prediction.</p>
+<div id="model" class="section level1">
+<h1>Model</h1>
+<div id="data-set-splitting" class="section level2">
+<h2>Data Set Splitting</h2>
+<p>We used data from the years 2018 to 2020 to train our models, and
+data from 2021 to perform prediction.</p>
 <p>All these datasets have been filtered to remove any missing values
 and do not contain any outliers, ensuring that the data quality is high.
 This preprocessing step lays a strong foundation for building accurate
@@ -440,10 +442,10 @@ training_data = filter(data, year &gt;= 2018 &amp; year &lt;= 2020) |&gt;
 testing_data = filter(data, year == 2021) |&gt;
   select(-c(state,year))</code></pre>
 </div>
-<div id="multiple-linear-regression" class="section level1">
-<h1>Multiple Linear Regression</h1>
-<div id="model-selection" class="section level2">
-<h2>Model Selection</h2>
+<div id="multiple-linear-regression" class="section level2">
+<h2>Multiple Linear Regression</h2>
+<div id="model-selection" class="section level3">
+<h3>Model Selection</h3>
 <p>The reason for initially choosing linear models in statistical
 analysis is their simplicity and ease of understanding. These models, by
 representing relationships in a straightforward linear manner, make it
@@ -455,11 +457,11 @@ errors. Importantly, they serve as an effective benchmark in more
 complex modeling processes.</p>
 <p>By starting with a linear model, we can establish a baseline
 performance level, against which the effectiveness of more sophisticated
-models can be measured. This stepwise approach helps ensure that the
-complexity of a model is justified by a significant improvement over the
-simpler linear model.</p>
-<div id="full-model-linear-regression" class="section level3">
-<h3>Full model: Linear regression</h3>
+models can be measured. This stepwise approach helps in ensuring that
+the complexity of a model is justified by a significant improvement over
+the simpler linear model.</p>
+<div id="full-model-linear-regression" class="section level4">
+<h4>Full model: Linear regression</h4>
 <pre class="r"><code>model = lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = training_data)
 summary(model) |&gt; 
 broom::tidy() |&gt;
@@ -567,12 +569,12 @@ broom::tidy() |&gt;
 </tr>
 </tbody>
 </table>
-<p>Based on the table of the full model, some of the predictors are
+<p>Based on the table of full model, some of the predictors are
 statistically significant while others are not, so we need a further
 selection of the model.</p>
 </div>
-<div id="backwards-elimination" class="section level3">
-<h3>Backwards Elimination</h3>
+<div id="backwards-elimination" class="section level4">
+<h4>Backwards Elimination</h4>
 <p>We use Backward Elimination for constructing our linear regression
 model to enhance its efficiency and interpretability. This method
 systematically removes the least significant variables, ensuring that
@@ -632,7 +634,7 @@ more robust and meaningful model.</p>
 </table>
 <pre class="r"><code>selected_model = lm(death_rate ~ hc_exp + edu_level + cardio_rate + elder_rate, data = training_data)
 
-summary(selected_model)|&gt;
+summary(selected_model) |&gt;
   broom::tidy() |&gt;
   knitr::kable()</code></pre>
 <table>
@@ -688,8 +690,8 @@ regression model that is streamlined and comprises only the
 statistically significant predictors.</p>
 </div>
 </div>
-<div id="model-performance" class="section level2">
-<h2>Model Performance</h2>
+<div id="model-performance" class="section level3">
+<h3>Model Performance</h3>
 <pre class="r"><code>pre =
   training_data |&gt;
   add_predictions(selected_model) |&gt;
@@ -732,7 +734,7 @@ residuals around the zero line without any discernible patterns,
 indicating good model fit and homoscedasticity. No obvious outliers are
 present, suggesting that the linear regression model assumptions are
 likely being met.</p>
-<p>The QQ plot suggests although the slight deviations at the tails
+<p>The QQ plot suggests although the slightly deviations at the tails
 indicate potential non-normality, the residuals from a statistical model
 are approximately normally distributed around the center.</p>
 <pre class="r"><code>broom::glance(selected_model) |&gt;
@@ -769,8 +771,8 @@ are approximately normally distributed around the center.</p>
 </tr>
 </tbody>
 </table>
-<div id="cross-validation-for-rmse" class="section level3">
-<h3>Cross Validation for RMSE</h3>
+<div id="cross-validation-for-rmse" class="section level4">
+<h4>Cross Validation for RMSE</h4>
 <p>To assess the performance and reliability of a predictive model, we
 use the Cross-validation method to divide the training data into 100
 subsets to ensure that each data point is used for both training and
@@ -802,7 +804,7 @@ cv_df |&gt;
     x = &quot;Model Linear Regression&quot;,
     y = &quot;Prediction Errors&quot;
   ) +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = &quot;grey20&quot;),
@@ -816,8 +818,8 @@ errors without extreme variability. The symmetric shape around the
 center suggests a median error likely within this range, implying a
 stable model performance.</p>
 </div>
-<div id="bootstrap" class="section level3">
-<h3>Bootstrap</h3>
+<div id="bootstrap" class="section level4">
+<h4>Bootstrap</h4>
 <p>Bootstrapping, involving repeated sampling with replacement, ensures
 that we are not just creating a model that works well for our current
 dataset (as indicated by a high R²) but also one that is likely to
@@ -825,45 +827,44 @@ perform consistently across different, unseen datasets.</p>
 <pre class="r"><code>training_data |&gt; 
   modelr::bootstrap(n = 1000) |&gt; 
   mutate(
-    models = map(strap, \(df) lm(death_rate ~ employment + hc_exp + income + edu_level + cardio_rate + smoke_rate + elder_rate, data = df)),
+    models = map(strap, \(df) lm(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = df)),
     results = map(models, broom::glance)) |&gt; 
   select(results) |&gt;
   unnest(results) |&gt;
   ggplot(aes(x = r.squared)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = &#39;blue&#39;, alpha = 0.5) +
   geom_density(alpha = .2, fill = &quot;red&quot;) +
-  labs(title = &quot;Bootstrap Distribution of R Squared&quot;, x = &quot;R  Squared&quot;, y = &quot;Density&quot;) +
+  labs(title = &quot;Bootstrap Distribution of R²&quot;, x = &quot;R²&quot;, y = &quot;Density&quot;) +
   theme_minimal()</code></pre>
 <p><img src="Model_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Despite all the varibles are significant, <span
-class="math inline">\(R^2\)</span> value is around 0.4, which is
-suggests potential nonlinear relationships or multicollinearity issues
-in our dataset.</p>
+<p>Despite all the varibles are significant, R² value is around 0.4,
+which is suggests potential nonlinear relationships or multicollinearity
+issues in our dataset.</p>
 </div>
 </div>
 </div>
-<div id="random-forest-model" class="section level1">
-<h1>Random Forest Model</h1>
-<div id="model-selection-1" class="section level2">
-<h2>Model Selection</h2>
-<p>The Random Forest Model is an ensemble learning method, that plays an
+<div id="random-forest-model" class="section level2">
+<h2>Random Forest Model</h2>
+<div id="model-selection-1" class="section level3">
+<h3>Model Selection</h3>
+<p>The Random Forest Model is an ensemble learning method, play an
 important role in classification and regression tasks by building
 multiple decision trees and aggregating their outputs. It handles
 complex datasets well and is robust against overfitting. Thus, we
-consider switching to Random Forest when linear models have limitations.
+consider switching to Random Forest when linear models has limitations.
 It effectively captures complex, non-linear relationships in data,
 offering improved accuracy and deeper insights.</p>
 <pre class="r"><code>library(randomForest)
 
 rf_model &lt;- randomForest(death_rate ~  employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = training_data)</code></pre>
 </div>
-<div id="model-performance-1" class="section level2">
-<h2>Model Performance</h2>
-<p>We also use cross-validation and bootstrap to see the performance and
+<div id="model-performance-1" class="section level3">
+<h3>Model Performance</h3>
+<p>We also use cross validation and boostrap to see the performance and
 reliability of the random forest model as we did to the linear
 model.</p>
-<div id="cross-validation-for-rmse-1" class="section level3">
-<h3>Cross Validation for RMSE</h3>
+<div id="cross-validation-for-rmse-1" class="section level4">
+<h4>Cross Validation for RMSE</h4>
 <pre class="r"><code># generate a cv dataframe 
 cv_df =
   crossv_mc(training_data, 100) %&gt;% 
@@ -885,14 +886,14 @@ cv_df |&gt;
     everything(),
     names_to = &quot;model&quot;, 
     values_to = &quot;rmse&quot;) %&gt;% 
-  ggplot(aes(x= model, y = rmse)) + 
+  ggplot(aes(x = model, y = rmse)) + 
   geom_violin(fill = &quot;blue&quot;, alpha = 0.5) +
   labs(
     title = &quot;Prediction Errors For Our Model Under CV&quot;,
     x = &quot;Model Random Forest&quot;,
     y = &quot;Prediction Errors&quot;
   ) +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = &quot;grey20&quot;),
@@ -932,11 +933,14 @@ indicates a very high level of explained variance in the model. This
 suggests that our model is highly effective in capturing and
 representing the relationships within the training dataset.</p>
 </div>
-<div id="bootstrap-1" class="section level3">
-<h3>Bootstrap</h3>
+<div id="bootstrap-1" class="section level4">
+<h4>Bootstrap</h4>
 <p>We perform bootstrapping to evaluate the model’s stability and
 reliability.</p>
-<pre class="r"><code>bootstrap_r2 &lt;- function(data, indices) {
+<pre class="r"><code>library(randomForest)
+library(boot)
+
+bootstrap_r2 &lt;- function(data, indices) {
   boot_data &lt;- data[indices, ]
   model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
   predictions &lt;- predict(model, boot_data)
@@ -953,23 +957,23 @@ results_df &lt;- data.frame(R_squared = results$t)
 ggplot(results_df, aes(x = R_squared)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = &#39;blue&#39;, alpha = 0.5) +
   geom_density(alpha = .2, fill = &quot;red&quot;) +
-  labs(title = &quot;Bootstrap Distribution of R Squared&quot;, x = &quot;R Squared&quot;, y = &quot;Density&quot;) +
-  theme_minimal()+
+  labs(title = &quot;Bootstrap Distribution of R²&quot;, x = &quot;R²&quot;, y = &quot;Density&quot;) +
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = &quot;grey20&quot;),
     axis.title = element_text(color = &quot;grey20&quot;)
   )</code></pre>
 <p><img src="Model_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>The bootstrap results of the Random Forest model showing an <span
-class="math inline">\(R^2\)</span> value around 0.96 indicate a high
-level of accuracy and consistency. This suggests that the model is not
-only effective in explaining a large portion of the variance in the data
-but also demonstrates robust performance across different samples.</p>
+<p>The bootstrap results of the Random Forest model showing an R² value
+around 0.96 indicate a high level of accuracy and consistency. This
+suggests that the model is not only effective in explaining a large
+portion of the variance in the data but also demonstrates robust
+performance across different samples.</p>
 </div>
 </div>
-<div id="prediction" class="section level2">
-<h2>Prediction</h2>
+<div id="prediction" class="section level3">
+<h3>Prediction</h3>
 <pre class="r"><code>testing_data$predicted_death_rate &lt;- predict(rf_model, testing_data)
 ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
   geom_point(color = &quot;black&quot;) +  # Add the actual data points
@@ -977,7 +981,7 @@ ggplot(testing_data, aes(x = death_rate, y = predicted_death_rate)) +
   labs(title = &quot;Linear Regression Predictions&quot;,
        x = &quot;Actual Values&quot;,
        y = &quot;Predicted Values&quot;) +
-  theme_minimal()+
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
     axis.text = element_text(color = &quot;grey20&quot;),
@@ -992,8 +996,8 @@ the model’s predictive accuracy is reasonable within the normal
 range.</p>
 </div>
 </div>
-<div id="results-and-discussion" class="section level1">
-<h1>Results and Discussion</h1>
+<div id="results-and-discussion" class="section level2">
+<h2>Results and Discussion</h2>
 <pre class="r"><code>importance_values &lt;- importance(rf_model)
 
 feature_importance &lt;- data.frame(Feature = rownames(importance_values), 
@@ -1001,26 +1005,28 @@ feature_importance &lt;- data.frame(Feature = rownames(importance_values),
   arrange(Importance) %&gt;% 
   mutate(Feature = factor(Feature, levels = Feature)) 
 
-plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;, orientation = &#39;h&#39;, marker = list(color = &quot;rgba(55, 128, 191, 0.7)&quot;, line = list(color = &quot;rgba(55, 128, 191, 0.7)&quot;, width = 2))) %&gt;%
+plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;, orientation = &#39;h&#39;) %&gt;%
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-0fd3173ab6e1ea37f969" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"82546883b0a":["function () ","plotlyVisDat"]},"cur_data":"82546883b0a","attrs":{"82546883b0a":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"710018537648":["function () ","plotlyVisDat"]},"cur_data":"710018537648","attrs":{"710018537648":{"x":{},"y":{},"orientation":"h","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>After careful consideration, we chose the random forest to be our
-final model. According to the model, <code>edu_level</code> emerges as
-the most important feature, which suggests a strong correlation between
-educational attainment and mortality rates in Alzheimer’s patients.
-Following it,<code>hc_exp</code> stands as the second most crucial
-factor, indicating the importance of healthcare resources in managing
-Alzheimer’s disease. Other features like <code>smoke_rate</code>,
-<code>elder_rate</code>, <code>employment</code>, <code>income</code>,
-and <code>cardio_rate</code> are ranked in descending order of
-importance, indicating a gradual decrease in their significance within
-the model. These findings highlight the multifaceted nature of factors
-affecting Alzheimer’s patient outcomes and underscore the importance of
+final mofel. And according to the model, <code>edu_level</code> emerges
+as the most important feature, which suggests a strong correlation
+between educational attainment and mortality rates in Alzheimer’s
+patients. Following it,<code>hc_exp</code> stands as the second most
+crucial factor, indicating the importance of healthcare resources in
+managing Alzheimer’s disease. Other features like
+<code>smoke_rate</code>, <code>elder_rate</code>,
+<code>employment</code>, <code>income</code>, and
+<code>cardio_rate</code> are ranked in descending order of importance,
+indicating a gradual decrease in their significance within the model.
+These findings highlight the multifaceted nature of factors affecting
+Alzheimer’s patient outcomes and underscore the importance of
 socioeconomic and lifestyle factors in addition to healthcare
 provision.</p>
+</div>
 </div>
 
 
