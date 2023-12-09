@@ -1202,6 +1202,10 @@ All trial participants took Alzheimer's tests to evaluate their stages at the st
 
 
 ```{r}
+CDR_SB = read_excel("Data/Donanemab.xlsx", sheet = "result") |> filter(outcome == "CDR-SB")
+ADAS_Cog13 = read_excel("Data/Donanemab.xlsx", sheet = "result") |> filter(outcome == "ADAS-Cog13")
+MMSE = read_excel("Data/Donanemab.xlsx", sheet = "result") |> filter(outcome == "MMSE")
+
 lec_result = read_excel("data/Lecanemab.xlsx", sheet = "result") |>
   filter(time == 0,
          outcome %in% c("CDR-SB", "ADAS-Cog14", "MMSE")) |>
