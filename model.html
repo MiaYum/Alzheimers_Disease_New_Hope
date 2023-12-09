@@ -832,7 +832,7 @@ perform consistently across different, unseen datasets.</p>
   ggplot(aes(x = r.squared)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = &#39;blue&#39;, alpha = 0.5) +
   geom_density(alpha = .2, fill = &quot;red&quot;) +
-  labs(title = &quot;Bootstrap Distribution of R^2&quot;, x = &quot;R^2&quot;, y = &quot;Density&quot;) +
+  labs(title = &quot;Bootstrap Distribution of R Squared&quot;, x = &quot;R  Squared&quot;, y = &quot;Density&quot;) +
   theme_minimal()</code></pre>
 <p><img src="model_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Despite all the varibles are significant, <span
@@ -936,10 +936,7 @@ representing the relationships within the training dataset.</p>
 <h3>Bootstrap</h3>
 <p>We perform bootstrapping to evaluate the model’s stability and
 reliability.</p>
-<pre class="r"><code>library(randomForest)
-library(boot)
-
-bootstrap_r2 &lt;- function(data, indices) {
+<pre class="r"><code>bootstrap_r2 &lt;- function(data, indices) {
   boot_data &lt;- data[indices, ]
   model &lt;- randomForest(death_rate ~employment+hc_exp+income+edu_level+cardio_rate+smoke_rate+elder_rate, data = boot_data)
   predictions &lt;- predict(model, boot_data)
@@ -956,7 +953,7 @@ results_df &lt;- data.frame(R_squared = results$t)
 ggplot(results_df, aes(x = R_squared)) +
   geom_histogram(aes(y = ..density..), bins = 30, fill = &#39;blue&#39;, alpha = 0.5) +
   geom_density(alpha = .2, fill = &quot;red&quot;) +
-  labs(title = &quot;Bootstrap Distribution of R²&quot;, x = &quot;R²&quot;, y = &quot;Density&quot;) +
+  labs(title = &quot;Bootstrap Distribution of R Squared&quot;, x = &quot;R Squared&quot;, y = &quot;Density&quot;) +
   theme_minimal()+
   theme(
     plot.title = element_text(hjust = 0.5),
@@ -964,11 +961,11 @@ ggplot(results_df, aes(x = R_squared)) +
     axis.title = element_text(color = &quot;grey20&quot;)
   )</code></pre>
 <p><img src="model_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>The bootstrap results of the Random Forest model showing an R² value
-around 0.96 indicate a high level of accuracy and consistency. This
-suggests that the model is not only effective in explaining a large
-portion of the variance in the data but also demonstrates robust
-performance across different samples.</p>
+<p>The bootstrap results of the Random Forest model showing an <span
+class="math inline">\(R^2\)</span> value around 0.96 indicate a high
+level of accuracy and consistency. This suggests that the model is not
+only effective in explaining a large portion of the variance in the data
+but also demonstrates robust performance across different samples.</p>
 </div>
 </div>
 <div id="prediction" class="section level2">
@@ -1008,8 +1005,8 @@ plot_ly(feature_importance, x = ~Importance, y = ~Feature, type = &#39;bar&#39;,
   layout(title = &quot;Feature Importance from Random Forest Model&quot;,
          xaxis = list(title = &quot;Importance&quot;),
          yaxis = list(title = &quot;Feature&quot;))</code></pre>
-<div class="plotly html-widget html-fill-item" id="htmlwidget-c2c81ce0685f65756a0c" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-c2c81ce0685f65756a0c">{"x":{"visdat":{"866062b23c44":["function () ","plotlyVisDat"]},"cur_data":"866062b23c44","attrs":{"866062b23c44":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0fd3173ab6e1ea37f969" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-0fd3173ab6e1ea37f969">{"x":{"visdat":{"9aa041443891":["function () ","plotlyVisDat"]},"cur_data":"9aa041443891","attrs":{"9aa041443891":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Feature Importance from Random Forest Model","xaxis":{"domain":[0,1],"automargin":true,"title":"Importance"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Feature","type":"category","categoryorder":"array","categoryarray":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1187.9888902208124,1238.1395154372374,1414.4543804406962,1471.0246855408136,1505.8696260485719,1778.4947615179824,1888.9695797938891],"y":["cardio_rate","income","employment","elder_rate","smoke_rate","hc_exp","edu_level"],"orientation":"h","marker":{"color":"rgba(55, 128, 191, 0.7)","line":{"color":"rgba(55, 128, 191, 0.7)","width":2}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>After careful consideration, we chose the random forest to be our
 final mofel. And according to the model, <code>edu_level</code> emerges
 as the most important feature, which suggests a strong correlation

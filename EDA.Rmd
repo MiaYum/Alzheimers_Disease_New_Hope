@@ -187,7 +187,7 @@ There are negative association between Alzheimer's disease mortality rates and f
 However, the data points show a lack of tight clustering, which suggests that a linear model might not fully capture the nuances of these relationships. This pattern hints at the potential for a more complex, non-linear relationship between these socio-economic factors and Alzheimer's mortality.
 
 ```{r}
-# Correlation plot for education level
+# Correlation plot for education
 data |>
   ggplot(aes(x = edu_level, y = death_rate, color = as.factor(year))) + 
   geom_point(alpha = 0.5, size = 0.8) +

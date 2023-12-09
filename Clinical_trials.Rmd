@@ -76,8 +76,8 @@ race_df=
   readxl::read_excel("data/newdrugdemographic.xlsx",sheet="Race", range = "A1:C9") |> 
   janitor::clean_names()
 
-sex_colors <- c("Male" = "#a1afc9", "Female" = "#ef7182") 
-race_colors <- c("Black" = "#c2ccd0", "Asian" ="#edd1d8", "White" = "#e0eee8", "Other or Missing" = "#eedeb0") 
+sex_colors <- c("Male" = "#a1afc9", "Female" = "#edd1d8") 
+race_colors <- c("Black" = "#c2ccd0", "Asian" ="#fcefe8", "White" = "#e0eee8", "Other or Missing" = "#eedeb0") 
 
 
 p1 <- sex_df |> 
