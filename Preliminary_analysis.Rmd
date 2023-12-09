@@ -115,7 +115,7 @@ var.test(west_death_rate,midwest_death_rate,alternative = "two.sided",conf.level
   knitr::kable()
 ```
 
-The null hypothesis for the variance test is that the two variance are equal. The result shows that the p-value is much less than 0.05. Thus, we may reject the null hypothesis and conclude that the variances are not equal. Next, we should perform 2 sample t.test with unknown and unequal variance.
+The null hypothesis for the variances test is that the two variance are equal. The result shows that the p-value is much less than 0.05. Thus, we may reject the null hypothesis and conclude that the variances are not equal. Next, we should perform 2 sample t.test with unknown and unequal variance.
 
 #### Two sample t.test with unknown unequal variances
 
@@ -154,7 +154,7 @@ data |>
 
 * The table and line graph above show the descriptive statistics and overall trend.
 
-* It is clearly shown in the plot that Northeast region has a much lower and South resgion has a much higher average Alzheimer's Disease death rate than the other regions.
+* It is clearly shown in the plot that Northeast region has a much lower and South region has a much higher average Alzheimer's Disease death rate than the other regions.
 
 ## 3. Average Alzheimer's Disease death rate by Income Level
 
@@ -243,7 +243,7 @@ income_level |>
 
 * The boxes of different income groups are almost not overlapping with each other.
 
-* The pattern is clear that people from lower income group tend to have a higher Alzheimer's Disease Death Rate.
+* The pattern is clear that people from lower income groups tend to have a higher Alzheimer's Disease Death Rate.
 
  
 <center> *H~0~ : mean of death_rate are equal in three groups  vs  H~1~ :  at least two means are not equal* </center>
@@ -342,7 +342,7 @@ employ_level |>
   y="Alzheimer's Disease Death Rate")
 ```
 
-* The pattern is clear that low employment tend to a higher Alzheimer's Disease death rate. 
+* The pattern is clear that low employment tends to a higher Alzheimer's Disease death rate. 
 
 <center> *H~0~ : mean high employment = mean low employment  vs  H~1~ : mean high employment ≠ mean low employment* </center>
 
