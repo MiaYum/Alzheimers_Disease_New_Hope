@@ -556,7 +556,7 @@ data |>
 
 * The table and line graph above show the descriptive statistics and overall trend. It is clear that the Northeast region has a much lower and South region has a much higher average Alzheimer's Disease death rate than the other regions across the time period.
 
-## Death Rate Comparison by Regions
+#### Death Rate Comparison by Regions
 
 From the boxplot above, we find that the Alzheimer’s Disease death rate in West region and Midwest region are almost overlapping. Though the median of Midwest region is higher, the variance in West region seems smaller. Thus, we want to study if the mean death rate in the two regions are significantly different.
 
@@ -782,7 +782,7 @@ t.test(death_rate ~ factor(employ_group),data = employ_level, alternative = "les
 
 * We have also performed 2 sample t.test to compare the mean death rate between the two groups. We conclude that the means are not equal. Since the method is similar to what we have used and displayed when studying the regional differences, we do not show the process here.
 
-# Summary
+### Summary
 
 In this analysis, we explored the impact of various factors on Alzheimer's Disease death rates using statistical tests and visualizations. Key findings include:
 
